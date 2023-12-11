@@ -59,6 +59,7 @@ header {
 }
 
 .button {
+    padding: 0;
     width: 48px;
     height: 48px;
     background-color: transparent;
@@ -80,6 +81,7 @@ header {
 }
 
 .restaurant-img {
+    display: block;
     width: 100%;
     height: 320px;
     object-fit: cover;
@@ -96,6 +98,7 @@ header {
     justify-content: space-between;
     align-items: center;
 }
+/* height passt nicht!!! (48 --> 36px */
 
 .atf-headline {
     margin: 0;
@@ -105,10 +108,125 @@ header {
     color: rgb(36, 46, 48);
 }
 
+.atf-row button {
+    margin-bottom: -16px;
+}
+
 .customer-review {
     margin-top: 16px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 4px;
 }
 /* Bitte gap zwischen img und headline entfernen!!! */
+
+.star-group {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.star-20 {
+    width: 20px;
+    height: 20px;
+    background-color: #F36805;
+}
+
+.customer-review-text {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    text-decoration: underline;
+    color: rgb(60, 76, 79);
+}
+
+.delivery-hint {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: rgb(60, 76, 79);
+}
+
+.menu-bar {
+    min-height: 56px;
+    margin-bottom: 8px;
+    background-color: lightgray;
+}
+
+.dishes {
+    padding: 0 68px 24px 68px;
+    background-color: #FCFCFC;
+}
+
+.dishes-title {
+    margin: 16px 0 0 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32px;
+    color: rgb(36, 46, 48);
+}
+
+.dish-card {
+    margin-top: 16px;
+    padding: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+}
+
+.dish-card:hover {
+    background-color: #F5F5F5;
+}
+
+.dish-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dish-card-title {
+    margin: 0 0 4px 0;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    color: rgb(36, 46, 48);
+}
+
+.dish-card-top .button {
+    margin-bottom: 4px;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 30px;
+    color: rgb(36, 46, 48);
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dish-card-ingredients {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: rgb(36, 46, 48);
+}
+
+.dish-card-option {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: rgb(60, 76, 79);
+}
+
+.dish-card-price {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 28px;
+    color: rgb(36, 46, 48);
+}
 
 
 /* menu */
@@ -156,11 +274,33 @@ header {
     background-color: transparent;
     border: unset;
     border-radius: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 } /* row-reverse */
 
 .delivery-button-activated {
     background-color: white;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.delivery-button-text {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: rgb(36, 46, 48);
+}
+
+.delivery-button-text-activated {
+    font-weight: 700;
+}
+
+.delivery-button-time {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    color: rgb(36, 46, 48);
 }
 
 .shopping-cart {
