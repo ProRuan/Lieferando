@@ -10,7 +10,7 @@
     <script src="script.js"></script>
 </head>
 
-<body>
+<body onload="showDishes()">
     <header>
         <div class="header-left">
             <img src="./img/arrow.png" alt="arrow">
@@ -57,7 +57,7 @@
                     <div id="dish-card" class="dish-card">
                         <div class="dish-card-top">
                             <h4 class="dish-card-title">Risipisi</h4>
-                            <button id="menu-button" class="button">+</button>
+                            <button id="menu-button" class="button" onclick="addDish(0)">+</button>
                         </div>
                         <div class="dish-card-description">
                             <p class="dish-card-ingredients">
