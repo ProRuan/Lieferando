@@ -332,11 +332,16 @@ header {
 }
 
 .shopping-cart-items {
-    padding: 16px 16px 8px 16px;
+    padding: 8px 16px 16px 16px;
 }
 
 .shopping-cart-item {
-    margin-bottom: 16px;
+    padding: 8px 0;
+    border-top: 1px solid lightgray;
+}
+
+.shopping-cart-item:first-child {
+    border-top: unset;
 }
 
 .item-index {
@@ -453,8 +458,9 @@ header {
 }
 
 .order-button {
+    margin: 0 16px;
     padding: 0;
-    width: 100%;
+    width: 312px;
     height: 48px;
     font-size: 20px;
     font-weight: 700;
@@ -463,4 +469,30 @@ header {
     background-color: #F36805;
     border: unset;
     border-radius: 100px;
+}
+
+.dialog-box-background {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    /* display: none */
+    display: none;    
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.dialog-box {
+    width: 600px;
+}
+
+.dialog-box-title {
+    padding: 24px 24px 16px 24px;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32px;
+    color: rgb(36, 46, 48);
 }

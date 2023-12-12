@@ -66,6 +66,8 @@ function showDishes() {    // Bitte bearbeiten!!!
         </div>
     `;
     }
+
+    showShoppingCartItems();
 }
 
 
@@ -120,6 +122,7 @@ function addToShoppingCart(i) {
     shoppingCart[nextIndex] = {
         'title': getTitle(i),
         'price': getPrice(i),
+        'options': getOptions(i),
         'amount': 1
     }
 }
@@ -137,6 +140,11 @@ function getTitle(i) {
 
 function getPrice(i) {
     return dishes[i]['price'];
+}
+
+
+function getOptions(i) {
+    return dishes[i]['options'];
 }
 
 
@@ -170,18 +178,96 @@ function saveAndShowDishes() {
 
 function load() {
     let keys = ['dishes', 'shoppingCart'];
-    let variables = [dishes, shoppingCart];
-    getItemAndParse(keys, variables);
+    getItemAndParse(keys);
 }
 
 
-function getItemAndParse(keys, variables) {
+function getItemAndParse(keys) {
     for (let i = 0; i < keys.length; i++) {
         let key = keys[i];
-        let variable = variables[i];
         let variableAsText = localStorage.getItem(key);
-        if (variableAsText) {
-            variable = JSON.parse(variableAsText);
+        if (i == 0 && variableAsText) {
+            dishes = JSON.parse(variableAsText);
+        } else if(variableAsText) {
+            shoppingCart = JSON.parse(variableAsText);
         }
+    }
+}
+
+
+// Functions - Shopping Cart
+function showShoppingCartItems() {
+    let shoppingCartItems = document.getElementById('shopping-cart-items');
+    shoppingCartItems.innerHTML = '';
+    for (let i = 0; i < shoppingCart.length; i++) {
+        shoppingCartItems.innerHTML += `
+        <div id="shopping-cart-item-${i}" class="shopping-cart-item">
+            <table>
+                <tr>
+                    <td id="item-index-${i}" class="item-index">${i}</td>
+                    <td class="fd-column item-details">
+                        <div id="item-title-and-price-${i}" class="jc-space-between item-title-and-price">
+                            <div class="added-item-title">${getTitleInCart(i)}</div>
+                            <div>${getPriceInCart(i)}</div>
+                        </div>
+                        <div class="added-options">${getOptionsInCart(i)}</div>
+                        <div class="mt-8 jc-space-between">
+                            <div class="width-50 item-notes">Anmerkungen hinzufügen</div>
+                            <div class="width-50 jc-space-between">
+                                <button id="menu-plus-button-${i}" class="button">+</button>
+                                <div class="item-amount">${getAmountInCart(i)}</div>
+                                <button id="menu-minus-button-${i}" class="button">-</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    `;
+    }
+}
+
+
+function getTitleInCart(i) {
+    return shoppingCart[i]['title'];
+}
+
+
+function getPriceInCart(i) {
+    return shoppingCart[i]['price'];
+}
+
+
+function getOptionsInCart(i) {
+    return shoppingCart[i]['options'];
+}
+
+
+function getAmountInCart(i) {
+    return shoppingCart[i]['amount'];
+}
+
+
+function getProductOfItem(i) {
+    let amount = getAmountInCart(i);
+    let price = getPriceInCart(i);
+    return amount * price;
+}
+
+
+function getSubTotalInCart() {
+    let subTotal = 0;
+    for (let i = 0; i < shoppingCart.length; i++) {
+        subTotal = subTotal + getProductOfItem(i);
+    }
+    return setDeliveryCosts(subTotal);
+}
+
+
+function setDeliveryCosts(subTotal) {
+    if (subTotal < 30) {
+        return getTotalInCart(subTotal, 30);
+    } else {
+        return getTotalInCart(subTotal, 0);
     }
 }
