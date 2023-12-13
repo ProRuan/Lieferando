@@ -383,6 +383,10 @@ header {
     color: rgb(36, 46, 48);
 }
 
+p {
+    margin: 16px 0;
+}
+
 .footer {
     padding: 16px 32px 24px 32px;
     background-color: #EFEDEA;

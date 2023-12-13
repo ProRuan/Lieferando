@@ -77,12 +77,12 @@
     background-color: lightgray;
 }
 
-.dishes {
+.menu-of-restaurant {
     padding: 0 68px 24px 68px;
     background-color: #FCFCFC;
 }
 
-.dishes-title {
+.menu-category {
     margin: 16px 0 0 0;
     font-size: 24px;
     font-weight: 700;

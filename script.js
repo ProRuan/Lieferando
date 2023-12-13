@@ -45,14 +45,14 @@ load();
 
 
 function showDishes() {    // Bitte bearbeiten!!!
-    let restaurantDishes = document.getElementById('restaurant-dishes');
+    let restaurantDishes = document.getElementById('dish-card-collector');
     restaurantDishes.innerHTML = '';
     for (let i = 0; i < dishes.length; i++) {
         restaurantDishes.innerHTML += `
-        <div id="dish-card-${i}" class="dish-card">
+        <article id="dish-card-${i}" class="dish-card">
             <div class="dish-card-top">
                 <h4 class="dish-card-title">${getTitle(i)}</h4>
-                <button id="menu-button" class="button" onclick="addDish(${i})">+</button>
+                <button id="add-dish-button" class="button" onclick="addDish(${i})">+</button>
             </div>
             <div class="dish-card-description">
                 <p class="dish-card-ingredients">
@@ -63,7 +63,7 @@ function showDishes() {    // Bitte bearbeiten!!!
                 </p>
                 <div class="dish-card-price">${getPrice(i)}</div>
             </div>
-        </div>
+        </article>
     `;
     }
 
