@@ -21,9 +21,9 @@ main {
 header {
     padding: 12px 16px;
     box-shadow:
-    0 2px 6px 0 rgba(0, 0, 0, 0.04),
-    0 4px 6px 0 rgba(0, 0, 0, 0.04),
-    0 8px 6px -2px rgba(0, 0, 0, 0.06);
+        0 2px 6px 0 rgba(0, 0, 0, 0.04),
+        0 4px 6px 0 rgba(0, 0, 0, 0.04),
+        0 8px 6px -2px rgba(0, 0, 0, 0.06);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -98,6 +98,7 @@ header {
     justify-content: space-between;
     align-items: center;
 }
+
 /* height passt nicht!!! (48 --> 36px */
 
 .atf-headline {
@@ -119,6 +120,7 @@ header {
     align-items: center;
     gap: 4px;
 }
+
 /* Bitte gap zwischen img und headline entfernen!!! */
 
 .star-group {
@@ -278,7 +280,9 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-} /* row-reverse */
+}
+
+/* row-reverse */
 
 .delivery-button-activated {
     background-color: white;
@@ -446,7 +450,9 @@ header {
     gap: 4px;
 }
 
-.sub-total, .delivery-costs, .total {
+.sub-total,
+.delivery-costs,
+.total {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -473,14 +479,15 @@ header {
 
 .dialog-box-background {
     position: fixed;
-    top: 80px;
+    top: 0;
     right: 0;
     bottom: 0;
     left: 0;
+    z-index: 101;
     background-color: rgba(0, 0, 0, 0.5);
 
     /* display: none */
-    display: flex;    
+    display: none;
     justify-content: center;
     align-items: flex-start;
 }
@@ -489,6 +496,9 @@ header {
     width: 600px;
     background-color: white;
     border-radius: 12px;
+    position: absolute;
+    top: 80px;
+    left: calc(50% - 300px);
 }
 
 .dialog-box-header {
@@ -513,7 +523,7 @@ header {
 }
 
 .dialog-box-main {
-    margin: 0 24px 24px 24px;
+    margin: 0 24px;
 }
 
 .dialog-box-description {
@@ -528,10 +538,11 @@ header {
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
-    color:  rgb(60, 76, 79);
+    color: rgb(60, 76, 79);
 }
 
 .dialog-box-price {
+    padding-bottom: 24px;
     font-size: 20px;
     font-weight: 700;
     line-height: 28px;
@@ -539,7 +550,7 @@ header {
 }
 
 .dialog-box-options {
-    padding: 16px 24px 8px 24px;
+    padding: 16px 0;
     background-color: #F5F3F1;
 }
 
@@ -552,8 +563,7 @@ header {
 }
 
 .dialog-box-options-selection {
-    margin: 12px 8px;
-    padding-bottom: 32px;
+    margin: 10px 8px;
 }
 
 .dialog-box-footer {
@@ -580,4 +590,75 @@ header {
     background-color: #F36805;
     border: unset;
     border-radius: 100px;
+}
+
+.imprint-container {
+    padding: 8px 68px 24px 68px;
+}
+
+.imprint-headline {
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 28px;
+    color: rgb(36, 46, 48);
+}
+
+.imprint-address {
+    font-style: normal;
+}
+
+.display-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.font-16424 {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: rgb(60, 76, 79);
+}
+
+.font-14420 {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: rgb(36, 46, 48);
+}
+
+.imprint-mail {
+    padding-bottom: 16px;
+    text-decoration: underline;
+    box-shadow: 0 1px rgba(0, 0, 0, 0.15);
+}
+
+.imprint-mail:hover {
+    text-decoration: none;
+}
+
+.hint-of-provider {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: rgb(36, 46, 48);
+}
+
+.footer {
+    padding: 16px 32px 24px 32px;
+    background-color: #EFEDEA;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.footer-list {
+    padding: 8px 0;
+}
+
+.footer-link {
+    padding: 8px 12px;
 }
