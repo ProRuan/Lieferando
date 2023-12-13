@@ -473,26 +473,111 @@ header {
 
 .dialog-box-background {
     position: fixed;
-    top: 0;
+    top: 80px;
     right: 0;
     bottom: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.5);
 
     /* display: none */
-    display: none;    
+    display: flex;    
     justify-content: center;
     align-items: flex-start;
 }
 
 .dialog-box {
     width: 600px;
+    background-color: white;
+    border-radius: 12px;
+}
+
+.dialog-box-header {
+    padding: 24px 24px 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .dialog-box-title {
-    padding: 24px 24px 16px 24px;
     font-size: 24px;
     font-weight: 700;
     line-height: 32px;
     color: rgb(36, 46, 48);
+}
+
+.close-button {
+    margin: 0 10px;
+    width: 28px;
+    height: 28px;
+    background-color: lightgray;
+}
+
+.dialog-box-main {
+    margin: 0 24px 24px 24px;
+}
+
+.dialog-box-description {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.dialog-box-ingredients {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color:  rgb(60, 76, 79);
+}
+
+.dialog-box-price {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 28px;
+    color: rgb(36, 46, 48);
+}
+
+.dialog-box-options {
+    padding: 16px 24px 8px 24px;
+    background-color: #F5F3F1;
+}
+
+.dialog-box-options-text {
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 28px;
+    color: rgb(36, 46, 48);
+}
+
+.dialog-box-options-selection {
+    margin: 12px 8px;
+    padding-bottom: 32px;
+}
+
+.dialog-box-footer {
+    padding: 20px 24px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 24px;
+}
+
+.width-144 {
+    width: 144px;
+}
+
+.dialog-add-button {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 56px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 28px;
+    color: white;
+    background-color: #F36805;
+    border: unset;
+    border-radius: 100px;
 }

@@ -13,9 +13,38 @@
 <body onload="showDishes()">
     <div class="dialog-box-background">
         <div class="dialog-box">
-            <div class="dialog-box-title">
-                Risipisi
-                <button>28 x 28</button>
+            <div class="dialog-box-header">
+                <div class="dialog-box-title">
+                    Risipisi
+                </div>
+                <div class="close-button"></div>
+            </div>
+            <div class="dialog-box-main">
+                <div class="dialog-box-description">
+                    <div class="dialog-box-ingredients">
+                        Reis, Erbsen und Hühnerfleisch<br>
+                        siehe auch Optionen
+                    </div>
+                    <div class="dialog-box-price">
+                        7,50 €
+                    </div>
+                </div>
+                <div class="dialog-box-options">
+                    <div class="dialog-box-options-text">
+                        Ihre Zutat:
+                    </div>
+                    <div class="dialog-box-options-selection">
+                        mit Mais - Button Ja/Nein
+                    </div>
+                </div>
+            </div>
+            <div class="dialog-box-footer">
+                <div class="width-144 jc-space-between">
+                    <button id="dialog-plus-button" class="button">+</button>
+                    <div class="item-amount">1</div>
+                    <button id="dialog-minus-button" class="button">-</button>
+                </div>
+                <button class="dialog-add-button">Bezahlen <code>(46,50 €)</code></button>
             </div>
         </div>
     </div>
