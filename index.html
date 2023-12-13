@@ -4,21 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lieferando</title>
-    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <title>Ruanizer</title>
+    <link rel="shortcut icon" href="./img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style/dialog.css">
+    <link rel="stylesheet" href="./style/restaurant.css">
     <script src="script.js"></script>
 </head>
 
 <body onload="showDishes()">
     <div class="dialog-box-background">
         <div class="dialog-box">
+            <!-- rendering -->
             <div class="dialog-box-header">
                 <div class="dialog-box-title">
                     Risipisi
                 </div>
-                <div class="close-button"></div>
+                <div class="dialog-box-close-button"></div>
             </div>
+
             <div class="dialog-box-main">
                 <div class="dialog-box-description">
                     <div class="dialog-box-ingredients">
@@ -29,29 +33,30 @@
                         7,50 €
                     </div>
                 </div>
-                <div class="dialog-box-options">
-                    <div class="dialog-box-options-text">
-                        Ihre Zutat:
+                <div class="dialog-box-option">
+                    <div class="dialog-box-option-text">
+                        Ihre Option:
                     </div>
-                    <div class="dialog-box-options-selection">
+                    <div class="dialog-box-option-group">
                         mit Mais - Button Ja/Nein
+                        <!-- Bitte bearbeiten!!! -->
                     </div>
                 </div>
             </div>
+
             <div class="dialog-box-footer">
-                <div class="width-144 jc-space-between">
-                    <button id="dialog-plus-button" class="button">+</button>
+                <div class="dialog-box-amount-group">
+                    <button id="dialog-box-plus-button" class="button">+</button>
                     <div class="item-amount">1</div>
-                    <button id="dialog-minus-button" class="button">-</button>
+                    <button id="dialog-box-minus-button" class="button">-</button>
                 </div>
-                <button class="dialog-add-button">Bezahlen <code>(46,50 €)</code></button>
+                <button class="dialog-box-add-button">Bezahlen (46,50 €)</button>
             </div>
         </div>
     </div>
 
     <header>
         <div class="header-left">
-            <img src="./img/arrow.png" alt="arrow">
             <img src="./img/logo.png" alt="logo">
             <span class="logo-text">Lieferando</span>
         </div>
@@ -66,28 +71,28 @@
 
     <main>
         <section id="restaurant" class="restaurant">
-            <div class="atf-restaurant">
-                <img src="./img/sushi.jpg" alt="sushi" class="restaurant-img">
+            <div class="atf">
+                <img src="./img/sushi.jpg" alt="sushi" class="atf-img">
                 <div class="atf-content">
-                    <div class="atf-row">
+                    <div class="atf-content-top">
                         <h1 class="atf-headline">Feinste Asia-Küche & Sushi Bar</h1>
                         <button id="favorite-button" class="button"></button>
                     </div>
                     <div class="customer-review">
                         <div class="star-group">
-                            <div class="star-20"></div>
-                            <div class="star-20"></div>
-                            <div class="star-20"></div>
-                            <div class="star-20"></div>
-                            <div class="star-20"></div>
+                            <div class="star"></div>
+                            <div class="star"></div>
+                            <div class="star"></div>
+                            <div class="star"></div>
+                            <div class="star"></div>
                         </div>
                         <span class="customer-review-text">354 Bewertungen</span>
                     </div>
                     <div class="delivery-hint">Kostenlose Lieferung ab 30,00 €</div>
                 </div>
             </div>
-            <nav id="menu-bar" class="menu-bar">
-
+            <nav id="slide-menu" class="slide-menu">
+                <!-- placeholder for slide menu -->
             </nav>
             <div class="dishes">
                 <h3 class="dishes-title">Speisekarte</h3>
@@ -175,7 +180,7 @@
                 </div>
                 <button class="order-button">Bezahlen <code>(46,50 €)</code></button>
             </div>
-            
+
         </aside>
     </main>
 
