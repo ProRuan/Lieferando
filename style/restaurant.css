@@ -2,6 +2,10 @@
     width: calc(100% - 344px);
 }
 
+.atf {
+    width: 100%;
+}
+
 .atf-img {
     display: block;
     width: 100%;
@@ -11,8 +15,7 @@
 }
 
 .atf-content {
-    margin: 5px 16px 0 16px;
-    padding: 24px 52px 16px 52px;
+    padding: 29px 68px 16px 68px;
 }
 
 .atf-content-top {
@@ -20,8 +23,6 @@
     justify-content: space-between;
     align-items: center;
 }
-
-/* height passt nicht!!! (48 --> 36px */
 
 .atf-headline {
     margin: 0;
@@ -31,7 +32,7 @@
     color: rgb(36, 46, 48);
 }
 
-.atf-content-top button {
+.favorite-button {
     margin-bottom: -16px;
 }
 
@@ -72,14 +73,20 @@
 }
 
 .slide-menu {
+    display: none;
+    width: 100%;
     min-height: 56px;
     margin-bottom: 8px;
-    background-color: lightgray;
 }
 
 .menu-of-restaurant {
     padding: 0 68px 24px 68px;
+    width: calc(100% - 136px);
     background-color: #FCFCFC;
+    box-shadow:
+        inset 0 2px 6px 0 rgba(0, 0, 0, 0.02),
+        inset 0 4px 6px 0 rgba(0, 0, 0, 0.02),
+        inset 0 8px 6px -2px rgba(0, 0, 0, 0.04);
 }
 
 .menu-category {
@@ -90,8 +97,14 @@
     color: rgb(36, 46, 48);
 }
 
+.dish-card-collector {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 16px;
+}
+
 .dish-card {
-    margin-top: 16px;
     padding: 16px;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 12px;
