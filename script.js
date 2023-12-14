@@ -50,11 +50,11 @@ function showDishes() {    // Bitte bearbeiten!!!
     for (let i = 0; i < dishes.length; i++) {
         restaurantDishes.innerHTML += `
         <article id="dish-card-${i}" class="dish-card">
-            <div class="dish-card-top">
+            <div class="display-between-center">
                 <h4 class="dish-card-title">${getTitle(i)}</h4>
                 <button id="add-dish-button" class="button" onclick="addDish(${i})">+</button>
             </div>
-            <div class="dish-card-description">
+            <div class="dish-card-description column-start-start">
                 <p class="dish-card-ingredients">
                     Reis, Erbsen und Huhn
                 </p>
@@ -229,15 +229,15 @@ function showShoppingCartItems() {
             <table>
                 <tr>
                     <td id="item-index-${i}" class="item-index">${i}</td>
-                    <td class="fd-column item-details">
-                        <div id="item-title-and-price-${i}" class="jc-space-between item-title-and-price">
+                    <td class="column-start-start item-details">
+                        <div id="item-title-and-price-${i}" class="width-100 display-between-center gap-20">
                             <div class="added-item-title">${getTitleInCart(i)}</div>
                             <div id="item-price-${i}">${getTotalPriceInCart(i)}</div>
                         </div>
                         <div class="added-options">${getOptionsInCart(i)}</div>
-                        <div class="mt-8 jc-space-between">
+                        <div class="mt-8 display-between-center gap-20">
                             <div class="width-50 item-notes">Anmerkungen hinzufügen</div>
-                            <div class="width-50 jc-space-between">
+                            <div class="width-50 display-between-center">
                                 <button id="menu-plus-button-${i}" class="button" onclick="increaseItems(${i})">+</button>
                                 <div class="item-amount">${getAmountInCart(i)}</div>
                                 <button id="menu-minus-button-${i}" class="button" onclick="decreaseItems(${i})">-</button>

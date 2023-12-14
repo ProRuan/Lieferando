@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ruanizer</title>
     <link rel="shortcut icon" href="./img/favicon.png" type="image/x-icon">
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="./style/dialog.css">
     <link rel="stylesheet" href="./style/restaurant.css">
     <link rel="stylesheet" href="./style/shopping-cart.css">
@@ -15,17 +14,17 @@
 
 <body onload="showDishes()">
     <dialog class="dialog-background">
-        <article class="dialog-box">
+        <section class="dialog-box">
             <!-- rendering content of dialog box -->
 
             <!-- Bitte loeschen!!! -->
-            <header class="dialog-box-header">
+            <div class="dialog-box-header display-between-center">
                 <h2 class="dialog-box-headline">Risipisi</h2>
                 <div class="dialog-box-close-button"></div>
-            </header>
+            </div>
 
-            <section>
-                <div class="dialog-box-description">
+            <div>
+                <div class="dialog-box-description column-start-start">
                     <p class="dialog-box-ingredients">
                         Reis, Erbsen und Hühnerfleisch<br>
                         siehe auch Optionen
@@ -39,21 +38,21 @@
                         <!-- Bitte bearbeiten!!! -->
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <footer class="dialog-box-footer">
-                <div class="dialog-box-amount-group">
+            <div class="dialog-box-footer display-start-center">
+                <div class="dialog-box-amount-group display-between-center">
                     <button id="dialog-box-plus-button" class="button">+</button>
                     <span class="item-amount">1</span>
                     <button id="dialog-box-minus-button" class="button">-</button>
                 </div>
                 <button class="dialog-box-add-button"><output>7,50</output> €</button>
-            </footer>
-        </article>
+            </div>
+        </section>
     </dialog>
 
-    <header class="header">
-        <hgroup class="header-left">
+    <header class="header display-between-center">
+        <hgroup class="header-left display-start-center">
             <img src="./img/logo.png" alt="logo">
             <span class="logo-text">Ruanizer</span>
         </hgroup>
@@ -67,16 +66,16 @@
     </header>
     
     <div class="content">
-        <main class="restaurant">
-            <section class="atf">
+        <main class="restaurant column-start-start">
+            <section class="width-100">
                 <img src="./img/sushi.jpg" alt="sushi" class="atf-img">
                 <div class="atf-content">
-                    <div class="atf-content-top">
+                    <div class="display-between-center">
                         <h1 class="atf-headline">Feinste Asia-Küche & Sushi Bar</h1>
                         <button id="favorite-button" class="button favorite-button"></button>
                     </div>
-                    <div class="customer-review">
-                        <div class="star-group">
+                    <div class="customer-review display-start-center">
+                        <div class="display-start-center">
                             <div class="star"></div>
                             <div class="star"></div>
                             <div class="star"></div>
@@ -98,9 +97,9 @@
                 </div>
             </section>
     
-            <section class="imprint display-column">
+            <section class="imprint column-start-start">
                 <h3 class="imprint-headline">Impressum</h3>
-                <address class="imprint-address display-column">
+                <address class="imprint-address column-start-start">
                     <span class="font-16424">Rudolf Sachslehner</span>
                     <span class="font-16424">Wiener Straße 6-8/1/21</span>
                     <span class="font-16424">3430 Tulln an der Donau</span>
@@ -119,7 +118,7 @@
             <section class="delivery-options-box">
                 <div class="delivery-options">
                     <button id="delivery-button" class="delivery-button delivery-button-activated">
-                        <span class="delivery-button-text delivery-button-text-activated">Lieferung</span>
+                        <span class="delivery-button-text fw-700">Lieferung</span>
                         <span class="delivery-button-time">ab 17:45</span>
                     </button>
                     <button id="collection-button" class="delivery-button">
@@ -144,16 +143,16 @@
                 <!-- rendering shopping cart items -->
             </section>
             <section class="sum-and-order">
-                <div class="sum-block">
-                    <div class="sum-group">
+                <div class="sum-block column-start-start">
+                    <div class="width-100 display-between-center">
                         <span>Zwischensumme</span>
                         <output id="value-of-subtotal">7,50 €</output>
                     </div>
-                    <div class="sum-group">
+                    <div class="width-100 display-between-center">
                         <span>Lieferkosten</span>
                         <output id="value-of-delivery-costs">1,00 €</output>
                     </div>
-                    <div class="sum-group fw-700">
+                    <div class="width-100 display-between-center fw-700">
                         <span>Gesamt</span>
                         <output id="value-of-total">8,50 €</output>
                     </div>

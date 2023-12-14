@@ -8,7 +8,7 @@
     left: 0;
     z-index: 101;
     background-color: rgba(0, 0, 0, 0.5);
-    border:unset;
+    border: unset;
     display: none;
     justify-content: center;
     align-items: flex-start;
@@ -22,16 +22,10 @@
     width: 600px;
     background-color: white;
     border-radius: 12px;
-    /* position: absolute;
-    top: 80px;
-    left: calc(50% - 300px); */
 }
 
 .dialog-box-header {
     padding: 24px 24px 16px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
 }
 
 .dialog-box-headline {
@@ -43,7 +37,7 @@
 }
 
 .dialog-box-close-button {
-    margin: 0 10px;
+    margin: 0 10px 4px 10px;
     width: 28px;
     height: 28px;
     background-color: lightgray;
@@ -51,10 +45,6 @@
 
 .dialog-box-description {
     padding: 0 24px 24px 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
     gap: 24px;
 }
 
@@ -92,22 +82,10 @@
 
 .dialog-box-footer {
     padding: 20px 24px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
     gap: 24px;
 }
 
 .dialog-box-amount-group {
-    width: 144px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-}
-
-/* notwendig? */
-.width-144 {
     width: 144px;
 }
 
