@@ -115,7 +115,7 @@
         </main>
 
         <aside id="shopping-cart-window" class="shopping-cart-window">
-            <h2 class="shopping-cart-title">Warenkorb</h2>
+            <h2 class="shopping-cart-headline">Warenkorb</h2>
             <section class="delivery-options-box">
                 <div class="delivery-options">
                     <button id="delivery-button" class="delivery-button delivery-button-activated">
@@ -145,20 +145,20 @@
             </section>
             <section class="sum-and-order">
                 <div class="sum-block">
-                    <div class="sub-total">
+                    <div class="sum-group">
                         <span>Zwischensumme</span>
-                        <span id="value-of-subtotal">7,50 €</span>
+                        <output id="value-of-subtotal">7,50 €</output>
                     </div>
-                    <div class="delivery-costs">
+                    <div class="sum-group">
                         <span>Lieferkosten</span>
-                        <span id="value-of-delivery-costs">1,00 €</span>
+                        <output id="value-of-delivery-costs">1,00 €</output>
                     </div>
-                    <div class="total">
+                    <div class="sum-group fw-700">
                         <span>Gesamt</span>
-                        <span id="value-of-total">8,50 €</span>
+                        <output id="value-of-total">8,50 €</output>
                     </div>
                 </div>
-                <button class="order-button">Bezahlen (46,50 €)</button>
+                <button class="order-button">Bezahlen <output>(46,50 €)</output></button>
             </section>
         </aside>
     </div>
