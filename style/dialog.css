@@ -5,14 +5,10 @@
     height: calc(100vh - 80px);
     position: fixed;
     top: 0;
-    right: 0;
-    bottom: 0;
     left: 0;
     z-index: 101;
     background-color: rgba(0, 0, 0, 0.5);
     border:unset;
-
-    /* display: none */
     display: none;
     justify-content: center;
     align-items: flex-start;
@@ -38,7 +34,7 @@
     align-items: flex-start;
 }
 
-.dialog-box-title {
+.dialog-box-headline {
     margin: 0;
     font-size: 24px;
     font-weight: 700;
@@ -53,11 +49,8 @@
     background-color: lightgray;
 }
 
-.dialog-box-main {
-    margin: 0 24px;
-}
-
 .dialog-box-description {
+    padding: 0 24px 24px 24px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -74,7 +67,6 @@
 }
 
 .dialog-box-price {
-    padding-bottom: 24px;
     font-size: 20px;
     font-weight: 700;
     line-height: 28px;
@@ -82,7 +74,7 @@
 }
 
 .dialog-box-option {
-    padding: 16px 0;
+    padding: 16px 24px;
     background-color: #F5F3F1;
 }
 
