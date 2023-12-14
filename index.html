@@ -14,17 +14,17 @@
 </head>
 
 <body onload="showDishes()">
-    <section class="dialog-box-background">
+    <dialog class="dialog-background">
         <article class="dialog-box">
             <!-- rendering content of dialog box -->
 
             <!-- Bitte loeschen!!! -->
-            <div class="dialog-box-header">
+            <header class="dialog-box-header">
                 <h2 class="dialog-box-title">Risipisi</h2>
                 <div class="dialog-box-close-button"></div>
-            </div>
+            </header>
 
-            <div class="dialog-box-main">
+            <section class="dialog-box-main">
                 <div class="dialog-box-description">
                     <p class="dialog-box-ingredients">
                         Reis, Erbsen und Hühnerfleisch<br>
@@ -39,31 +39,31 @@
                         <!-- Bitte bearbeiten!!! -->
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="dialog-box-footer">
+            <footer class="dialog-box-footer">
                 <div class="dialog-box-amount-group">
                     <button id="dialog-box-plus-button" class="button">+</button>
                     <span class="item-amount">1</span>
                     <button id="dialog-box-minus-button" class="button">-</button>
                 </div>
                 <button class="dialog-box-add-button">Bezahlen (46,50 €)</button>
-            </div>
+            </footer>
         </article>
-    </section>
+    </dialog>
 
-    <header>
-        <div class="header-left">
+    <header class="header">
+        <hgroup class="header-left">
             <img src="./img/logo.png" alt="logo">
             <span class="logo-text">Ruanizer</span>
-        </div>
+        </hgroup>
         <span class="header-center-text">
             Speisekarte
         </span>
-        <div class="header-right">
+        <hgroup class="header-right">
             <button id="language-button" class="button"></button>
             <button id="menu-button" class="button"></button>
-        </div>
+        </hgroup>
     </header>
     
     <div class="content">
@@ -107,12 +107,10 @@
                     <span class="font-16424">Österreich</span>
                     <a class="font-14420 imprint-mail" href="mailto:rudolf.sachslehner@gmx.at">Send uns eine E-Mail</a>
                 </address>
-                <div class="hint-of-provider">
-                    <p>
-                        Diese Webseite dient rein zu Übungszwecken.<br>
-                        Ein Klick auf den Bezahlen-Button setzt lediglich die Einstellung dieser Webseite zurück.
-                    </p>
-                </div>
+                <p class="hint-of-provider">
+                    Diese Webseite dient rein zu Übungszwecken.<br>
+                    Ein Klick auf den Bezahlen-Button setzt lediglich die Einstellung dieser Webseite zurück.
+                </p>
             </section>
         </main>
 
@@ -170,7 +168,7 @@
             <a class="footer-link font-14420">Datenschutzerklärung</a>
             <a class="footer-link font-14420">Impressum</a>
         </div>
-        <a class="footer-link-copyright font-14420">© 2023 Rudolf Sachslehner</a>
+        <a class="footer-link font-14420">© 2023 Rudolf Sachslehner</a>
     </footer>
 </body>
 

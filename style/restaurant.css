@@ -128,7 +128,7 @@
     color: rgb(36, 46, 48);
 }
 
-.dish-card-top .button {
+.dish-card-title .button {
     margin-bottom: 4px;
     padding: 0;
     width: 30px;
@@ -140,8 +140,16 @@
     background-color: rgba(0, 0, 0, 0.05);
 }
 
+.dish-card-description {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 4px;
+}
+
 .dish-card-ingredients {
-    margin: 0 0 4px 0;
+    margin: 0;
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
@@ -149,7 +157,7 @@
 }
 
 .dish-card-option {
-    margin: 0 0 4px 0;
+    margin: 0;
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
@@ -160,5 +168,59 @@
     font-size: 20px;
     font-weight: 700;
     line-height: 28px;
+    color: rgb(36, 46, 48);
+}
+
+.imprint {
+    padding: 8px 68px 24px 68px;
+}
+
+.imprint-headline {
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 28px;
+    color: rgb(36, 46, 48);
+}
+
+.imprint-address {
+    font-style: normal;
+}
+
+.display-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.font-16424 {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: rgb(60, 76, 79);
+}
+
+.font-14420 {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: rgb(36, 46, 48);
+}
+
+.imprint-mail {
+    padding-bottom: 16px;
+    text-decoration: underline;
+    box-shadow: 0 1px rgba(0, 0, 0, 0.15);
+}
+
+.imprint-mail:hover {
+    text-decoration: none;
+}
+
+.hint-of-provider {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
     color: rgb(36, 46, 48);
 }

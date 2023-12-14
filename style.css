@@ -11,7 +11,7 @@ body {
     line-height: 20px;
 }
 
-header {
+.header {
     padding: 12px 16px;
     box-shadow:
         0 2px 6px 0 rgba(0, 0, 0, 0.04),
@@ -92,63 +92,7 @@ main {
 
 /* Bitte kontrollieren!!! */
 
-.imprint {
-    padding: 8px 68px 24px 68px;
-}
 
-.imprint-headline {
-    margin: 0 0 8px 0;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 28px;
-    color: rgb(36, 46, 48);
-}
-
-.imprint-address {
-    font-style: normal;
-}
-
-.display-column {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-}
-
-.font-16424 {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    color: rgb(60, 76, 79);
-}
-
-.font-14420 {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 20px;
-    color: rgb(36, 46, 48);
-}
-
-.imprint-mail {
-    padding-bottom: 16px;
-    text-decoration: underline;
-    box-shadow: 0 1px rgba(0, 0, 0, 0.15);
-}
-
-.imprint-mail:hover {
-    text-decoration: none;
-}
-
-.hint-of-provider {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    color: rgb(36, 46, 48);
-}
-
-p {
-    margin: 16px 0;
-}
 
 .footer {
     padding: 16px 32px 24px 32px;
@@ -161,13 +105,12 @@ p {
 
 .footer-list {
     padding: 8px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
 }
 
-/* Warum wird height falsch angezeigt? */
 .footer-link {
-    padding: 8px 12px;
-}
-
-.footer-link-copyright {
-    padding: 16px 12px;
+    padding: 8px 0;
 }
