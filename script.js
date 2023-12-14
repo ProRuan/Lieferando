@@ -221,7 +221,7 @@ function getItemAndParse(keys) {    // Bitte ueberdenken!!!
 
 // Functions - Shopping Cart
 function showShoppingCartItems() {
-    let shoppingCartItems = document.getElementById('shopping-cart-items');
+    let shoppingCartItems = document.getElementById('shopping-cart-item-collector');
     shoppingCartItems.innerHTML = '';
     for (let i = 0; i < shoppingCart.length; i++) {
         shoppingCartItems.innerHTML += `

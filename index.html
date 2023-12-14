@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="./style/dialog.css">
     <link rel="stylesheet" href="./style/restaurant.css">
+    <link rel="stylesheet" href="./style/shopping-cart.css">
     <script src="script.js"></script>
 </head>
 
@@ -60,7 +61,7 @@
     <header>
         <div class="header-left">
             <img src="./img/logo.png" alt="logo">
-            <span class="logo-text">Lieferando</span>
+            <span class="logo-text">Ruanizer</span>
         </div>
         <span class="header-center-text">
             Speisekarte
@@ -121,35 +122,38 @@
             </div>
         </section>
 
-        <aside id="menu" class="menu menu-sticky">
-            <h2 class="menu-title">Warenkorb</h2>
-            <div class="delivery-options-box">
+        <aside id="shopping-cart-window" class="shopping-cart-window">
+            <h2 class="shopping-cart-title">Warenkorb</h2>
+            <section class="delivery-options-box">
                 <div class="delivery-options">
                     <button id="delivery-button" class="delivery-button delivery-button-activated">
-                        <span class="delivery-button-text">Lieferung</span>
+                        <span class="delivery-button-text delivery-button-text-activated">Lieferung</span>
                         <span class="delivery-button-time">ab 17:45</span>
                     </button>
                     <button id="collection-button" class="delivery-button">
-                        <span class="delivery-button-text delivery-button-text-activated">Abholung</span>
+                        <span class="delivery-button-text">Abholung</span>
                         <span class="delivery-button-time">ab 17:45</span>
                     </button>
                 </div>
-            </div>
-            <div class="shopping-cart">
-                <div class="cart-icon">
+            </section>
+
+            <!-- Bitte rendern!!! -->
+            <section class="shopping-cart-guide">
+                <div class="shopping-cart-guide-icon">
                     [Bitte shopping-cart-icon einfügen]
                 </div>
-                <div class="cart-text">
+                <div class="shopping-cart-guide-text">
                     Fülle deinen Warenkorb
                 </div>
-                <div class="cart-hint">
+                <div class="shopping-cart-guide-hint">
                     Füge einige leckere Gerichte aus der Speisekarte hinzu und bestelle dein Essen.
                 </div>
-            </div>
-            <div id="shopping-cart-items" class="shopping-cart-items">
-                <!-- contains shopping cart items -->
-            </div>
-            <div class="sum-and-order">
+            </section>
+
+            <section id="shopping-cart-item-collector" class="shopping-cart-item-collector">
+                <!-- rendering shopping cart items -->
+            </section>
+            <section class="sum-and-order">
                 <div class="sum-block">
                     <div class="sub-total">
                         <div>Zwischensumme</div>
@@ -164,9 +168,8 @@
                         <div id="value-of-total">8,50 €</div>
                     </div>
                 </div>
-                <button class="order-button">Bezahlen <code>(46,50 €)</code></button>
-            </div>
-
+                <button class="order-button">Bezahlen (46,50 €)</button>
+            </section>
         </aside>
     </main>
 

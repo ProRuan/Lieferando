@@ -1,0 +1,247 @@
+/* menu */
+.shopping-cart-window {
+    width: 344px;
+    min-height: calc(100vh - 72px);
+    /* position: relative; */
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    /* left: 0; */
+    box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.shopping-cart-title {
+    margin: 0;
+    padding: 24px 16px 0 16px;
+    width: calc(100% - 32px);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32px;
+    text-align: center;
+    color: rgb(36, 46, 48);
+}
+
+.delivery-options-box {
+    margin: 12px 0 8px 0;
+    padding: 8px 16px;
+}
+
+.delivery-options {
+    background-color: #EFEDEA;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delivery-button {
+    margin: 2px;
+    padding: 0;
+    width: calc(50% - 4px);
+    height: 44px;
+    color: #9AA5A6;
+    background-color: transparent;
+    border: unset;
+    border-radius: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* row-reverse */
+
+.delivery-button-activated {
+    background-color: white;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.delivery-button-text {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: rgb(36, 46, 48);
+}
+
+.delivery-button-text-activated {
+    font-weight: 700;
+}
+
+.delivery-button-time {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    color: rgb(36, 46, 48);
+}
+
+.shopping-cart {
+    padding: 80px 16px;
+}
+
+.shopping-cart-guide-icon {
+    margin-bottom: 16px;
+    height: 40px;
+    text-align: center;
+}
+
+.shopping-cart-guide-text {
+    margin-bottom: 4px;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32px;
+    text-align: center;
+    color: rgb(36, 46, 48);
+}
+
+.shopping-cart-guide-hint {
+    margin-bottom: 32px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: center;
+    color: rgb(60, 76, 79);
+}
+
+.shopping-cart-item-collector {
+    padding: 8px 16px 16px 16px;
+}
+
+.shopping-cart-item {
+    padding: 8px 0;
+    border-top: 1px solid lightgray;
+}
+
+.shopping-cart-item:first-child {
+    border-top: unset;
+}
+
+.item-index {
+    padding: 0;
+    width: 24px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    color: rgb(36, 46, 48);
+    text-align: left;
+    vertical-align: top;
+}
+
+.fd-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.item-details {
+    padding: 0;
+    width: calc(280px - 24px);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    color: rgb(36, 46, 48);
+}
+
+.item-price {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    color: rgb(36, 46, 48);
+}
+
+.jc-space-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.item-title-and-price {
+    width: 100%;
+}
+
+.added-item-title {
+    text-decoration: underline;
+}
+
+.added-options {
+    margin-top: 12px;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    color: rgb(36, 46, 48);
+}
+
+.mt-8 {
+    margin-top: 8px;
+}
+
+.width-50 {
+    width: 50%;
+}
+
+.width-50 .jc-space-between {
+    gap: unset;
+    /* Bitte gap ausschalten!!! */
+}
+
+.item-notes {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    text-decoration: underline;
+}
+
+.item-amount {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: rgb(36, 46, 48);
+}
+
+.sum-and-order {
+    padding: 16px;
+}
+
+.sum-block {
+    padding-bottom: 16px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    color: rgb(36, 46, 48);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.sub-total,
+.delivery-costs,
+.total {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total {
+    font-weight: 700;
+}
+
+.order-button {
+    margin: 0;
+    padding: 0;
+    width: 312px;
+    height: 48px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 28px;
+    color: white;
+    background-color: #F36805;
+    border: unset;
+    border-radius: 100px;
+}
