@@ -14,32 +14,26 @@
 </head>
 
 <body onload="showDishes()">
-    <div class="dialog-box-background">
-        <div class="dialog-box">
+    <section class="dialog-box-background">
+        <article class="dialog-box">
             <!-- rendering content of dialog box -->
 
             <!-- Bitte loeschen!!! -->
             <div class="dialog-box-header">
-                <div class="dialog-box-title">
-                    Risipisi
-                </div>
+                <h2 class="dialog-box-title">Risipisi</h2>
                 <div class="dialog-box-close-button"></div>
             </div>
 
             <div class="dialog-box-main">
                 <div class="dialog-box-description">
-                    <div class="dialog-box-ingredients">
+                    <p class="dialog-box-ingredients">
                         Reis, Erbsen und Hühnerfleisch<br>
                         siehe auch Optionen
-                    </div>
-                    <div class="dialog-box-price">
-                        7,50 €
-                    </div>
+                    </p>
+                    <span class="dialog-box-price">7,50 €</span>
                 </div>
                 <div class="dialog-box-option">
-                    <div class="dialog-box-option-text">
-                        Ihre Option:
-                    </div>
+                    <div class="dialog-box-option-text">Ihre Option:</div>
                     <div class="dialog-box-option-group">
                         mit Mais - Button Ja/Nein
                         <!-- Bitte bearbeiten!!! -->
@@ -50,13 +44,13 @@
             <div class="dialog-box-footer">
                 <div class="dialog-box-amount-group">
                     <button id="dialog-box-plus-button" class="button">+</button>
-                    <div class="item-amount">1</div>
+                    <span class="item-amount">1</span>
                     <button id="dialog-box-minus-button" class="button">-</button>
                 </div>
                 <button class="dialog-box-add-button">Bezahlen (46,50 €)</button>
             </div>
-        </div>
-    </div>
+        </article>
+    </section>
 
     <header>
         <div class="header-left">
@@ -71,10 +65,10 @@
             <button id="menu-button" class="button"></button>
         </div>
     </header>
-
-    <main>
-        <section id="restaurant" class="restaurant">
-            <div class="atf">
+    
+    <div class="content">
+        <main class="restaurant">
+            <section class="atf">
                 <img src="./img/sushi.jpg" alt="sushi" class="atf-img">
                 <div class="atf-content">
                     <div class="atf-content-top">
@@ -93,19 +87,19 @@
                     </div>
                     <div class="delivery-hint">Kostenlose Lieferung ab 30,00 €</div>
                 </div>
-            </div>
+            </section>
             <nav id="slide-menu" class="slide-menu">
                 <!-- placeholder of slide menu -->
             </nav>
-            <div class="menu-of-restaurant">
-                <h3 class="menu-category">Speisekarte</h3>
+            <section class="menu-of-restaurant">
+                <h2 class="menu-category">Speisekarte</h2>
                 <div id="dish-card-collector" class="dish-card-collector">
                     <!-- rendering dish cards -->
                 </div>
-            </div>
-
-            <div class="imprint-container display-column">
-                <h4 class="imprint-headline">Impressum</h4>
+            </section>
+    
+            <section class="imprint display-column">
+                <h3 class="imprint-headline">Impressum</h3>
                 <address class="imprint-address display-column">
                     <span class="font-16424">Rudolf Sachslehner</span>
                     <span class="font-16424">Wiener Straße 6-8/1/21</span>
@@ -119,8 +113,8 @@
                         Ein Klick auf den Bezahlen-Button setzt lediglich die Einstellung dieser Webseite zurück.
                     </p>
                 </div>
-            </div>
-        </section>
+            </section>
+        </main>
 
         <aside id="shopping-cart-window" class="shopping-cart-window">
             <h2 class="shopping-cart-title">Warenkorb</h2>
@@ -136,42 +130,40 @@
                     </button>
                 </div>
             </section>
-
+    
             <!-- Bitte rendern!!! -->
             <section class="shopping-cart-guide">
                 <div class="shopping-cart-guide-icon">
                     [Bitte shopping-cart-icon einfügen]
                 </div>
-                <div class="shopping-cart-guide-text">
-                    Fülle deinen Warenkorb
-                </div>
-                <div class="shopping-cart-guide-hint">
+                <h2 class="shopping-cart-guide-text">Fülle deinen Warenkorb</h2>
+                <p class="shopping-cart-guide-hint">
                     Füge einige leckere Gerichte aus der Speisekarte hinzu und bestelle dein Essen.
-                </div>
+                </p>
             </section>
-
+    
             <section id="shopping-cart-item-collector" class="shopping-cart-item-collector">
                 <!-- rendering shopping cart items -->
             </section>
             <section class="sum-and-order">
                 <div class="sum-block">
                     <div class="sub-total">
-                        <div>Zwischensumme</div>
-                        <div id="value-of-subtotal">7,50 €</div>
+                        <span>Zwischensumme</span>
+                        <span id="value-of-subtotal">7,50 €</span>
                     </div>
                     <div class="delivery-costs">
-                        <div>Lieferkosten</div>
-                        <div id="value-of-delivery-costs">1,00 €</div>
+                        <span>Lieferkosten</span>
+                        <span id="value-of-delivery-costs">1,00 €</span>
                     </div>
                     <div class="total">
-                        <div>Gesamt</div>
-                        <div id="value-of-total">8,50 €</div>
+                        <span>Gesamt</span>
+                        <span id="value-of-total">8,50 €</span>
                     </div>
                 </div>
                 <button class="order-button">Bezahlen (46,50 €)</button>
             </section>
         </aside>
-    </main>
+    </div>
 
     <footer class="footer">
         <div class="footer-list">

@@ -11,8 +11,15 @@ body {
     line-height: 20px;
 }
 
+.content {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
 main {
     display: flex;
+    flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
 }
@@ -83,7 +90,7 @@ header {
 
 
 
-.imprint-container {
+.imprint {
     padding: 8px 68px 24px 68px;
 }
 

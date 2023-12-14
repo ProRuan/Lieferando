@@ -8,7 +8,6 @@
     top: 0;
     right: 0;
     bottom: 0;
-    /* left: 0; */
     box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -87,7 +86,7 @@
 }
 
 .shopping-cart-guide-text {
-    margin-bottom: 4px;
+    margin: 0 0 4px 0;
     font-size: 24px;
     font-weight: 700;
     line-height: 32px;
@@ -96,7 +95,7 @@
 }
 
 .shopping-cart-guide-hint {
-    margin-bottom: 32px;
+    margin: 0 0 32px 0;
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
