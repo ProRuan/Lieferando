@@ -189,7 +189,7 @@ h3 {
     line-height: 30px;
 }
 
-.dish-card-title .button {
+.dish-card-button {
     margin-bottom: 4px;
     padding: 0;
     width: 30px;
@@ -206,13 +206,13 @@ h3 {
 }
 
 .dish-card-ingredients {
-    margin: 0;
+    margin: 0 0 4px 0;
     line-height: 24px;
     color: rgb(36, 46, 48);
 }
 
 .dish-card-option {
-    margin: 0;
+    margin: 0 0 4px 0;
     font-size: 14px;
     color: rgb(60, 76, 79);
 }
