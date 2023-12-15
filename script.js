@@ -1,97 +1,4 @@
-// Variablen
-let dishes = [
-    {
-        'title': 'dish1',
-        'ingredients': 'Rindsuppe',
-        'options': 'Fritatten, Backerbsen',
-        'price': 3.50,
-        'in-cart': false
-    },
-    {
-        'title': 'Risipisi',
-        'ingredients': 'Reis, Erbsen und Huhn',
-        'options': 'Mais, Speckwürfel',
-        'price': 6.00,
-        'in-cart': false
-    },
-    {
-        'title': 'dish3',
-        'ingredients': 'Lasagne',
-        'options': '',
-        'price': 8.00,
-        'in-cart': false
-    },
-    {
-        'title': 'dish4',
-        'ingredients': 'Gebackene Calamaris',
-        'options': '1,00 € pro zusätzlichem Stück',
-        'price': 12.00,
-        'in-cart': false
-    },
-    {
-        'title': 'dish5',
-        'ingredients': 'Apfelkuchen',
-        'options': 'Zimt',
-        'price': 5.50,
-        'in-cart': false
-    }
-];
 
-let shoppingCart = [];
-
-
-// Functions
-load();
-
-
-function showDishes() {    // Bitte bearbeiten!!!
-    let restaurantDishes = document.getElementById('dish-card-collector');
-    restaurantDishes.innerHTML = '';
-    for (let i = 0; i < dishes.length; i++) {
-        restaurantDishes.innerHTML += `
-        <article id="dish-card-${i}" class="dish-card">
-            <div class="display-between-center">
-                <h4 class="dish-card-title">${getTitle(i)}</h4>
-                <button id="add-dish-button" class="button" onclick="addDish(${i})">+</button>
-            </div>
-            <div class="dish-card-description column-start-start">
-                <p class="dish-card-ingredients">
-                    Reis, Erbsen und Huhn
-                </p>
-                <p class="dish-card-option">
-                    Auch mit Mais und Speckwürfeln.
-                </p>
-                <div class="dish-card-price">${getPrice(i)}</div>
-            </div>
-        </article>
-    `;
-    }
-
-    showShoppingCartItems();
-    setValuesInCart();
-}
-
-
-function addDish(i) {
-    addOrIncreaseIf(i);
-    saveAndShowDishes();
-}
-// if shopppingCart == false, add dish, else increase amount
-
-
-function addOrIncreaseIf(i) {
-    if (alreadyInCart(i)) {
-        updateAmountAndPrice(i);
-    } else {
-        addToShoppingCart(i);
-        setInCart(i);
-    }
-}
-
-
-function alreadyInCart(i) {
-    return dishes[i]['in-cart'];
-}
 
 
 function updateAmountAndPrice(i) {
@@ -156,20 +63,6 @@ function getNextIndex() {
     return shoppingCart.length;
 }
 
-
-function getTitle(i) {
-    return dishes[i]['title'];
-}
-
-
-function getPrice(i) {
-    return dishes[i]['price'];
-}
-
-
-function getOptions(i) {
-    return dishes[i]['options'];
-}
 
 
 function setInCart(i) {

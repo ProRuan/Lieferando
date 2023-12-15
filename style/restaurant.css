@@ -159,10 +159,6 @@ body {
 
 .menu-category {
     margin: 16px 0;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 32px;
-    color: rgb(36, 46, 48);
 }
 
 .dish-card-collector {
@@ -182,12 +178,15 @@ body {
     background-color: #F5F5F5;
 }
 
-.dish-card-title {
-    margin: 0 0 4px 0;
+h3 {
     font-size: 20px;
     font-weight: 700;
-    line-height: 30px;
     color: rgb(36, 46, 48);
+}
+
+.dish-card-title {
+    margin: 0 0 4px 0;
+    line-height: 30px;
 }
 
 .dish-card-title .button {
@@ -231,10 +230,7 @@ body {
 
 .imprint-headline {
     margin: 0 0 8px 0;
-    font-size: 20px;
-    font-weight: 700;
     line-height: 28px;
-    color: rgb(36, 46, 48);
 }
 
 .imprint-address {
