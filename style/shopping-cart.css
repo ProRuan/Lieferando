@@ -8,15 +8,18 @@
     box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
 }
 
+h2 {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32px;
+    color: rgb(36, 46, 48);
+}
+
 .shopping-cart-headline {
     margin: 0;
     padding: 24px 16px 0 16px;
     width: calc(100% - 32px);
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 32px;
     text-align: center;
-    color: rgb(36, 46, 48);
 }
 
 .delivery-options-box {
@@ -81,17 +84,11 @@
 
 .shopping-cart-guide-text {
     margin: 0 0 4px 0;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 32px;
     text-align: center;
-    color: rgb(36, 46, 48);
 }
 
 .shopping-cart-guide-hint {
     margin: 0 0 32px 0;
-    font-size: 16px;
-    font-weight: 400;
     line-height: 24px;
     text-align: center;
     color: rgb(60, 76, 79);
@@ -122,9 +119,6 @@ table {
 .item-index {
     padding: 0;
     width: 24px;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 20px;
     color: rgb(36, 46, 48);
     text-align: left;
     vertical-align: top;
@@ -132,16 +126,10 @@ table {
 
 .item-details {
     padding: 0;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 20px;
     color: rgb(36, 46, 48);
 }
 
 .item-price {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 20px;
     color: rgb(36, 46, 48);
 }
 
@@ -157,7 +145,6 @@ table {
     margin-top: 12px;
     width: 100%;
     font-size: 14px;
-    font-weight: 400;
     line-height: 18px;
     color: rgb(36, 46, 48);
 }
@@ -172,17 +159,12 @@ table {
 
 .item-notes {
     width: calc(144px - 20px);
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 20px;
     text-decoration: underline;
 }
 
 .item-amount {
     margin: 0 12px;
     width: 24px;
-    font-size: 16px;
-    font-weight: 400;
     line-height: 24px;
     text-align: center;
     color: rgb(36, 46, 48);
@@ -194,9 +176,6 @@ table {
 
 .sum-block {
     padding-bottom: 16px;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 20px;
     color: rgb(36, 46, 48);
     gap: 4px;
 }

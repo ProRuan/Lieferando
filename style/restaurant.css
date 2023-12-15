@@ -45,7 +45,6 @@ body {
 .header-center-text {
     font-size: 14px;
     font-weight: 700;
-    line-height: 20px;
     color: rgb(36, 46, 48);
 }
 
@@ -131,8 +130,6 @@ body {
 
 .customer-review-text {
     font-size: 14px;
-    font-weight: 400;
-    line-height: 20px;
     text-decoration: underline;
     color: rgb(60, 76, 79);
 }
@@ -140,8 +137,6 @@ body {
 .delivery-hint {
     margin-top: 8px;
     font-size: 14px;
-    font-weight: 400;
-    line-height: 20px;
     color: rgb(60, 76, 79);
 }
 
@@ -213,8 +208,6 @@ body {
 
 .dish-card-ingredients {
     margin: 0;
-    font-size: 16px;
-    font-weight: 400;
     line-height: 24px;
     color: rgb(36, 46, 48);
 }
@@ -222,8 +215,6 @@ body {
 .dish-card-option {
     margin: 0;
     font-size: 14px;
-    font-weight: 400;
-    line-height: 20px;
     color: rgb(60, 76, 79);
 }
 
@@ -250,23 +241,16 @@ body {
     font-style: normal;
 }
 
-.font-16424 {
-    font-size: 16px;
-    font-weight: 400;
+.imprint-address-text {
     line-height: 24px;
     color: rgb(60, 76, 79);
 }
 
-.font-14420 {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 20px;
-    color: rgb(36, 46, 48);
-}
-
 .imprint-mail {
     padding-bottom: 16px;
+    font-size: 14px;
     text-decoration: underline;
+    color: rgb(36, 46, 48);
     box-shadow: 0 1px rgba(0, 0, 0, 0.15);
 }
 
@@ -275,8 +259,6 @@ body {
 }
 
 .hint-of-provider {
-    font-size: 16px;
-    font-weight: 400;
     line-height: 24px;
     color: rgb(36, 46, 48);
 }

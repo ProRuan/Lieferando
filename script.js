@@ -228,11 +228,11 @@ function showShoppingCartItems() {
         <div id="shopping-cart-item-${i}" class="shopping-cart-item">
             <table>
                 <tr>
-                    <td id="item-index-${i}" class="item-index">${i}</td>
+                    <td id="item-index-${i}" class="item-index fw-700">${i}</td>
                     <td class="column-start-start item-details">
                         <div id="item-title-and-price-${i}" class="width-100 display-between-center gap-20">
-                            <div class="added-item-title">${getTitleInCart(i)}</div>
-                            <div id="item-price-${i}">${getTotalPriceInCart(i)}</div>
+                            <div class="added-item-title fw-700">${getTitleInCart(i)}</div>
+                            <div id="item-price-${i}" class="item-price fw-700">${getTotalPriceInCart(i)}</div>
                         </div>
                         <div class="added-options">${getOptionsInCart(i)}</div>
                         <div class="mt-8 display-between-center gap-20">

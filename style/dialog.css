@@ -30,10 +30,6 @@
 
 .dialog-box-headline {
     margin: 0;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 32px;
-    color: rgb(36, 46, 48);
 }
 
 .dialog-box-close-button {
@@ -50,8 +46,6 @@
 
 .dialog-box-ingredients {
     margin: 0;
-    font-size: 16px;
-    font-weight: 400;
     line-height: 24px;
     color: rgb(60, 76, 79);
 }
