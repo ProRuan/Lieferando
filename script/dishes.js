@@ -74,6 +74,9 @@ loadDishes();
 function render() {
     showDishes();
     showItems();
+    outputSubtotal();
+    outputDeliveryCosts();
+    outputTotal();
 }
 
 

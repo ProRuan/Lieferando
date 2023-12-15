@@ -50,7 +50,7 @@ function writeTitleAndPrice(i) {
     return `
         <div id="item-title-and-price-${i}" class="width-100 display-between-center gap-20">
             <div id="item-title-${i}" class="added-item-title fw-700">${getTitleOfDish(i)}</div>
-            <div id="item-price-${i}" class="item-price fw-700">${getDecimalPriceInCart(i)} €</div>
+            <output id="item-price-${i}" class="item-price fw-700">${getDecimalPriceInCart(i)} €</output>
         </div>
     `;
 }
@@ -120,13 +120,13 @@ function loadShoppingCart() {
 
 function addDish(i) {    // adds dish i to the shopping cart
     addOrIncreaseIf(i);
-    saveAndShowItems();
+    saveAndRender();
 }
 
 
-function saveAndShowItems() {
+function saveAndRender() {
     save();
-    showItems();
+    render();
 }
 
 
@@ -178,7 +178,7 @@ function addToShoppingCart(i) {    // adds the dish i to shopping cart
     };    // adds the dish i to shopping cart
 
     dishes[i]['in-cart'] = true,
-    dishes[i]['item-id'] = currentIndex;
+        dishes[i]['item-id'] = currentIndex;
 }
 
 
@@ -190,7 +190,7 @@ function getCurrentIndex() {    // provides the current index for the new item
 function increaseItems(i) {
     increaseAmount(i);
     increasePrice(i);
-    saveAndShowItems();
+    saveAndRender();
 }
 
 
@@ -210,7 +210,7 @@ function increasePrice(i) {
 
 function decreaseItems(i) {
     decreaseAmount(i);
-    saveAndShowItems();
+    saveAndRender();
 }
 
 
@@ -227,7 +227,9 @@ function decreaseOrDeleteItem(amount, i) {
     } else {
         let dishId = getDishId(i);
         dishes[dishId]['in-cart'] = false;
+        delete dishes[dishId]['item-id'];
         shoppingCart.splice(i, 1);
+        updateItemId();
     }
 }
 
@@ -238,4 +240,61 @@ function decreasePrice(i) {
     let price = getPrice(dishId);
     let currentPrice = priceInCart - price;
     shoppingCart[i]['price'] = currentPrice;
+}
+
+
+function updateItemId() {
+    for (let i = 0; i < shoppingCart.length; i++) {
+        shoppingCart[i]['item-id'] = i;
+        let dishId = getDishId(i);
+        dishes[dishId]['item-id'] = i;
+    }
+}
+
+
+
+function outputSubtotal() {
+    let subtotal = calculateSubtotal();
+    let output = document.getElementById('subtotal');
+    output.innerHTML = subtotal.toFixed(2) + ' €';
+}
+
+
+function calculateSubtotal() {
+    let subtotal = 0;
+    for (let i = 0; i < shoppingCart.length; i++) {
+        subtotal += shoppingCart[i]['price'];
+    }
+    return subtotal;
+}
+
+
+function outputDeliveryCosts() {
+    let deliveryCosts = calculateDeliveryCosts();
+    let output = document.getElementById('delivery-costs');
+    output.innerHTML = deliveryCosts.toFixed(2) + ' €';
+}
+
+
+function calculateDeliveryCosts() {
+    let subtotal = calculateSubtotal();
+    if (subtotal < 30) {
+        return 30;
+    } else {
+        return 0;
+    }
+}
+
+
+function outputTotal() {
+    let total = calculateTotal();
+    let output = document.getElementById('total');
+    output.innerHTML = total.toFixed(2);
+}
+
+
+function calculateTotal() {
+    let subtotal = calculateSubtotal();
+    let deliveryCosts = calculateDeliveryCosts();
+    return subtotal + deliveryCosts;
 }
