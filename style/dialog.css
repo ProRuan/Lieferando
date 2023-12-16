@@ -74,6 +74,17 @@
     margin: 10px 8px;
 }
 
+.option-button {
+    padding: 8px 16px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border: unset;
+    border-radius: 50px;
+}
+
+.option-button:hover {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
 .dialog-box-footer {
     padding: 20px 24px;
     gap: 24px;

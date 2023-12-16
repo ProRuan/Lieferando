@@ -109,7 +109,7 @@ function writeHeader(i) {    // writes the header of dish card i
     return `
         <div id="dish-card-header-${i}" class="display-between-center">
             <h3 id="dish-card-title-${i}" class="dish-card-title">${getTitle(i)}</h3>
-            <button id="add-dish-button-${i}" class="button dish-card-button" onclick="addDish(${i})">+</button>
+            <button id="add-dish-button-${i}" class="button dish-card-button" onclick="openDialog(${i})">+</button>
         </div>
     `;
 }
