@@ -1,7 +1,7 @@
 // Variables
 let dishes = [
     {
-        'title': 'Mexicana scharf',
+        'title': 'Pizza Mexicana scharf',
         'description': 'Paradeiser, Käse, Hühnerfleisch, Paprika, Mais, Chilli',
         'price': 9.50,
         'option': 'große Pizza',
@@ -117,7 +117,7 @@ function writeHeader(i) {    // writes the header of dish card i
     return `
         <div id="dish-card-header-${i}" class="display-between-center">
             <h3 id="dish-card-title-${i}" class="dish-card-title">${getTitle(i)}</h3>
-            <button id="add-dish-button-${i}" class="button dish-card-button" onclick="openDialog(${i})">+</button>
+            <button id="add-dish-button-${i}" class="button dish-card-button" onclick="showDialog(${i})">+</button>
         </div>
     `;
 }
@@ -151,8 +151,7 @@ function getOption(i) {    // provides the option of dish card i
 
 function getDecimalPrice(i) {
     let price = getPrice(i);
-    let roundedPrice = Math.round(price * 100) / 100;
-    return roundedPrice.toFixed(2);
+    return price.toFixed(2);
 }
 
 

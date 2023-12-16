@@ -122,6 +122,8 @@ function addDish(i) {    // adds dish i to the shopping cart
     sortItems();
     updateId();
     saveAndRender();
+    calculateTotalPriceIf(i)    // notwendig?
+    saveAndRender();    // notwendig?
 }
 
 
@@ -165,7 +167,8 @@ function increaseAmountInCart(itemId) {
 function increasePriceInCart(i, itemId) {
     let price = getPrice(i);
     let optionPrice = getOptionPriceIf(i);
-    shoppingCart[itemId]['price'] += price;
+    let totalPrice = price + optionPrice;
+    shoppingCart[itemId]['price'] += totalPrice;
 }
 
 
