@@ -121,6 +121,7 @@ function loadShoppingCart() {
 function addDish(i) {    // adds dish i to the shopping cart
     addOrIncreaseIf(i);
     sortItems();
+    updateId();
     saveAndRender();
 }
 
@@ -172,7 +173,7 @@ function addToShoppingCart(i) {    // adds the dish i to shopping cart
     let currentIndex = getCurrentIndex();    // contains the index of the current item
     shoppingCart[currentIndex] = {
         'dish-id': i,    // contains the id of dish i
-        'item-id': currentIndex,    // contains the id of the new item
+        // 'item-id': currentIndex,
         'price': getPrice(i),    // takes the price of dish i
         'option': 'keine / nicht ausgewählt',    // takes the option of dish i
         'amount': 1,    // sets amount = 1
@@ -246,12 +247,11 @@ function decreasePrice(i) {
 
 function updateItemId() {
     for (let i = 0; i < shoppingCart.length; i++) {
-        shoppingCart[i]['item-id'] = i;
+        // shoppingCart[i]['item-id'] = i;
         let dishId = getDishId(i);
         dishes[dishId]['item-id'] = i;
     }
 }
-
 
 
 function outputSubtotal() {
@@ -340,4 +340,12 @@ function copyOfShoppingCart() {
         };
     }
     return copy;
+}
+
+
+function updateId() {
+    for (let i = 0; i < shoppingCart.length; i++) {
+        let dishId = getDishId(i);
+        dishes[dishId]['item-id'] = i;
+    }
 }
