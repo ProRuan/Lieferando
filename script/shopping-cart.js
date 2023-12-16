@@ -289,7 +289,9 @@ function calculateDeliveryCosts() {
 function outputTotal() {
     let total = calculateTotal();
     let output = document.getElementById('total');
+    let orderButton = document.getElementById('order-button-total');
     output.innerHTML = total.toFixed(2);
+    orderButton.innerHTML = `(${total.toFixed(2)})`;
 }
 
 
