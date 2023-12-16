@@ -95,7 +95,7 @@ function writeDialogBoxFooter(i) {
         <div class="dialog-box-footer display-start-center">
             <div class="dialog-box-amount-group display-between-center">
                 <button id="dialog-box-plus-button" class="button">+</button>
-                <span class="item-amount">${getAmountInCartIf(i)}</span>
+                <span id="dialog-box-item-amount" class="item-amount">${getAmountInCartIf(i)}</span>
                 <button id="dialog-box-minus-button" class="button">-</button>
             </div>
             <button id="dialog-box-add-button" class="dialog-box-add-button" onclick="confirmAction(${i})">
@@ -111,6 +111,8 @@ function getAmountInCartIf(i) {
     if (inCart) {
         let itemId = getItemId(i);
         return shoppingCart[itemId]['amount'];
+    } else {
+        return 1;
     }
 }
 
@@ -129,6 +131,7 @@ function confirmAction(i) {
 function calculateTotalDialog(i) {
     let price = getPrice(i);
     let optionPrice = getOptionPrice(i);
-    let totalPrice = (price + optionPrice).toFixed(2);
-    return totalPrice;
+    let totalPrice = price + optionPrice;
+    let amount = getAmountInCartIf(i);
+    return (amount * totalPrice).toFixed(2);
 }
