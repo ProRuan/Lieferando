@@ -35,7 +35,7 @@ function writeItem(i) {
 function writeTableTr(i) {
     return `
         <tr>
-            <td id="item-index-${i}" class="item-index fw-700">${i}</td>
+            <td id="item-index-${i}" class="item-index fw-700">${getAmountInCart(i)}</td>
             <td class="column-start-start item-details">
                 ${writeTitleAndPrice(i)}
                 ${writeOption(i)}
@@ -69,8 +69,7 @@ function getDishId(i) {
 
 function getDecimalPriceInCart(i) {
     let price = getPriceInCart(i);
-    let roundedPrice = Math.round(price * 100) / 100;
-    return roundedPrice.toFixed(2);
+    return price.toFixed(2);
 }
 
 
@@ -165,6 +164,7 @@ function increaseAmountInCart(itemId) {
 
 function increasePriceInCart(i, itemId) {
     let price = getPrice(i);
+    let optionPrice = getOptionPriceIf(i);
     shoppingCart[itemId]['price'] += price;
 }
 
@@ -174,7 +174,7 @@ function addToShoppingCart(i) {    // adds the dish i to shopping cart
     shoppingCart[currentIndex] = {
         'dish-id': i,    // contains the id of dish i
         // 'item-id': currentIndex,
-        'price': getPrice(i),    // takes the price of dish i
+        'price': getPriceIf(i),    // takes the price of dish i
         'option': 'keine / nicht ausgewählt',    // takes the option of dish i
         'amount': 1,    // sets amount = 1
     };    // adds the dish i to shopping cart
@@ -186,6 +186,18 @@ function addToShoppingCart(i) {    // adds the dish i to shopping cart
 
 function getCurrentIndex() {    // provides the current index for the new item
     return shoppingCart.length;
+}
+
+
+function getPriceIf(i) {
+    let price = getPrice(i);
+    let optionSelected = getOptionSelected(i);
+    if (optionSelected) {
+        let optionPrice = getOptionPrice(i);
+        return price + optionPrice;
+    } else {
+        return price;
+    }
 }
 
 
@@ -204,7 +216,7 @@ function increaseAmount(i) {
 function increasePrice(i) {
     let priceInCart = getPriceInCart(i);
     let dishId = getDishId(i);
-    let price = getPrice(dishId);
+    let price = getPriceIf(dishId);
     let currentPrice = priceInCart + price;
     shoppingCart[i]['price'] = currentPrice;
 }
@@ -239,12 +251,13 @@ function decreaseOrDeleteItem(amount, i) {
 function decreasePrice(i) {
     let priceInCart = getPriceInCart(i);
     let dishId = getDishId(i);
-    let price = getPrice(dishId);
+    let price = getPriceIf(dishId);
     let currentPrice = priceInCart - price;
     shoppingCart[i]['price'] = currentPrice;
 }
 
 
+// in Gebrauch?
 function updateItemId() {
     for (let i = 0; i < shoppingCart.length; i++) {
         // shoppingCart[i]['item-id'] = i;

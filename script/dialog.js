@@ -71,7 +71,7 @@ function writeDialogBoxOption(i) {
             <div class="dialog-box-option-text">Ihre Option:</div>
             <div class="dialog-box-option-group display-between-center">
                 <span>${getOption(i)} (<output id="dialog-box-option-price">${getDecimalOptionPrice(i)}</output> €)</span>
-                <button id="option-button" class="option-button" onclick="${setOptionSelected(i)}">Auswählen</button>
+                <button id="option-button" class="option-button" onclick="setOptionSelected(${(i)})">Auswählen</button>
             </div>
         </div>
     `;
@@ -103,6 +103,8 @@ function setOptionSelected(i) {
     } else {
         dishes[i]['option-selected'] = true;
     }
+    calculateTotalPriceIf(i);
+    saveAndRender();
 }
 
 
@@ -111,19 +113,69 @@ function getOptionSelected(i) {
 }
 
 
+function calculateTotalPriceIf(i) {
+    let inCart = getInCart(i);
+    if (inCart) {
+        let itemId = getItemId(i);
+        let amount = getAmountInCart(itemId);
+        document.getElementById('dialog-box-amount').innerHTML = amount;
+        let price = getPrice(i);
+        let optionPrice = getOptionPriceIf(i);
+        let totalPrice = amount * (price + optionPrice);
+        let output = document.getElementById('dialog-box-total-price');
+        output.innerHTML = totalPrice.toFixed(2);
+    } else {
+        let price = getPrice(i);
+        let output = document.getElementById('dialog-box-total-price');
+        output.innerHTML = price.toFixed(2);
+    }
+}
+
+
+// function disableButton(id) {
+//     let button = document.getElementById(id);
+//     button.disabled = true;
+// }
+
+
+// function enableButton(id) {
+//     let button = document.getElementById(id);
+//     button.disabled = false;
+// }
+
+
 function writeDialogBoxFooter(i) {
     return `
         <div class="dialog-box-footer display-start-center">
             <div class="dialog-box-amount-group display-between-center">
-                <button id="dialog-box-plus-button" class="button">+</button>
+                <button id="dialog-box-plus-button" class="button" onclick="increaseItemsDialog(${i})">+</button>
                 <span id="dialog-box-item-amount" class="item-amount"><output id="dialog-box-amount">${getAmountInCartIf(i)}</output></span>
-                <button id="dialog-box-minus-button" class="button">-</button>
+                <button id="dialog-box-minus-button" class="button" onclick="decreaseItemsDialog(${i})">-</button>
             </div>
             <button id="dialog-box-add-button" class="dialog-box-add-button" onclick="confirmAction(${i})">
-                <span><output id="dialog-box-total-price">${calculateTotalDialog(i)}</output> €</span>
+                <span><output id="dialog-box-total-price">${getPriceInCartIf(i)}</output> €</span>
             </button>
         </div>
     `;
+}
+
+
+function increaseItemsDialog(i) {    // mit 1 begrenzen!!! + if not inCart
+    // getItemIdIf() fehlt!!!
+    let itemId = getItemId(i);
+    increaseItems(itemId);
+    calculateTotalPriceIf(i);
+}
+
+
+// ergebnis in shoppingCart (nur) speichern!!!
+
+
+function decreaseItemsDialog(i) {    // mit 1 begrenzen!!! + if not inCart
+    // getItemIdIf() fehlt!!!
+    let itemId = getItemId(i);
+    decreaseItems(itemId);
+    calculateTotalPriceIf(i);
 }
 
 
@@ -140,6 +192,17 @@ function getAmountInCartIf(i) {
 
 function getInCart(i) {
     return dishes[i]['in-cart'];
+}
+
+
+function getPriceInCartIf(i) {
+    let inCart = getInCart(i);
+    if (inCart) {
+        let itemId = getItemId(i);
+        return shoppingCart[itemId]['price'].toFixed(2);
+    } else {
+        return getDecimalPrice(i);
+    }
 }
 
 
@@ -166,3 +229,4 @@ function getOptionPriceIf(i) {
         return 0;
     }
 }
+
