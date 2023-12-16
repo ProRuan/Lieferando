@@ -85,7 +85,9 @@ function writeDialogBoxFooter(i) {
                 <span class="item-amount">${getAmountInCartIf(i)}</span>
                 <button id="dialog-box-minus-button" class="button">-</button>
             </div>
-            <button id="dialog-box-add-button" class="dialog-box-add-button" onclick="addDish(${i})"><output>${calculateTotalDialog(i)}</output> €</button>
+            <button id="dialog-box-add-button" class="dialog-box-add-button" onclick="addDish(${i})">
+                <span><output>${calculateTotalDialog(i)}</output> €</span>
+            </button>
         </div>
     `;
 }
@@ -109,5 +111,5 @@ function calculateTotalDialog(i) {
     let price = getPrice(i);
     let optionPrice = getOptionPrice(i);
     let totalPrice = (price + optionPrice).toFixed(2);
-    return totalPrice + ' €';
+    return totalPrice;
 }

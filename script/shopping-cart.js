@@ -120,6 +120,7 @@ function loadShoppingCart() {
 
 function addDish(i) {    // adds dish i to the shopping cart
     addOrIncreaseIf(i);
+    sortItems();
     saveAndRender();
 }
 
@@ -256,7 +257,7 @@ function updateItemId() {
 function outputSubtotal() {
     let subtotal = calculateSubtotal();
     let output = document.getElementById('subtotal');
-    output.innerHTML = subtotal.toFixed(2) + ' €';
+    output.innerHTML = subtotal.toFixed(2);
 }
 
 
@@ -272,7 +273,7 @@ function calculateSubtotal() {
 function outputDeliveryCosts() {
     let deliveryCosts = calculateDeliveryCosts();
     let output = document.getElementById('delivery-costs');
-    output.innerHTML = deliveryCosts.toFixed(2) + ' €';
+    output.innerHTML = deliveryCosts.toFixed(2);
 }
 
 
@@ -291,7 +292,7 @@ function outputTotal() {
     let output = document.getElementById('total');
     let orderButton = document.getElementById('order-button-total');
     output.innerHTML = total.toFixed(2);
-    orderButton.innerHTML = `(${total.toFixed(2)})`;
+    orderButton.innerHTML = total.toFixed(2);
 }
 
 
@@ -299,4 +300,44 @@ function calculateTotal() {
     let subtotal = calculateSubtotal();
     let deliveryCosts = calculateDeliveryCosts();
     return subtotal + deliveryCosts;
+}
+
+
+function sortItems() {
+    let copy = copyOfShoppingCart();
+    shoppingCart = [];
+    for (let i = 0; i < copy.length; i++) {
+        let min = dishes.length;
+        let itemId = 0;
+        for (let j = 0; j < copy.length; j++) {
+            let dishId = copy[j]['dish-id'];
+            if (dishId < min) {
+                min = dishId;
+                itemId = j;
+            }
+        }
+        shoppingCart[i] = {
+            'dish-id': copy[itemId]['dish-id'],
+            // 'item-id': copy[itemId]['item-id'],
+            'amount': copy[itemId]['amount'],
+            'price': copy[itemId]['price'],
+            'option': copy[itemId]['option']
+        }
+        copy[itemId]['dish-id'] = dishes.length;
+    }
+}
+
+
+function copyOfShoppingCart() {
+    let copy = [];
+    for (let i = 0; i < shoppingCart.length; i++) {
+        copy[i] = {
+            'dish-id': shoppingCart[i]['dish-id'],
+            // 'item-id': shoppingCart[i]['item-id'],
+            'amount': shoppingCart[i]['amount'],
+            'price': shoppingCart[i]['price'],
+            'option': shoppingCart[i]['option']
+        };
+    }
+    return copy;
 }
