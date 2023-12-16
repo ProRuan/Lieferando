@@ -278,7 +278,8 @@ function outputDeliveryCosts() {
 
 
 function calculateDeliveryCosts() {
-    let subtotal = calculateSubtotal();
+    // let subtotal = calculateSubtotal();
+    let subtotal = +document.getElementById('subtotal').innerHTML;
     if (subtotal < 30) {
         return 30;
     } else {
@@ -297,8 +298,10 @@ function outputTotal() {
 
 
 function calculateTotal() {
-    let subtotal = calculateSubtotal();
-    let deliveryCosts = calculateDeliveryCosts();
+    // let subtotal = calculateSubtotal();
+    // let deliveryCosts = calculateDeliveryCosts();
+    let subtotal = +document.getElementById('subtotal').innerHTML;
+    let deliveryCosts = +document.getElementById('delivery-costs').innerHTML;
     return subtotal + deliveryCosts;
 }
 

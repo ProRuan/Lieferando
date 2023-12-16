@@ -6,6 +6,7 @@ let dishes = [
         'price': 9.50,
         'option': 'große Pizza',
         'option-price': 2.40,
+        'option-selected': false,
         'in-cart': false
     },
     {
@@ -14,6 +15,7 @@ let dishes = [
         'price': 9.90,
         'option': 'große Pizza',
         'option-price': 2.60,
+        'option-selected': false,
         'in-cart': false
     },
     {
@@ -22,6 +24,7 @@ let dishes = [
         'price': 1.50,
         'option': 'plus 3 Stück',
         'option-price': 1.50,
+        'option-selected': false,
         'in-cart': false
     },
     {
@@ -30,6 +33,7 @@ let dishes = [
         'price': 9.90,
         'option': 'keine',
         'option-price': 0,
+        'option-selected': false,
         'in-cart': false
     },
     {
@@ -38,6 +42,7 @@ let dishes = [
         'price': 9.90,
         'option': 'keine',
         'option-price': 0,
+        'option-selected': false,
         'in-cart': false
     },
     {
@@ -46,6 +51,7 @@ let dishes = [
         'price': 5.90,
         'option': 'plus 3 Stück',
         'option-price': 2.40,
+        'option-selected': false,
         'in-cart': false
     },
     {
@@ -54,6 +60,7 @@ let dishes = [
         'price': 10.50,
         'option': 'große Portion',
         'option-price': 1.40,
+        'option-selected': false,
         'in-cart': false
     },
     {
@@ -62,6 +69,7 @@ let dishes = [
         'price': 6.00,
         'option': 'plus 1 Stück',
         'option-price': 2.00,
+        'option-selected': false,
         'in-cart': false
     }
 ];

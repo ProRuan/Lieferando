@@ -1,3 +1,5 @@
+let counter = 0;
+
 function openDialog(i) {
     let dialog = document.getElementById('dialog');
     dialog.show();
@@ -26,9 +28,20 @@ function writeDialogBoxHeader(i) {
 }
 
 
-function closeDialog() {
+function closeDialog(id) {
     let dialog = document.getElementById('dialog');
     dialog.close();
+}
+
+
+function closeDialogIf(id) {
+    if (id == 'dialog-box') {
+        counter = 3;
+    }
+    if (--counter < 1) {
+        closeDialog();
+        counter = 1;
+    }
 }
 
 
@@ -85,7 +98,7 @@ function writeDialogBoxFooter(i) {
                 <span class="item-amount">${getAmountInCartIf(i)}</span>
                 <button id="dialog-box-minus-button" class="button">-</button>
             </div>
-            <button id="dialog-box-add-button" class="dialog-box-add-button" onclick="addDish(${i})">
+            <button id="dialog-box-add-button" class="dialog-box-add-button" onclick="confirmAction(${i})">
                 <span><output>${calculateTotalDialog(i)}</output> €</span>
             </button>
         </div>
@@ -104,6 +117,12 @@ function getAmountInCartIf(i) {
 
 function getInCart(i) {
     return dishes[i]['in-cart'];
+}
+
+
+function confirmAction(i) {
+    addDish(i);
+    closeDialog();
 }
 
 
