@@ -131,9 +131,6 @@ function saveAndRender() {
 }
 
 
-
-
-// in Arbeit ...
 function increaseAmountInCart(i) {
     shoppingCart[i]['amount']++;
 }
@@ -141,42 +138,84 @@ function increaseAmountInCart(i) {
 
 function increasePriceInCart(i) {
     let dishId = getDishId(i);
-    let priceOfItem = getPrice(dishId);
-    let upcharge = getUpchargeIf(dishId);
-    let totalPrice = priceOfItem + upcharge;
-    shoppingCart[i]['price'] += totalPrice;
-}
-
-
-function getUpchargeIf(dishId) {
-    let optionSelected = getOptionSelected(dishId);
-    if (optionSelected) {
-        return getUpcharge(dishId);
+    let original = getOriginal(i);
+    if (original) {
+        let price = getPrice(dishId);
+        shoppingCart[i]['price'] += price;
     } else {
-        return 0;
+        originalDishId = downgradeIndex(dishId);
+        let priceOfItem = getPrice(originalDishId);
+        let upcharge = getUpcharge(originalDishId);
+        let totalPrice = priceOfItem + upcharge;
+        shoppingCart[i]['price'] += totalPrice;
     }
 }
 
 
-// function getItemId(i) {
-//     return dishes[i]['item-id'];
-// }
+function downgradeIndex(dishId) {
+    return --dishId;
+}
 
 
+function decreaseItemInCart(i) {
+    decreaseOrDeleteItem(i);
+    updateItemId();
+    saveAndRender();
+}
 
+
+function decreaseOrDeleteItem(i) {
+    let amount = getAmountInCart(i);
+    if (amount > 1) {
+        decreaseAmountInCart(i);
+        decreasePriceInCart(i);
+    } else {
+        let dishId = getDishId(i);
+        dishes[dishId]['in-cart'] = false;
+        delete dishes[dishId]['item-id'];
+        shoppingCart.splice(i, 1);
+    }
+}
+
+
+function decreaseAmountInCart(i) {
+    shoppingCart[i]['amount']--;
+}
+
+
+function decreasePriceInCart(i) {
+    let dishId = getDishId(i);
+    let original = getOriginal(i);
+    if (original) {
+        let price = getPrice(dishId);
+        shoppingCart[i]['price'] -= price;
+    } else {
+        originalDishId = downgradeIndex(dishId);
+        let priceOfItem = getPrice(originalDishId);
+        let upcharge = getUpcharge(originalDishId);
+        let totalPrice = priceOfItem + upcharge;
+        shoppingCart[i]['price'] -= totalPrice;
+    }
+}
 
 
 function outputSubtotal() {
     let subtotal = calculateSubtotal();
-    let output = document.getElementById('subtotal');
+    let output = selectOutput('subtotal');
     output.innerHTML = subtotal.toFixed(2);
+}
+
+
+function selectOutput(id) {
+    return document.getElementById(id);
 }
 
 
 function calculateSubtotal() {
     let subtotal = 0;
     for (let i = 0; i < shoppingCart.length; i++) {
-        subtotal += shoppingCart[i]['price'];
+        subtotal += getPriceInCart(i);
+    
     }
     return subtotal;
 }
@@ -184,28 +223,34 @@ function calculateSubtotal() {
 
 function outputDeliveryCosts() {
     let deliveryCosts = calculateDeliveryCosts();
-    let output = document.getElementById('delivery-costs');
+    let output = selectOutput('delivery-costs');
     output.innerHTML = deliveryCosts.toFixed(2);
 }
 
 
 function calculateDeliveryCosts() {
     // let subtotal = calculateSubtotal();
-    let subtotal = +document.getElementById('subtotal').innerHTML;
-    if (subtotal < 30) {
-        return 30;
-    } else {
-        return 0;
-    }
+    let subtotal = getSubtotal();
+    return (subtotal < 30) ? 30 : 0;
+    // if (subtotal < 30) {
+    //     return 30;
+    // } else {
+    //     return 0;
+    // }
+}
+
+
+function getSubtotal() {
+    return +document.getElementById('subtotal').innerHTML;
 }
 
 
 function outputTotal() {
     let total = calculateTotal();
-    let output = document.getElementById('total');
-    let orderButton = document.getElementById('order-button-total');
+    let output = selectOutput('total');
+    let outputButton = selectOutput('order-button-total');
     output.innerHTML = total.toFixed(2);
-    orderButton.innerHTML = total.toFixed(2);
+    outputButton.innerHTML = total.toFixed(2);
 }
 
 
@@ -213,16 +258,16 @@ function calculateTotal() {
     // let subtotal = calculateSubtotal();
     // let deliveryCosts = calculateDeliveryCosts();
     let subtotal = +document.getElementById('subtotal').innerHTML;
-    let deliveryCosts = +document.getElementById('delivery-costs').innerHTML;
+    let deliveryCosts = getDeliveryCosts();
     return subtotal + deliveryCosts;
 }
 
 
+function getDeliveryCosts() {
+    return +document.getElementById('delivery-costs').innerHTML;
+}
 
 
-
-
-// Funktioert!!! :)
 function sortItems() {
     let copy = copyOfShoppingCart();
     shoppingCart = [];

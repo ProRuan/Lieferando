@@ -1,7 +1,7 @@
 // Variables
 let dishes = [
     {
-        'rendering': true,
+        'original': true,
         'title': 'Pizza Mexicana',
         'description': 'Paradeiser, Käse, Hühnerfleisch, Paprika, Mais, Chilli',
         'price': 9.50,
@@ -11,12 +11,12 @@ let dishes = [
         'in-cart': false
     },
     {
-        'rendering': false,
+        'original': false,
         'title': 'Große Pizza Mexicana',
         'in-cart': false
     },
     {
-        'rendering': true,
+        'original': true,
         'title': 'Pizza Frutti di Mare',
         'description': 'Paradeiser, Käse, Meeresfrüchte, Knoblauch',
         'price': 9.90,
@@ -26,12 +26,12 @@ let dishes = [
         'in-cart': false
     },
     {
-        'rendering': false,
+        'original': false,
         'title': 'Große Pizza Frutti di Mare',
         'in-cart': false
     },
     {
-        'rendering': true,
+        'original': true,
         'title': 'Pizzastangerl',
         'description': '2 Stück',
         'price': 1.50,
@@ -41,26 +41,26 @@ let dishes = [
         'in-cart': false
     },
     {
-        'rendering': false,
+        'original': false,
         'title': 'Pizzastangerl Plus',
         'in-cart': false
     },
     {
-        'rendering': true,
+        'original': true,
         'title': 'Spaghetti Bolognese',
         'description': 'Fleischsauce',
         'price': 9.90,
         'in-cart': false
     },
     {
-        'rendering': true,
+        'original': true,
         'title': 'Lasagne',
         'description': 'keine',
         'price': 9.90,
         'in-cart': false
     },
     {
-        'rendering': true,
+        'original': true,
         'title': 'Frühlingsrollen',
         'description': 'mit süß-saurer Sauce, 5 Stück',
         'price': 5.90,
@@ -70,12 +70,12 @@ let dishes = [
         'in-cart': false
     },
     {
-        'rendering': false,
+        'original': false,
         'title': 'Frühlingsrollen Plus',
         'in-cart': false
     },
     {
-        'rendering': true,
+        'original': true,
         'title': 'Paella Reis',
         'description': 'Curry Reis, Shrimps, Frutti di Mare, Hühnerfleisch und Salat',
         'price': 10.50,
@@ -85,12 +85,12 @@ let dishes = [
         'in-cart': false
     },
     {
-        'rendering': false,
+        'original': false,
         'title': 'Großer Paella Reis',
         'in-cart': false
     },
     {
-        'rendering': true,
+        'original': true,
         'title': 'Nusspalatschinken',
         'description': '2 Stück',
         'price': 6.00,
@@ -100,7 +100,7 @@ let dishes = [
         'in-cart': false
     },
     {
-        'rendering': false,
+        'original': false,
         'title': 'Nusspalatschinken Plus',
         'in-cart': false
     }
@@ -131,16 +131,16 @@ function showDishes() {    // shows all available dishes of restaurant
 
 function fillDishCardCollector(dishCardCollector) {    // fills dishCardCollector with dish cards
     for (let i = 0; i < dishes.length; i++) {
-        let rendering = getRendering(i);
-        if (rendering) {
+        let original = getOriginal(i);
+        if (original) {
             dishCardCollector.innerHTML += writeDishCard(i);
         }
     }
 }
 
 
-function getRendering(i) {
-    return dishes[i]['rendering'];
+function getOriginal(i) {
+    return dishes[i]['original'];
 }
 
 

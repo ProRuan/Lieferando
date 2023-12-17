@@ -242,9 +242,12 @@ function getInCart(i) {
 function increaseOptionalItem(index) {
     let amount = getAmountOfDialog();
     let totalPrice = getTotalPriceOfDialog();
-    let optionalId = getOptionalId(index);
-    shoppingCart[optionalId]['amount'] += amount;
-    shoppingCart[optionalId]['price'] += totalPrice;
+    // let optionalId = getOptionalId(index);
+    // shoppingCart[optionalId]['amount'] += amount;
+    // shoppingCart[optionalId]['price'] += totalPrice;
+    let itemId = getItemId(index);
+    shoppingCart[itemId]['amount'] += amount;
+    shoppingCart[itemId]['price'] += totalPrice;
 }
 
 
@@ -258,9 +261,11 @@ function getTotalPriceOfDialog() {
 }
 
 
-function getOptionalId(index) {
-    return dishes[index]['option-id'];
-}
+// function getOptionalId(index) {
+//     return dishes[index]['option-id'];
+// }
+
+// getItemId() ... here!!!
 
 
 function addOptionalItem(index) {
@@ -272,7 +277,8 @@ function addOptionalItem(index) {
         'price': getTotalPriceOfDialog()
     };
     dishes[index]['in-cart'] = true;
-    dishes[index]['option-id'] = newIndex;    // item-id?
+    // dishes[index]['option-id'] = newIndex;
+    dishes[index]['item-id'] = newIndex;
 }
 
 
@@ -291,7 +297,7 @@ function increaseItem(i) {
 
 
 function getItemId(i) {
-    return diishes[i]['item-id'];
+    return dishes[i]['item-id'];
 }
 
 
