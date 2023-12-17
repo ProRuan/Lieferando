@@ -79,7 +79,7 @@ function writeDialogBoxOption(i) {
         <div class="dialog-box-option">
             <div class="dialog-box-option-text">Ihre Option:</div>
             <div class="dialog-box-option-group display-between-center">
-                <span>${getOption(i)} (<output id="dialog-box-option-price">${getDecimalOptionPrice(i)}</output> €)</span>
+                <span>${getOption(i)} (<output id="dialog-box-option-price">${getDecimalUpcharge(i)}</output> €)</span>
                 <button id="option-button" class="option-button" onclick="setOptionSelected(${(i)})">Auswählen</button>
             </div>
         </div>
@@ -87,14 +87,14 @@ function writeDialogBoxOption(i) {
 }
 
 
-function getDecimalOptionPrice(i) {
-    let optionPrice = getOptionPrice(i);
-    return optionPrice.toFixed(2);
+function getDecimalUpcharge(i) {
+    let upcharge = getUpcharge(i);
+    return upcharge.toFixed(2);
 }
 
 
-function getOptionPrice(i) {
-    return dishes[i]['option-price'];
+function getUpcharge(i) {
+    return dishes[i]['upcharge'];
 }
 
 
@@ -105,8 +105,9 @@ function setOptionSelected(i) {
     } else {
         dishes[i]['option-selected'] = true;
     }
-    // calculateTotalPriceIf(i);
-    saveAndRender();
+    let feedback = document.getElementById('option-button');
+    feedback.innerHTML = 'ausgewählt';
+    save();
     updateTotalPriceDialog(i);
 }
 
@@ -116,35 +117,20 @@ function getOptionSelected(i) {
 }
 
 
-function calculateTotalPriceIf(i) {
-    let inCart = getInCart(i);
-    if (inCart) {
-        let itemId = getItemId(i);
-        let amount = getAmountInCart(itemId);
-        document.getElementById('dialog-box-amount').innerHTML = amount;
-        let price = getPrice(i);
-        let optionPrice = getOptionPriceIf(i);
-        let totalPrice = amount * (price + optionPrice);
-        let output = document.getElementById('dialog-box-total-price');
-        output.innerHTML = totalPrice.toFixed(2);
+function updateTotalPriceDialog(i) {
+    let amount = +document.getElementById('dialog-box-amount').innerHTML;
+    let price = getPrice(i);
+    let upcharge = 0;
+    let optionSelected = getOptionSelected(i);
+    if (optionSelected) {
+        upcharge = getUpcharge(i);
     } else {
-        let price = getPrice(i);
-        let output = document.getElementById('dialog-box-total-price');
-        output.innerHTML = price.toFixed(2);
+        upcharge = 0;
     }
+    let totalPrice = amount * (price + upcharge);
+    let output = document.getElementById('dialog-box-total-price');
+    output.innerHTML = totalPrice.toFixed(2);
 }
-
-
-// function disableButton(id) {
-//     let button = document.getElementById(id);
-//     button.disabled = true;
-// }
-
-
-// function enableButton(id) {
-//     let button = document.getElementById(id);
-//     button.disabled = false;
-// }
 
 
 function writeDialogBoxFooter(i) {
@@ -174,22 +160,6 @@ function increaseAmountDialog() {
     let output = document.getElementById('dialog-box-amount');
     let amount = +output.innerHTML;
     output.innerHTML = ++amount;
-}
-
-
-function updateTotalPriceDialog(i) {
-    let amount = +document.getElementById('dialog-box-amount').innerHTML;
-    let price = getPrice(i);
-    let optionPrice = 0;
-    let optionSelected = getOptionSelected(i);
-    if (optionSelected) {
-        optionPrice = getOptionPrice(i);
-    } else {
-        optionPrice = 0;
-    }
-    let totalPrice = (amount * (price + optionPrice)).toFixed(2);
-    let output = document.getElementById('dialog-box-total-price');
-    output.innerHTML = totalPrice;
 }
 
 
@@ -233,17 +203,34 @@ function disableButton(id) {
 }
 
 
-// ergebnis in shoppingCart (nur) speichern!!!
+function confirmAction(i) {
+    addOrIncreaseItem(i);
+    resetOptionSelected(i);
+    closeDialog();
+}
 
 
-function getAmountInCartIf(i) {
-    let inCart = getInCart(i);
-    if (inCart) {
-        let itemId = getItemId(i);
-        return getAmountInCart(itemId);
+function addOrIncreaseItem(i) {
+    let optionSelected = getOptionSelected(i);
+    if (optionSelected) {
+        let index = i + 1;
+        let inCart = getInCart(index);
+        if (inCart) {
+            increaseOptionalItem(index);
+        } else {
+            addOptionalItem(index)
+        }
     } else {
-        return 1;
+        let inCart = getInCart(i);
+        if (inCart) {
+            increaseItem(i);
+        } else {
+            addItem(i);
+        }
     }
+    sortItems();
+    updateItemId();
+    saveAndRender();
 }
 
 
@@ -252,85 +239,75 @@ function getInCart(i) {
 }
 
 
-function getPriceInCartIf(i) {
-    let inCart = getInCart(i);
-    if (inCart) {
-        let itemId = getItemId(i);
-        return shoppingCart[itemId]['price'].toFixed(2);
-    } else {
-        return getDecimalPrice(i);
-    }
+function increaseOptionalItem(index) {
+    let amount = getAmountOfDialog();
+    let totalPrice = getTotalPriceOfDialog();
+    let optionalId = getOptionalId(index);
+    shoppingCart[optionalId]['amount'] += amount;
+    shoppingCart[optionalId]['price'] += totalPrice;
 }
 
 
-function confirmAction(i) {
-    addDishFromDialog(i);
-    closeDialog();
+function getAmountOfDialog() {
+    return +document.getElementById('dialog-box-amount').innerHTML;
 }
 
 
-// Kontroll-Checkpoint ---
-
-function addDishFromDialog(i) {
-    let inCart = getInCart(i);
-    if (inCart) {
-        let itemId = getItemId(i);
-        let amount = +document.getElementById('dialog-box-amount').innerHTML;
-        shoppingCart[itemId]['amount'] += amount;
-        let price = +document.getElementById('dialog-box-total-price').innerHTML;
-        shoppingCart[itemId]['price'] += price;
-
-    } else {
-        addDish(i);
-    }
-    sortItems();
-    updateId();
-    saveAndRender();
+function getTotalPriceOfDialog() {
+    return +document.getElementById('dialog-box-total-price').innerHTML;
 }
 
 
-// function addDishDialog(i) {
-//     let optionSelected = getOptionSelected(i);
-//     if (optionSelected) {
-//         let currentIndex = getCurrentIndex();
-//         shoppingCart[currentIndex] = {
-//             'dish-id': i,
-//             'price': getPrice(i) + getOptionPrice(i),
-//             'option': getOption(i),
-//             'amount': 1,
-//         };
-
-//         dishes[i]['option-in-cart'] = true,
-//             dishes[i]['option-id'] = currentIndex;
-//     } else {
-//         let currentIndex = getCurrentIndex();
-//         shoppingCart[currentIndex] = {
-//             'dish-id': i,
-//             'price': getPrice(i),
-//             'amount': 1,
-//         };
-
-//         dishes[i]['in-cart'] = true,
-//             dishes[i]['item-id'] = currentIndex;
-//     }
-// }
-
-
-function calculateTotalDialog(i) {
-    let price = getPrice(i);
-    let optionPrice = getOptionPriceIf(i);
-    let totalPrice = price + optionPrice;
-    let amount = getAmountInCartIf(i);
-    return (amount * totalPrice).toFixed(2);
+function getOptionalId(index) {
+    return dishes[index]['option-id'];
 }
 
 
-function getOptionPriceIf(i) {
-    let optionSelected = getOptionSelected(i);
-    if (optionSelected) {
-        return getOptionPrice(i);
-    } else {
-        return 0;
-    }
+function addOptionalItem(index) {
+    let newIndex = getNewIndex();
+    shoppingCart[newIndex] = {
+        'dish-id': index,
+        'amount': getAmountOfDialog(),
+        'title': getTitle(index),
+        'price': getTotalPriceOfDialog()
+    };
+    dishes[index]['in-cart'] = true;
+    dishes[index]['option-id'] = newIndex;    // item-id?
 }
 
+
+function getNewIndex() {
+    return shoppingCart.length;
+}
+
+
+function increaseItem(i) {
+    let amount = getAmountOfDialog();
+    let totalPrice = getTotalPriceOfDialog();
+    let itemId = getItemId(i);
+    shoppingCart[itemId]['amount'] += amount;
+    shoppingCart[itemId]['price'] += totalPrice;
+}
+
+
+function getItemId(i) {
+    return diishes[i]['item-id'];
+}
+
+
+function addItem(i) {
+    let newIndex = getNewIndex();
+    shoppingCart[newIndex] = {
+        'dish-id': i,
+        'amount': getAmountOfDialog(),
+        'title': getTitle(i),
+        'price': getTotalPriceOfDialog()
+    };
+    dishes[i]['in-cart'] = true;
+    dishes[i]['item-id'] = newIndex;
+}
+
+
+function resetOptionSelected(i) {
+    dishes[i]['option-selected'] = false;
+}

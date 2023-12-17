@@ -1,75 +1,107 @@
 // Variables
 let dishes = [
     {
-        'title': 'Pizza Mexicana scharf',
+        'rendering': true,
+        'title': 'Pizza Mexicana',
         'description': 'Paradeiser, Käse, Hühnerfleisch, Paprika, Mais, Chilli',
         'price': 9.50,
         'option': 'große Pizza',
-        'option-price': 2.40,
+        'upcharge': 2.40,
         'option-selected': false,
         'in-cart': false
     },
     {
-        'title': 'Frutti di Mare',
+        'rendering': false,
+        'title': 'Große Pizza Mexicana',
+        'in-cart': false
+    },
+    {
+        'rendering': true,
+        'title': 'Pizza Frutti di Mare',
         'description': 'Paradeiser, Käse, Meeresfrüchte, Knoblauch',
         'price': 9.90,
         'option': 'große Pizza',
-        'option-price': 2.60,
+        'upcharge': 2.60,
         'option-selected': false,
         'in-cart': false
     },
     {
+        'rendering': false,
+        'title': 'Große Pizza Frutti di Mare',
+        'in-cart': false
+    },
+    {
+        'rendering': true,
         'title': 'Pizzastangerl',
         'description': '2 Stück',
         'price': 1.50,
         'option': 'plus 3 Stück',
-        'option-price': 1.50,
+        'upcharge': 1.50,
         'option-selected': false,
         'in-cart': false
     },
     {
+        'rendering': false,
+        'title': 'Pizzastangerl Plus',
+        'in-cart': false
+    },
+    {
+        'rendering': true,
         'title': 'Spaghetti Bolognese',
         'description': 'Fleischsauce',
         'price': 9.90,
-        'option': 'keine',
-        'option-price': 0,
-        'option-selected': false,
         'in-cart': false
     },
     {
+        'rendering': true,
         'title': 'Lasagne',
         'description': 'keine',
         'price': 9.90,
-        'option': 'keine',
-        'option-price': 0,
-        'option-selected': false,
         'in-cart': false
     },
     {
+        'rendering': true,
         'title': 'Frühlingsrollen',
         'description': 'mit süß-saurer Sauce, 5 Stück',
         'price': 5.90,
         'option': 'plus 3 Stück',
-        'option-price': 2.40,
+        'upcharge': 2.40,
         'option-selected': false,
         'in-cart': false
     },
     {
+        'rendering': false,
+        'title': 'Frühlingsrollen Plus',
+        'in-cart': false
+    },
+    {
+        'rendering': true,
         'title': 'Paella Reis',
         'description': 'Curry Reis, Shrimps, Frutti di Mare, Hühnerfleisch und Salat',
         'price': 10.50,
         'option': 'große Portion',
-        'option-price': 1.40,
+        'upcharge': 1.40,
         'option-selected': false,
         'in-cart': false
     },
     {
+        'rendering': false,
+        'title': 'Großer Paella Reis',
+        'in-cart': false
+    },
+    {
+        'rendering': true,
         'title': 'Nusspalatschinken',
         'description': '2 Stück',
         'price': 6.00,
         'option': 'plus 1 Stück',
-        'option-price': 2.00,
+        'upcharge': 2.00,
         'option-selected': false,
+        'in-cart': false
+    },
+    {
+        'rendering': false,
+        'title': 'Nusspalatschinken Plus',
         'in-cart': false
     }
 ];
@@ -82,6 +114,7 @@ loadDishes();
 function render() {
     showDishes();
     showItems();
+    
     outputSubtotal();
     outputDeliveryCosts();
     outputTotal();
@@ -92,14 +125,22 @@ function showDishes() {    // shows all available dishes of restaurant
     let dishCardCollector = document.getElementById('dish-card-collector');    // contains the element 'dish-card-collector'
     dishCardCollector.innerHTML = '';    // empties dishCardCollector
     fillDishCardCollector(dishCardCollector);
-    save();
+    save();    // notwendig?
 }
 
 
 function fillDishCardCollector(dishCardCollector) {    // fills dishCardCollector with dish cards
     for (let i = 0; i < dishes.length; i++) {
-        dishCardCollector.innerHTML += writeDishCard(i);
+        let rendering = getRendering(i);
+        if (rendering) {
+            dishCardCollector.innerHTML += writeDishCard(i);
+        }
     }
+}
+
+
+function getRendering(i) {
+    return dishes[i]['rendering'];
 }
 
 
