@@ -78,6 +78,21 @@ body {
     background-color: red;
 }
 
+.img-circle {
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+}
+
+.img-square {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    object-position: center;
+}
+
 .content {
     display: flex;
     justify-content: flex-start;
@@ -120,6 +135,7 @@ body {
 }
 
 .favorite-button {
+    display: none;
     margin-bottom: -16px;
 }
 
