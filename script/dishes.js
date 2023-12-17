@@ -50,13 +50,15 @@ let dishes = [
         'title': 'Spaghetti Bolognese',
         'description': 'Fleischsauce',
         'price': 9.90,
+        'option': false,
         'in-cart': false
     },
     {
         'original': true,
         'title': 'Lasagne',
-        'description': 'keine',
+        'description': 'Fleisch- und Béchamelsause',
         'price': 9.90,
+        'option': false,
         'in-cart': false
     },
     {
@@ -114,7 +116,7 @@ loadDishes();
 function render() {
     showDishes();
     showItems();
-    
+
     outputSubtotal();
     outputDeliveryCosts();
     outputTotal();
@@ -158,7 +160,7 @@ function writeHeader(i) {    // writes the header of dish card i
     return `
         <div id="dish-card-header-${i}" class="display-between-center">
             <h3 id="dish-card-title-${i}" class="dish-card-title">${getTitle(i)}</h3>
-            <button id="add-dish-button-${i}" class="button dish-card-button" onclick="showDialog(${i})">+</button>
+            <button id="add-dish-button-${i}" class="button dish-card-button" onclick="showDialogOrAddItem(${i})">+</button>
         </div>
     `;
 }
@@ -166,6 +168,40 @@ function writeHeader(i) {    // writes the header of dish card i
 
 function getTitle(i) {    // provides the title of dish card i
     return dishes[i]['title'];
+}
+
+
+function showDialogOrAddItem(i) {
+    let optionAvailable = getOption(i);
+    if (optionAvailable) {
+        showDialog(i);
+    } else {
+        addOneItem(i);
+        sortItems();
+        updateItemId();
+        saveAndRender();
+    }
+}
+
+
+function addOneItem(i) {
+    let inCart = getInCart(i);
+    if (inCart) {
+        let itemId = getItemId(i);
+        let price = getPrice(i);
+        shoppingCart[itemId]['amount']++;
+        shoppingCart[itemId]['price'] += price;
+    } else {
+        let newIndex = getNewIndex();
+        shoppingCart[newIndex] = {
+            'dish-id': i,
+            'amount': 1,
+            'title': getTitle(i),
+            'price': getPrice(i)
+        };
+        dishes[i]['in-cart'] = true;
+        dishes[i]['item-id'] = newIndex;
+    }
 }
 
 

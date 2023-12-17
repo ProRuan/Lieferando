@@ -138,7 +138,7 @@ function increaseAmountInCart(i) {
 
 function increasePriceInCart(i) {
     let dishId = getDishId(i);
-    let original = getOriginal(i);
+    let original = getOriginal(dishId);
     if (original) {
         let price = getPrice(dishId);
         shoppingCart[i]['price'] += price;
@@ -185,7 +185,7 @@ function decreaseAmountInCart(i) {
 
 function decreasePriceInCart(i) {
     let dishId = getDishId(i);
-    let original = getOriginal(i);
+    let original = getOriginal(dishId);
     if (original) {
         let price = getPrice(dishId);
         shoppingCart[i]['price'] -= price;
@@ -231,7 +231,7 @@ function outputDeliveryCosts() {
 function calculateDeliveryCosts() {
     // let subtotal = calculateSubtotal();
     let subtotal = getSubtotal();
-    return (subtotal < 30) ? 30 : 0;
+    return (subtotal < 20) ? 3.90 : 0;
     // if (subtotal < 30) {
     //     return 30;
     // } else {
