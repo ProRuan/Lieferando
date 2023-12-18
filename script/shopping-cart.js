@@ -18,7 +18,34 @@ function showItems() {
     let itemCollector = document.getElementById('shopping-cart-item-collector');
     itemCollector.innerHTML = '';
     fillItemCollector(itemCollector);
+    setDisplayNone();
     save();
+}
+
+
+function setDisplayNone() {
+    let cartEmpty = (shoppingCart.length < 1);
+    if (cartEmpty) {
+        addDisplayNone('shopping-cart-item-collector');
+        addDisplayNone('sum-and-order');
+        removeDisplayNone('shopping-cart-guide');
+    } else {
+        addDisplayNone('shopping-cart-guide');
+        removeDisplayNone('shopping-cart-item-collector');
+        removeDisplayNone('sum-and-order');
+    }
+}
+
+
+function addDisplayNone(id) {
+    let element = document.getElementById(id);
+    element.classList.add('display-none');
+}
+
+
+function removeDisplayNone(id) {
+    let element = document.getElementById(id);
+    element.classList.remove('display-none');
 }
 
 
@@ -111,7 +138,7 @@ function writeNotesAndAmount(i) {
             <div class="width-50 item-notes">Anmerkungen hinzufügen</div>
             <div class="width-50 display-between-center">
                 <button id="menu-plus-button-${i}" class="button" onclick="increaseItemInCart(${i})">+</button>
-                <div id="item-amount-${i}" class="item-amount">${getAmountInCart(i)}</div>
+                <output id="item-amount-${i}" class="item-amount">${getAmountInCart(i)}</output>
                 <button id="menu-minus-button-${i}" class="button" onclick="decreaseItemInCart(${i})">-</button>
             </div>
         </div>

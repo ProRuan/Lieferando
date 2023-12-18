@@ -26,6 +26,10 @@ h2 {
     padding: 20px 16px 16px 16px;
 }
 
+.display-none {
+    display: none;
+}
+
 .delivery-options {
     background-color: #EFEDEA;
     border-radius: 100px;
@@ -47,10 +51,15 @@ h2 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    cursor: unset;
 }
 
+/* .delivery-button:hover {
+    background-color: #E5E3E1;
+} */
+
 .delivery-button-activated {
-    background-color: white;
+    background-color: white !important;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
 }
 

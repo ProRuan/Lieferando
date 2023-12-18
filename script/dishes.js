@@ -210,7 +210,7 @@ function writeDescription(i) {    // writes the description of dish card i
         <div id="dish-card-description-${i}" class="column-start-start">
             <p id="dish-card-ingredients-${i}" class="dish-card-ingredients">${getDescription(i)}</p>
             <p id="dish-card-option-${i}" class="dish-card-option">Option: ${getOption(i)}</p>
-            <div id="dish-card-price-${i}" class="dish-card-price">${getDecimalPrice(i)} €</div>
+            <output id="dish-card-price-${i}" class="dish-card-price">${getDecimalPrice(i)} €</output>
         </div>
     `;
 }
