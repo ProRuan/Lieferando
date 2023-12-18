@@ -79,7 +79,7 @@ function writeDialogBoxOption(i) {
         <div class="dialog-box-option">
             <div class="dialog-box-option-text">Ihre Option:</div>
             <div class="dialog-box-option-group display-between-center">
-                <span>${getOption(i)} (<output id="dialog-box-option-price">${getDecimalUpcharge(i)}</output> €)</span>
+                <span>${getOption(i)} (+ <output id="dialog-box-option-price">${getDecimalUpcharge(i)}</output> €)</span>
                 <button id="option-button" class="option-button" onclick="setOptionSelected(${(i)})">Auswählen</button>
             </div>
         </div>
@@ -88,8 +88,9 @@ function writeDialogBoxOption(i) {
 
 
 function getDecimalUpcharge(i) {
-    let upcharge = getUpcharge(i);
-    return upcharge.toFixed(2);
+    let upchargeUnformatted = getUpcharge(i);
+    let upcharge = upchargeUnformatted.toFixed(2);
+    return upcharge.replace('.', ',');
 }
 
 
@@ -102,11 +103,15 @@ function setOptionSelected(i) {
     let optionSelected = getOptionSelected(i);
     if (optionSelected) {
         dishes[i]['option-selected'] = false;
+        let feedback = document.getElementById('option-button');
+        feedback.innerHTML = 'auswählen';
+        feedback.classList.remove('option-button-activated');
     } else {
         dishes[i]['option-selected'] = true;
+        let feedback = document.getElementById('option-button');
+        feedback.innerHTML = 'aktiviert';
+        feedback.classList.add('option-button-activated');
     }
-    let feedback = document.getElementById('option-button');
-    feedback.innerHTML = 'ausgewählt';
     save();
     updateTotalPriceDialog(i);
 }
@@ -127,9 +132,10 @@ function updateTotalPriceDialog(i) {
     } else {
         upcharge = 0;
     }
-    let totalPrice = amount * (price + upcharge);
+    let totalPriceUnformatted = amount * (price + upcharge);
+    let totalPrice = totalPriceUnformatted.toFixed(2)
     let output = document.getElementById('dialog-box-total-price');
-    output.innerHTML = totalPrice.toFixed(2);
+    output.innerHTML = totalPrice.replace('.', ',');
 }
 
 
@@ -257,7 +263,9 @@ function getAmountOfDialog() {
 
 
 function getTotalPriceOfDialog() {
-    return +document.getElementById('dialog-box-total-price').innerHTML;
+    let totalPriceUnformatted = document.getElementById('dialog-box-total-price').innerHTML;
+    let totalPrice = Number(totalPriceUnformatted.replace(',', '.'));
+    return totalPrice;
 }
 
 

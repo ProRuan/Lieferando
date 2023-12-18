@@ -71,7 +71,6 @@
     color: rgb(36, 46, 48);
 }
 
-/* Bitte bearbeiten!!! */
 .dialog-box-option-group {
     padding: 8px 16px;
     background-color: white;
@@ -79,20 +78,24 @@
     border-radius: 12px;
 }
 
-/* Bitte bearbeiten!!! */
 .option-button {
-    padding: 8px 16px;
+    padding: 4px 8px;
+    width: calc(160px - 32px);
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
     font-size: 14px;
     font-weight: 400;
     line-height: 14px;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: #F5F3F1;
     border: unset;
     border-radius: 50px;
 }
 
 .option-button:hover {
-    background-color: rgba(0, 0, 0, 0.15);
+    background-color: rgba(243, 104, 5, 0.3);
+}
+
+.option-button-activated {
+    background-color: rgba(243, 104, 5, 0.3);
 }
 
 .dialog-box-footer {

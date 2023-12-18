@@ -227,8 +227,9 @@ function getOption(i) {    // provides the option of dish card i
 
 
 function getDecimalPrice(i) {
-    let price = getPrice(i);
-    return price.toFixed(2);
+    let priceUnformatted = getPrice(i);
+    let price = priceUnformatted.toFixed(2);
+    return price.replace('.', ',');
 }
 
 

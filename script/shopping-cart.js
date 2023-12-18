@@ -81,8 +81,9 @@ function getDishId(i) {
 
 
 function getDecimalPriceInCart(i) {
-    let price = getPriceInCart(i);
-    return price.toFixed(2);
+    let priceUnformatted = getPriceInCart(i);
+    let price = priceUnformatted.toFixed(2);
+    return price.replace('.', ',');
 }
 
 
@@ -200,9 +201,10 @@ function decreasePriceInCart(i) {
 
 
 function outputSubtotal() {
-    let subtotal = calculateSubtotal();
+    let subtotalUnformatted = calculateSubtotal();
+    let subtotal = subtotalUnformatted.toFixed(2);
     let output = selectOutput('subtotal');
-    output.innerHTML = subtotal.toFixed(2);
+    output.innerHTML = subtotal.replace('.', ',');
 }
 
 
@@ -215,16 +217,16 @@ function calculateSubtotal() {
     let subtotal = 0;
     for (let i = 0; i < shoppingCart.length; i++) {
         subtotal += getPriceInCart(i);
-    
     }
     return subtotal;
 }
 
 
 function outputDeliveryCosts() {
-    let deliveryCosts = calculateDeliveryCosts();
+    let deliveryCostsUnformatted = calculateDeliveryCosts();
+    let deliveryCosts = deliveryCostsUnformatted.toFixed(2);
     let output = selectOutput('delivery-costs');
-    output.innerHTML = deliveryCosts.toFixed(2);
+    output.innerHTML = deliveryCosts.replace('.', ',');
 }
 
 
@@ -241,30 +243,35 @@ function calculateDeliveryCosts() {
 
 
 function getSubtotal() {
-    return +document.getElementById('subtotal').innerHTML;
+    let subtotalFormatted = document.getElementById('subtotal').innerHTML;
+    let subtotal = Number(subtotalFormatted.replace(',', '.'));
+    return subtotal;
 }
 
 
 function outputTotal() {
-    let total = calculateTotal();
+    let totalUnformatted = calculateTotal();
+    let total = totalUnformatted.toFixed(2);
     let output = selectOutput('total');
     let outputButton = selectOutput('order-button-total');
-    output.innerHTML = total.toFixed(2);
-    outputButton.innerHTML = total.toFixed(2);
+    output.innerHTML = total.replace('.', ',');
+    outputButton.innerHTML = total.replace('.', ',');
 }
 
 
 function calculateTotal() {
     // let subtotal = calculateSubtotal();
     // let deliveryCosts = calculateDeliveryCosts();
-    let subtotal = +document.getElementById('subtotal').innerHTML;
+    let subtotal = getSubtotal();
     let deliveryCosts = getDeliveryCosts();
     return subtotal + deliveryCosts;
 }
 
 
 function getDeliveryCosts() {
-    return +document.getElementById('delivery-costs').innerHTML;
+    let deliveryCostsFormatted = document.getElementById('delivery-costs').innerHTML;
+    let deliveryCosts = Number(deliveryCostsFormatted.replace(',', '.'));
+    return deliveryCosts;
 }
 
 
