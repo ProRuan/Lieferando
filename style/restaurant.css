@@ -55,6 +55,10 @@ body {
     gap: 12px;
 }
 
+button {
+    cursor: pointer;
+}
+
 .button {
     padding: 0;
     width: 48px;
@@ -62,7 +66,6 @@ body {
     background-color: transparent;
     border: unset;
     border-radius: 50%;
-    cursor: pointer;
 }
 
 .button:hover {
@@ -73,9 +76,9 @@ body {
     background-color: rgba(0, 0, 0, 0.15);
 }
 
-/* Bitte einrichten!!! */
 .button:disabled {
-    background-color: red;
+    opacity: 0;
+    cursor: unset;
 }
 
 .img-circle {
@@ -91,6 +94,16 @@ body {
     height: 24px;
     object-fit: contain;
     object-position: center;
+}
+
+.dummy-button {
+    padding: 0;
+    width: 48px;
+    height: 48px;
+    background-color: transparent;
+    border: unset;
+    border-radius: 50%;
+    cursor: unset;
 }
 
 .content {
@@ -220,7 +233,7 @@ h3 {
     font-weight: 400;
     line-height: 30px;
     color: rgb(36, 46, 48);
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: #F5F5F5;
 }
 
 .dish-card-description {

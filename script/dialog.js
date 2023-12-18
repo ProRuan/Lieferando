@@ -31,13 +31,15 @@ function writeDialogBoxHeader(i) {
     return `
         <div class="dialog-box-header display-between-center">
             <h2 class="dialog-box-headline">${getTitle(i)}</h2>
-            <div id="dialog-box-close-button" class="dialog-box-close-button" onclick="closeDialog()"></div>
+            <button id="dialog-box-close-button" class="dialog-box-close-button" onclick="closeDialog()"></button>
         </div>
     `;
 }
 
 
 function closeDialog() {
+    let output = selectOutput('dialog-box');
+    output.innerHTML = '<!-- rendering content of dialog box -->'
     let dialog = document.getElementById('dialog');
     dialog.close();
 }
@@ -145,7 +147,7 @@ function writeDialogBoxFooter(i) {
             <div class="dialog-box-amount-group display-between-center">
                 <button id="dialog-box-plus-button" class="button" onclick="increaseItemDialog(${i})">+</button>
                 <span id="dialog-box-item-amount" class="item-amount"><output id="dialog-box-amount">1</output></span>
-                <button id="dialog-box-minus-button" class="button" onclick="decreaseItemDialog(${i})">-</button>
+                <button id="dialog-box-minus-button" class="button" disabled onclick="decreaseItemDialog(${i})">-</button>
             </div>
             <button id="dialog-box-add-button" class="dialog-box-add-button" onclick="confirmAction(${i})">
                 <span><output id="dialog-box-total-price">${getDecimalPrice(i)}</output> €</span>
