@@ -14,14 +14,14 @@
     <script src="./script/shopping-cart.js"></script>
 </head>
 
-<body onload="render()">
+<body id="body" onload="render()">
     <dialog id="dialog" class="dialog-background" onclick="closeDialogIf(id)">
         <section id="dialog-box" class="dialog-box" onclick="closeDialogIf(id)">
             <!-- rendering content of dialog box -->
         </section>
     </dialog>
 
-    <header class="header display-between-center">
+    <header id="header" class="header display-between-center">
         <hgroup class="header-left display-start-center">
             <img src="./img/logo.png" alt="logo">
             <span class="logo-text">Ruanizer</span>

@@ -1,6 +1,6 @@
 .shopping-cart-window {
     width: 344px;
-    height: calc(100vh - 128px);
+    height: calc(100vh - 72px);
     position: sticky;
     top: 0;
     right: 0;
@@ -105,7 +105,7 @@ h2 {
 /* Bitte bearbeiten!!! */
 .shopping-cart-item-collector {
     padding: 16px 16px 8px 16px;
-    max-height: 455px;
+    height: calc(100vh - 328px);
     overflow-y: auto;
 }
 
@@ -184,11 +184,6 @@ table {
 
 .sum-and-order {
     padding: 16px;
-    /* background-color: white;
-    position: -webkit-sticky;
-    position: sticky;
-    right: 0;
-    bottom: 0; */
 }
 
 .sum-block {

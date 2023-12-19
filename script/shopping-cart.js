@@ -346,3 +346,39 @@ function updateItemId() {
         dishes[dishId]['item-id'] = i;
     }
 }
+
+
+window.onscroll = function () {
+    let heightWindow = window.innerHeight;
+    let heightBody = body.scrollHeight;
+    let heightHeader = 72;
+    let heightFooter = 128;
+    let maxScrollHeight = heightBody - heightWindow;
+    let shoppingCartWindow = document.getElementById('shopping-cart-window');
+
+    if (scrollY > maxScrollHeight - heightFooter) {
+        let delta = scrollY - (maxScrollHeight - heightFooter);
+        let newHeight = heightWindow - delta;
+        let output = newHeight.toString() + "px";
+        shoppingCartWindow.style.height = output;
+        calculateHeight(newHeight);
+    } else if (scrollY > heightHeader) {
+        shoppingCartWindow.style.height = "100vh";
+        let element = document.getElementById('shopping-cart-item-collector');
+        element.style.height = "calc(100vh - 328px)";
+    } else {
+        let delta = heightHeader - scrollY;
+        let newHeight = heightWindow - delta;
+        let output = newHeight.toString() + "px";
+        shoppingCartWindow.style.height = output;
+        calculateHeight(newHeight);
+    }
+}
+
+
+function calculateHeight(newHeight) {
+    let element = document.getElementById('shopping-cart-item-collector');
+    let heightElement = newHeight - 328;
+    let output = heightElement.toString() + "px";
+    element.style.height = output;
+}
