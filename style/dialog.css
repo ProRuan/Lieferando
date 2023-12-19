@@ -28,6 +28,10 @@
     padding: 24px 24px 16px 24px;
 }
 
+.ta-center {
+    text-align: center;
+}
+
 .dialog-box-headline {
     margin: 0;
 }

@@ -347,7 +347,7 @@ function updateItemId() {
     }
 }
 
-
+// Funktion schreiben!!!
 window.onscroll = function () {
     let heightWindow = window.innerHeight;
     let heightBody = body.scrollHeight;

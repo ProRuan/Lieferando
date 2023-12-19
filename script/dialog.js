@@ -327,3 +327,47 @@ function addItem(i) {
 function resetOptionSelected(i) {
     dishes[i]['option-selected'] = false;
 }
+
+
+function submitOrder() {
+    let dialog = document.getElementById('dialog');
+    dialog.show();
+    emptyShoppingCart();
+    resetInCart();
+    saveAndRender();
+    showFinalDialog();
+    setTimeout(closeDialog, 2500);
+}
+
+
+function showFinalDialog() {
+    dialogBox = document.getElementById('dialog-box');
+    dialogBox.innerHTML = '';
+    writeOrderConfirmation(dialogBox);
+}
+
+
+function writeOrderConfirmation() {
+    dialogBox.innerHTML = `
+        <div class="dialog-box-header">
+            <h2 class="dialog-box-headline ta-center">Vielen Dank, dass Sie Ruanizer nutzen!</h2>
+        </div>
+        <div class="dialog-box-description">
+            <p class="dialog-box-ingredients ta-center">
+                Wir werden Ihre Bestellung so rasch wie möglich bearbeiten!
+            </p>
+        </div>
+    `;
+}
+
+
+function emptyShoppingCart() {
+    shoppingCart = [];
+}
+
+
+function resetInCart() {
+    for (let i = 0; i < dishes.length; i++) {
+        dishes[i]['in-cart'] = false;
+    }
+}
