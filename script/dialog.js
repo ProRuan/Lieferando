@@ -58,7 +58,7 @@ function closeDialogIf(id) {
 
 function writeDialogBoxContent(i) {
     return `
-        <div>
+        <div class="dialog-box-content">
             ${writeDialogBoxDescripton(i)}
             ${writeDialogBoxOption(i)}
         </div>
