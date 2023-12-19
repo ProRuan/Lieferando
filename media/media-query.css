@@ -1,7 +1,58 @@
+@media (max-width: 1350px) {
+    .atf-content {
+        padding: 29px 16px 16px 16px;
+    }
+
+    .menu-of-restaurant {
+        padding: 0 16px 24px 16px;
+        width: calc(100% - 32px);
+    }
+}
+
+
 @media (max-width: 1024px) {
     .restaurant {
         width: 100%;
     }
+
+    .atf-headline {
+        font-size: 24px;
+    }
+
+    .menu-category {
+        font-size: 20px;
+    }
+
+    .dish-card-title {
+        font-size: 16px;
+    }
+
+    .dish-card-ingredients {
+        font-size: 14px;
+    }
+
+    .dish-card-price {
+        font-size: 16px;
+    }
+
+    .imprint {
+        padding: 8px 16px 24px 16px;
+    }
+
+    .imprint-headline {
+        font-size: 16px;
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     /* .shopping-cart-window {
        width: 0;
@@ -12,9 +63,6 @@
        bottom: 0;
        left: 0;
     } */
-
-
-    /* Bitte restaurant einfuegen!!! */
 
     /* Bitte shopping cart einfuegen!!! */
 
@@ -46,6 +94,10 @@
         border-radius: unset;
     }
 
+    .dialog-box-header {
+        padding: 24px 16px 16px 16px;
+    }
+
     .dialog-box-headline {
         font-size: 20px;
     }
@@ -70,10 +122,39 @@
     .dialog-box-content {
         height: calc(100vh - 168px);
     }
+
+    .dialog-box-description {
+        padding: 0 16px 24px 16px;
+    }
+
+    .dialog-box-option {
+        padding: 16px;
+    }
+
+    .dialog-box-footer {
+        padding: 20px 16px;
+        gap: 16px;
+    }
 }
 
 
-/* responsiveness bearbeiten!!! */
+
+
+/* Responsiveness bearbeiten!!! */
+
+@media (max-width: 400px) {
+    .logo-text {
+        display: none;
+    }
+
+    #language-button {
+        display: none;
+    }
+
+    footer {
+        font-size: 14px;
+    }
+}
 
 
 @media (max-width: 400px) {
