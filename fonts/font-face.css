@@ -1,0 +1,10 @@
+/* Roboto */
+@font-face {
+  font-family: 'Roboto', Arial, sans-serif;
+  src: url('./roboto/RobotoCondensed-VariableFont_wght.ttf');
+}
+
+@font-face {
+  font-family: 'Roboto', Arial, sans-serif;
+  src: url('./roboto/RobotoCondensed-Italic-VariableFont_wght.ttf');
+}
