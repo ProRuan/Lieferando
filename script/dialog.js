@@ -2,8 +2,15 @@ let counter = 0;
 
 function showDialog(i) {
     openDialog();
+    setOverflowYHidden();
     showDialogBox(i);
 }
+
+
+function setOverflowYHidden() {
+    body.style.overflowY = 'hidden';
+}
+
 
 function openDialog(i) {
     let dialog = document.getElementById('dialog');
@@ -40,8 +47,14 @@ function writeDialogBoxHeader(i) {
 function closeDialog() {
     let output = selectOutput('dialog-box');
     output.innerHTML = '<!-- rendering content of dialog box -->'
+    setOverflowYUnset();
     let dialog = document.getElementById('dialog');
     dialog.close();
+}
+
+
+function setOverflowYUnset() {
+    body.style.overflowY = 'unset';
 }
 
 

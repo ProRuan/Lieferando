@@ -1,6 +1,7 @@
 .shopping-cart-window {
     width: 344px;
     height: calc(100vh - 72px);
+    background-color: white;
     position: sticky;
     top: 0;
     right: 0;
