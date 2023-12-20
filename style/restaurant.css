@@ -161,7 +161,9 @@ button {
 .star {
     width: 20px;
     height: 20px;
-    background-color: #F36805;
+    /* background-color: #F36805; */
+    object-fit: contain;
+    object-position: center;
 }
 
 .customer-review-text {

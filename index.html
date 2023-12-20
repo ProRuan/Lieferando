@@ -35,7 +35,7 @@
             <button id="language-button" class="dummy-button">
                 <img src="./img/flag.png" alt="flag" class="img-circle">
             </button>
-            <button id="menu-button" class="button">
+            <button id="menu-button" class="dummy-button">
                 <img src="./img/menu.png" alt="menu" class="img-square">
             </button>
         </hgroup>
@@ -52,20 +52,22 @@
                     </div>
                     <div class="customer-review display-start-center">
                         <div class="display-start-center">
-                            <div class="star"></div>
-                            <div class="star"></div>
-                            <div class="star"></div>
-                            <div class="star"></div>
-                            <div class="star"></div>
+                            <img src="./img/star.png" alt="star" class="star">
+                            <img src="./img/star.png" alt="star" class="star">
+                            <img src="./img/star.png" alt="star" class="star">
+                            <img src="./img/star.png" alt="star" class="star">
+                            <img src="./img/star.png" alt="star" class="star">
                         </div>
                         <span class="customer-review-text">354 Bewertungen</span>
                     </div>
                     <div class="delivery-hint">Kostenlose Lieferung ab 20,00 €</div>
                 </div>
             </section>
+
             <nav id="slide-menu" class="slide-menu">
                 <!-- placeholder of slide menu -->
             </nav>
+
             <section class="menu-of-restaurant">
                 <h2 class="menu-category">Speisekarte</h2>
                 <div id="dish-card-collector" class="dish-card-collector">
@@ -84,7 +86,7 @@
                 </address>
                 <p class="hint-of-provider">
                     Diese Webseite dient rein zu Übungszwecken.<br>
-                    Ein Klick auf den Bezahlen-Button setzt lediglich die Einstellung dieser Webseite zurück.
+                    Ein Klick auf den Bezahlen-Button entleert lediglich den Warenkorb.
                 </p>
             </section>
         </main>
@@ -155,7 +157,8 @@
     </footer>
 
     <div id="shopping-cart-mobile" class="shopping-cart-mobile">
-        <button id="cart-button-mobile" class="cart-button-mobile" onclick="showShoppingCart()">Warenkorb (<output id="mobile-button-total">0,00</output> €)</button>
+        <button id="cart-button-mobile" class="cart-button-mobile" onclick="showShoppingCart()">Warenkorb (<output
+                id="mobile-button-total">0,00</output> €)</button>
     </div>
 </body>
 
