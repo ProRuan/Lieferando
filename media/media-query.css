@@ -1,4 +1,5 @@
 @media (max-width: 1350px) {
+    /* restaurant */
     .atf-content {
         padding: 29px 16px 16px 16px;
     }
@@ -13,8 +14,8 @@
     }
 }
 
-
 @media (max-width: 1024px) {
+    /* restaurant */
     .atf-headline {
         font-size: 24px;
     }
@@ -46,38 +47,23 @@
        background-color: white;
        position: fixed;
        left: 0;
-       overflow-x: hidden;
-    }
-
-    .shopping-cart-hide-button {
-        display: unset;
     }
 
     .display-unset {
         display: none;
     }
 
-
-    /* Bitte shopping cart einfuegen!!! */
-
+    .shopping-cart-hide-button {
+        display: unset;
+    }
 
     .shopping-cart-mobile {
         display: flex;
     }
 
-
-
-
-
-
-
-
-
-
     /* dialog */
     .dialog-background {
         padding: 0;
-        width: 100%;
         height: 100vh;
     }
 
@@ -99,7 +85,6 @@
         font-size: 20px;
     }
 
-    /* Bitte bearbeiten!!! */
     .dialog-box-close-button {
         margin: 0 10px 4px 10px;
         padding: 4px;
@@ -135,6 +120,7 @@
 }
 
 @media (max-width: 450px) {
+    /* header */
     .logo-text {
         display: none;
     }
@@ -143,13 +129,14 @@
         display: none;
     }
 
+    /* footer */
     footer {
         font-size: 14px;
     }
 }
 
-
 @media (max-width: 400px) {
+    /* dialog */
     .dialog-box-option-group {
         flex-direction: column;
         gap: 8px;
