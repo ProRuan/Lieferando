@@ -143,7 +143,7 @@ function getOriginal(i) {    // provides 'original' of dish i
 }
 
 
-function writeDishCard(i) {    // writes the HTML code of dish i
+function writeDishCard(i) {    // writes the HTML code of dish card i
     return `
         <article id="dish-card-${i}" class="dish-card">
             ${writeHeader(i)}
@@ -163,17 +163,17 @@ function writeHeader(i) {    // writes the header of dish card i
 }
 
 
-function getTitle(i) {    // provides the title of dish card i
+function getTitle(i) {    // provides the title of dish i
     return dishes[i]['title'];
 }
 
 
 function showDialogOrAddItem(i) {
     let optionAvailable = getOption(i);    // contains 'text' or false
-    if (optionAvailable) {    // if there is an option available ...
+    if (optionAvailable) {    // if true ...
         showDialog(i);    // open dialog
     } else {    // else ...
-        addOneItem(i);    // add item directly (without dialog)
+        addOneItem(i);    // add one item directly (without dialog)
         sortItems();
         updateItemId();
         saveAndRender();
@@ -181,7 +181,7 @@ function showDialogOrAddItem(i) {
 }
 
 
-function getOption(i) {    // provides the option of dish card i
+function getOption(i) {    // provides the option of dish i
     return dishes[i]['option'];
 }
 
@@ -191,10 +191,12 @@ function addOneItem(i) {    // adds one item of dish i to the shopping cart
     if (inCart) {    // if dish i is already in the shopping cart ...
         increaseAmountAndPrice(i);    // increase amount and price of dish i in the shopping cart
     } else {    // else ...
-        addNewItem(i);    // add dish i to the shopping cart
+        let newIndex = getNewIndex();    // contains the index of new item
+        addNewItem(i, newIndex);    // add dish i to the shopping cart
+        setInCartTrue(i);
+        setItemId(i, newIndex);
     }
 }
-
 
 function getInCart(i) {    // provides 'in-cart' of dish i
     return dishes[i]['in-cart'];
@@ -219,21 +221,28 @@ function getPrice(i) {    // provides the price of dish i
 }
 
 
-function addNewItem(i) {
-    let newIndex = getNewIndex();    // contains the index of new item
+function getNewIndex() {    // provides the index of new item
+    return shoppingCart.length;
+}
+
+
+function addNewItem(i, newIndex) {    // adds the dish i with one item to shopping cart
     shoppingCart[newIndex] = {
         'dish-id': i,    // contains the index of dish i
         'amount': 1,    // contains amount 1
         'title': getTitle(i),    // contains the title of dish i
         'price': getPrice(i)    // contains the price of dish i
     };
-    dishes[i]['in-cart'] = true;
-    dishes[i]['item-id'] = newIndex;
 }
 
 
-function getNewIndex() {    // provides the index of new item
-    return shoppingCart.length;
+function setInCartTrue(i) {    // sets 'in-cart' of dish i to true
+    dishes[i]['in-cart'] = true;
+}
+
+
+function setItemId(i, newIndex) {    // sets 'item-id' of dish i
+    dishes[i]['item-id'] = newIndex;
 }
 
 
@@ -248,29 +257,29 @@ function writeDescription(i) {    // writes the description of dish card i
 }
 
 
-function writeOptionIf(i) {
-    let optionAvailable = getOption(i);
-    if (optionAvailable) {
-        return `<p id="dish-card-option-${i}" class="dish-card-option">Option: ${getOption(i)}</p>`;
-    } else {
-        return '';
-    }
-}
-
-
 function getDescription(i) {    // provides the description of dish card i
     return dishes[i]['description'];
 }
 
 
-function getDecimalPrice(i) {
-    let priceUnformatted = getPrice(i);
-    let price = priceUnformatted.toFixed(2);
-    return price.replace('.', ',');
+function writeOptionIf(i) {    // writes the option of dish card i on one condition
+    let optionAvailable = getOption(i);    // contains 'text' or false
+    if (optionAvailable) {    // if true ...
+        return `<p id="dish-card-option-${i}" class="dish-card-option">Option: ${getOption(i)}</p>`;    // write option of dish card i ...
+    } else {
+        return '';    // no content
+    }
 }
 
 
-function save() {    // saves global variables to the local storage
+function getDecimalPrice(i) {    // provides the price of dish i as decimal number
+    let priceUnformatted = getPrice(i);    // contains the price
+    let price = priceUnformatted.toFixed(2);    // contains a String number with 2 decimals
+    return price.replace('.', ',');    // outputs the price with comma
+}
+
+
+function save() {    // saves the global variables to the local storage
     let keys = ['dishes', 'shoppingCart'];    // contains global variables' keys
     let variables = [dishes, shoppingCart];    // contains global variables
     stringifyAndSetItem(keys, variables);
@@ -281,15 +290,15 @@ function stringifyAndSetItem(keys, variables) {    // creates Strings and sets i
     for (let i = 0; i < keys.length; i++) {
         let key = keys[i];    // contains the key i
         let variable = variables[i];    // contains the variable i
-        let variableAsText = JSON.stringify(variable);    // creates a String of variable i
+        let variableAsText = JSON.stringify(variable);    // contains a String of variable i
         localStorage.setItem(key, variableAsText);    // sets this item at the local storage
     }
 }
 
 
-function loadDishes() {
-    let dishesAsText = localStorage.getItem('dishes');
-    if (dishesAsText) {
-        dishes = JSON.parse(dishesAsText);
+function loadDishes() {    // loads the variable dishes
+    let dishesAsText = localStorage.getItem('dishes');    // get Item 'dishes'
+    if (dishesAsText) {    // if 'text' ...
+        dishes = JSON.parse(dishesAsText);    // parse the String to the variable dishes
     }
 }
