@@ -81,14 +81,7 @@ let dishes = [
         'title': 'Paella Reis',
         'description': 'Curry Reis, Shrimps, Frutti di Mare, Hühnerfleisch und Salat',
         'price': 10.50,
-        'option': 'große Portion',
-        'upcharge': 1.40,
-        'option-selected': false,
-        'in-cart': false
-    },
-    {
-        'original': false,
-        'title': 'Großer Paella Reis',
+        'option': false,
         'in-cart': false
     },
     {
@@ -209,10 +202,20 @@ function writeDescription(i) {    // writes the description of dish card i
     return `
         <div id="dish-card-description-${i}" class="column-start-start">
             <p id="dish-card-ingredients-${i}" class="dish-card-ingredients">${getDescription(i)}</p>
-            <p id="dish-card-option-${i}" class="dish-card-option">Option: ${getOption(i)}</p>
+            ${writeOptionIf(i)}
             <output id="dish-card-price-${i}" class="dish-card-price">${getDecimalPrice(i)} €</output>
         </div>
     `;
+}
+
+
+function writeOptionIf(i) {
+    let optionAvailable = getOption(i);
+    if (optionAvailable) {
+        return `<p id="dish-card-option-${i}" class="dish-card-option">Option: ${getOption(i)}</p>`;
+    } else {
+        return '';
+    }
 }
 
 

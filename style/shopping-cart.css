@@ -129,7 +129,7 @@ h2 {
 /* Bitte bearbeiten!!! */
 .shopping-cart-item-collector {
     padding: 16px 16px 8px 16px;
-    height: calc(100vh - 328px);
+    height: calc(100vh - 400px);
     overflow-y: auto;
 }
 
@@ -197,6 +197,7 @@ table {
 .item-notes {
     width: calc(144px - 20px);
     text-decoration: underline;
+    opacity: 0;
 }
 
 .item-amount {
