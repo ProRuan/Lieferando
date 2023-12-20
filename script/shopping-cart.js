@@ -235,9 +235,7 @@ function outputSubtotal() {
 }
 
 
-function selectOutput(id) {
-    return document.getElementById(id);
-}
+// Bitte neue output function verwenden!!!
 
 
 function calculateSubtotal() {

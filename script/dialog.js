@@ -141,38 +141,49 @@ function getOptionSelected(i) {    // provides 'option-selected' from dish i
 
 function setOptionSettingsFalse(i) {    // sets option related settings (false)
     dishes[i]['option-selected'] = false;
-    let feedback = getElement('option-button');
-    feedback.innerHTML = 'auswählen';
-    feedback.classList.remove('option-button-activated');
+    let button = getElement('option-button');
+    button.innerHTML = 'auswählen';
+    button.classList.remove('option-button-activated');
 }
 
 
 function setOptionSettingsTrue(i) {    // sets option related settings (true)
     dishes[i]['option-selected'] = true;
-    let feedback = getElement('option-button');
-    feedback.innerHTML = 'aktiviert';
-    feedback.classList.add('option-button-activated');
+    let button = getElement('option-button');
+    button.innerHTML = 'aktiviert';
+    button.classList.add('option-button-activated');
 }
 
 
-function updateTotalPriceDialog(i) {
-    let amount = +document.getElementById('dialog-box-amount').innerHTML;
+function updateTotalPriceDialog(i) {    // updates the total price of the 'dialog-box-add-button'
+    let amount = getAmountOfDialog();
     let price = getPrice(i);
-    let upcharge = 0;
-    let optionSelected = getOptionSelected(i);
-    if (optionSelected) {
-        upcharge = getUpcharge(i);
-    } else {
-        upcharge = 0;
-    }
-    let totalPriceUnformatted = amount * (price + upcharge);
-    let totalPrice = totalPriceUnformatted.toFixed(2)
-    let output = document.getElementById('dialog-box-total-price');
-    output.innerHTML = totalPrice.replace('.', ',');
+    let upcharge = setUpcharge(i);
+    let totalPriceUnformatted = amount * (price + upcharge);    // contains the total price as number
+    let totalPrice = totalPriceUnformatted.toFixed(2);    // contains the total price as String number with 2 decimals
+    let output = selectOutput('dialog-box-total-price');    // contains the output element 'dialog-box-total-price'
+    output = totalPrice.replace('.', ',');    // outputs total price with comma
 }
 
 
-function writeDialogBoxFooter(i) {
+function getAmountOfDialog() {    // provides the current amount of dish i at the dialog
+    return +document.getElementById('dialog-box-amount').innerHTML;
+}
+
+
+function setUpcharge(i) {    // sets the value of upcharge
+    let optionSelected = getOptionSelected(i);
+    let upcharge = getUpcharge(i);
+    return (optionSelected) ? upcharge : 0;    // return 0, if option is not selected
+}
+
+
+function selectOutput(id) {    // selects the element 'id' including innerHTML
+    return document.getElementById(id).innerHTML;
+}
+
+
+function writeDialogBoxFooter(i) {    // writes the footer of dialog box
     return `
         <div class="dialog-box-footer display-start-center">
             <div class="dialog-box-amount-group display-between-center">
@@ -188,61 +199,62 @@ function writeDialogBoxFooter(i) {
 }
 
 
-function increaseItemDialog(i) {
+function increaseItemDialog(i) {    // increases the item at the dialog box
     increaseAmountDialog();
     updateTotalPriceDialog(i);
     enableButtonIf('dialog-box-minus-button');
 }
 
 
-function increaseAmountDialog() {
-    let output = document.getElementById('dialog-box-amount');
-    let amount = +output.innerHTML;
-    output.innerHTML = ++amount;
+function increaseAmountDialog() {    // increases the amount of item at the dialog box
+    let output = selectOutput('dialog-box-amount');    // contains the output element
+    let amount = +output;    // contains the amount
+    output = ++amount;    // outputs amount + 1
 }
 
 
 function enableButtonIf(id) {
-    let buttondisabled = document.getElementById(id);
-    if (buttondisabled) {
-        enableButton(id);
+    let buttondisabled = getElement(id);    // contains the minus button of the dialog box
+    if (buttondisabled) {    // if the minus button is disabled ...
+        enableButton(id);    // enable minus button
     }
 }
 
 
-function enableButton(id) {
+function enableButton(id) {    // enables a button
     document.getElementById(id).disabled = false;
 }
 
 
-function decreaseItemDialog(i) {
+function decreaseItemDialog(i) {    // decreases the item at the dialog box
     decreaseAmountDialog();
     updateTotalPriceDialog(i);
     disableButtonIf('dialog-box-minus-button');
 }
 
 
-function decreaseAmountDialog() {
-    let output = document.getElementById('dialog-box-amount');
-    let amount = +output.innerHTML;
-    output.innerHTML = --amount;
+function decreaseAmountDialog() {    // decreases the amount of item at the dialog box
+    let output = selectOutput('dialog-box-amount');    /// contains the output element
+    let amount = +output;    // contains the amount
+    output = --amount;    // outputs amount - 1
 }
 
 
 function disableButtonIf(id) {
-    let amount = +document.getElementById('dialog-box-amount').innerHTML;
-    if (amount < 2) {
-        disableButton(id);
+    let input = getElement('dialog-box-amount');    // contains the element 'dialog-box-amount'
+    let amount = +input.innerHTML;    // contains the amount
+    if (amount < 2) {    // if amount less than 2 ...
+        disableButton(id);    // disable minus button
     }
 }
 
 
-function disableButton(id) {
+function disableButton(id) {    // disables a button
     document.getElementById(id).disabled = true;
 }
 
 
-function confirmAction(i) {
+function confirmAction(i) {    // confirms adding or increasing of items
     addOrIncreaseItem(i);
     resetOptionSelected(i);
     closeDialog();
@@ -250,22 +262,11 @@ function confirmAction(i) {
 
 
 function addOrIncreaseItem(i) {
-    let optionSelected = getOptionSelected(i);
-    if (optionSelected) {
-        let index = i + 1;
-        let inCart = getInCart(index);
-        if (inCart) {
-            increaseOptionalItem(index);
-        } else {
-            addOptionalItem(index)
-        }
-    } else {
-        let inCart = getInCart(i);
-        if (inCart) {
-            increaseItem(i);
-        } else {
-            addItem(i);
-        }
+    let optionSelected = getOptionSelected(i);    // contains true or false
+    if (optionSelected) {    // if option is selected ...
+        addOrIncreaseUpgradedItem(i);    // add or increase the upgraded item
+    } else {    // else ...
+        addOrIncreaseItemOriginalItem(i);    // add or increase the original item
     }
     sortItems();
     updateItemId();
@@ -273,48 +274,49 @@ function addOrIncreaseItem(i) {
 }
 
 
-function increaseOptionalItem(index) {
+function addOrIncreaseUpgradedItem(i) {    // adds or increase an upgraded item
+    let index = i + 1;    // increase i to get the index of upgraded item
+    let inCart = getInCart(index);    // contains true or false
+    (inCart) ? increaseUpgradedItem() : addUpgradedItem();
+}
+
+
+function increaseUpgradedItem(index) {    // increases the upgraded item in the shopping cart
     let amount = getAmountOfDialog();
     let totalPrice = getTotalPriceOfDialog();
-    // let optionalId = getOptionalId(index);
-    // shoppingCart[optionalId]['amount'] += amount;
-    // shoppingCart[optionalId]['price'] += totalPrice;
-    let itemId = getItemId(index);
-    shoppingCart[itemId]['amount'] += amount;
-    shoppingCart[itemId]['price'] += totalPrice;
+    let itemId = getItemId(index);    // contains the item index of this dish
+    shoppingCart[itemId]['amount'] += amount;    // increases the amount of upgraded item
+    shoppingCart[itemId]['price'] += totalPrice;    // increases the total price of upgraded item
 }
 
 
-function getAmountOfDialog() {
-    return +document.getElementById('dialog-box-amount').innerHTML;
+function getTotalPriceOfDialog() {    // provides the total price of item from the dialog box
+    let totalPriceUnformatted = selectOutput('dialog-box-total-price');    // contains the total price as String
+    return Number(totalPriceUnformatted.replace(',', '.'));    // contains the total price as number
 }
 
 
-function getTotalPriceOfDialog() {
-    let totalPriceUnformatted = document.getElementById('dialog-box-total-price').innerHTML;
-    let totalPrice = Number(totalPriceUnformatted.replace(',', '.'));
-    return totalPrice;
-}
-
-
-// function getOptionalId(index) {
-//     return dishes[index]['option-id'];
-// }
-
-// getItemId() ... here!!!
-
-
-function addOptionalItem(index) {
+function addUpgradedItem(index) {    // adds an upgraded item including related settings
     let newIndex = getNewIndex();
+    addNewUpgradedItem(index);
+    setInCartTrue(index);
+    setItemId(index, newIndex);
+}
+
+
+function addNewUpgradedItem(newIndex) {    // adds a new upgraded item to the shopping cart
     shoppingCart[newIndex] = {
         'dish-id': index,
         'amount': getAmountOfDialog(),
         'title': getTitle(index),
         'price': getTotalPriceOfDialog()
     };
-    dishes[index]['in-cart'] = true;
-    // dishes[index]['option-id'] = newIndex;
-    dishes[index]['item-id'] = newIndex;
+}
+
+
+function addOrIncreaseItemOriginalItem(i) {
+    let inCart = getInCart(i);
+    (inCart) ? increaseItem(i) : addItem(i);
 }
 
 
