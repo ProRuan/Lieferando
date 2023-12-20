@@ -18,6 +18,10 @@
     display: flex;
 }
 
+.overflowY-hidden {
+    overflow-y: hidden;
+}
+
 .dialog-box {
     width: 600px;
     background-color: white;

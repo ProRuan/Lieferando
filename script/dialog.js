@@ -1,31 +1,34 @@
-let counter = 0;
+// Variables
+let counter = 0;    // needed for the function closeDialogIf()
 
-function showDialog(i) {
+
+// Functions
+function showDialog(i) {    // shows the dialog with the content of dish card i
     openDialog();
-    setOverflowYHidden();
+    addOverflowYHidden();
     showDialogBox(i);
 }
 
 
-function setOverflowYHidden() {
-    body.style.overflowY = 'hidden';
-}
-
-
-function openDialog(i) {
-    let dialog = document.getElementById('dialog');
+function openDialog() {    // opens the dialog
+    let dialog = getElement('dialog');
     dialog.show();
 }
 
 
-function showDialogBox(i) {
-    let dialogBox = document.getElementById('dialog-box');
-    dialogBox.innerHTML = '';
+function addOverflowYHidden() {    // adds overflow-y:hidden to the element 'body'
+    body.classList.add('overflowY-hidden');
+}
+
+
+function showDialogBox(i) {    // opens the dialog with the content of dish card i
+    let dialogBox = getElement('dialog-box');    // contains the element 'dialog-box'
+    dialogBox.innerHTML = '';    // emtpies dialogBox
     fillDialogBox(i, dialogBox);
 }
 
 
-function fillDialogBox(i, dialogBox) {
+function fillDialogBox(i, dialogBox) {    // fills dialogBox with the content of dish card i
     dialogBox.innerHTML = `
         ${writeDialogBoxHeader(i)}
         ${writeDialogBoxContent(i)}
@@ -34,7 +37,7 @@ function fillDialogBox(i, dialogBox) {
 }
 
 
-function writeDialogBoxHeader(i) {
+function writeDialogBoxHeader(i) {    // writes the header of dialog box
     return `
         <div class="dialog-box-header display-between-center">
             <h2 class="dialog-box-headline">${getTitle(i)}</h2>
@@ -44,32 +47,37 @@ function writeDialogBoxHeader(i) {
 }
 
 
-function closeDialog() {
-    let output = selectOutput('dialog-box');
-    output.innerHTML = '<!-- rendering content of dialog box -->'
-    setOverflowYUnset();
-    let dialog = document.getElementById('dialog');
+function closeDialog() {    // closes the dialog
+    resetDialogContent();
+    removeOverflowYHidden();
+    let dialog = getElement('dialog');
     dialog.close();
 }
 
 
-function setOverflowYUnset() {
-    body.style.overflowY = 'unset';
+function resetDialogContent() {    // resets the dialog's content
+    let output = selectOutput('dialog-box');
+    output.innerHTML = '<!-- rendering content of dialog box -->';
 }
 
 
-function closeDialogIf(id) {
-    if (id == 'dialog-box') {
-        counter = 3;
+function removeOverflowYHidden() {    // removes overflow-y:hidden from the element 'body'
+    body.classList.remove('overflowY-hidden');
+}
+
+
+function closeDialogIf(id) {    // closes the dialog on one condition
+    if (id == 'dialog-box') {    // if the clicked element is 'dialog-box' ...
+        counter = 3;    // increase counter to keep the dialog box open
     }
-    if (--counter < 1) {
-        closeDialog();
-        counter = 1;
+    if (--counter < 1) {    // if counter equals 0 ...
+        closeDialog();    // close dialog
+        counter = 1;    // set counter = 1
     }
 }
 
 
-function writeDialogBoxContent(i) {
+function writeDialogBoxContent(i) {    // writes the content of dialog box
     return `
         <div class="dialog-box-content">
             ${writeDialogBoxDescripton(i)}
@@ -79,7 +87,7 @@ function writeDialogBoxContent(i) {
 }
 
 
-function writeDialogBoxDescripton(i) {
+function writeDialogBoxDescripton(i) {    // writes the description of dialog box
     return `
         <div class="dialog-box-description column-start-start">
             <p class="dialog-box-ingredients">${getDescription(i)}</p>
@@ -89,7 +97,7 @@ function writeDialogBoxDescripton(i) {
 }
 
 
-function writeDialogBoxOption(i) {
+function writeDialogBoxOption(i) {    // writes the option of dialog box
     return `
         <div class="dialog-box-option">
             <div class="dialog-box-option-text">Ihre Option:</div>
@@ -102,38 +110,48 @@ function writeDialogBoxOption(i) {
 }
 
 
-function getDecimalUpcharge(i) {
-    let upchargeUnformatted = getUpcharge(i);
-    let upcharge = upchargeUnformatted.toFixed(2);
-    return upcharge.replace('.', ',');
+function getDecimalUpcharge(i) {    // provides the upcharge of dish i as formatted decimal number
+    let upchargeUnformatted = getUpcharge(i);    // contains the upcharge of dish i
+    let upcharge = upchargeUnformatted.toFixed(2);    // contains a String number with 2 decimals
+    return upcharge.replace('.', ',');    // outputs the upcharge with comma
 }
 
 
-function getUpcharge(i) {
+function getUpcharge(i) {    // provides the upcharge of dish i
     return dishes[i]['upcharge'];
 }
 
 
-function setOptionSelected(i) {
-    let optionSelected = getOptionSelected(i);
-    if (optionSelected) {
-        dishes[i]['option-selected'] = false;
-        let feedback = document.getElementById('option-button');
-        feedback.innerHTML = 'auswählen';
-        feedback.classList.remove('option-button-activated');
-    } else {
-        dishes[i]['option-selected'] = true;
-        let feedback = document.getElementById('option-button');
-        feedback.innerHTML = 'aktiviert';
-        feedback.classList.add('option-button-activated');
+function setOptionSelected(i) {    // sets 'option-selected' of dish i and related settings
+    let optionSelected = getOptionSelected(i);    // contains true or false
+    if (optionSelected) {    // if true ...
+        setOptionSettingsFalse(i);    // deselect option
+    } else {    // else ...
+        setOptionSettingsTrue(i);    // add option
     }
     save();
     updateTotalPriceDialog(i);
 }
 
 
-function getOptionSelected(i) {
+function getOptionSelected(i) {    // provides 'option-selected' from dish i
     return dishes[i]['option-selected'];
+}
+
+
+function setOptionSettingsFalse(i) {    // sets option related settings (false)
+    dishes[i]['option-selected'] = false;
+    let feedback = getElement('option-button');
+    feedback.innerHTML = 'auswählen';
+    feedback.classList.remove('option-button-activated');
+}
+
+
+function setOptionSettingsTrue(i) {    // sets option related settings (true)
+    dishes[i]['option-selected'] = true;
+    let feedback = getElement('option-button');
+    feedback.innerHTML = 'aktiviert';
+    feedback.classList.add('option-button-activated');
 }
 
 
