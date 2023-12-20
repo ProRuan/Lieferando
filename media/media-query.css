@@ -7,14 +7,14 @@
         padding: 0 16px 24px 16px;
         width: calc(100% - 32px);
     }
+
+    .imprint {
+        padding: 8px 16px 24px 16px;
+    }
 }
 
 
 @media (max-width: 1024px) {
-    .restaurant {
-        width: 100%;
-    }
-
     .atf-headline {
         font-size: 24px;
     }
@@ -33,10 +33,6 @@
 
     .dish-card-price {
         font-size: 16px;
-    }
-
-    .imprint {
-        padding: 8px 16px 24px 16px;
     }
 
     .imprint-headline {

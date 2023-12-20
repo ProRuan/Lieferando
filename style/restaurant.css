@@ -114,7 +114,7 @@ button {
 }
 
 .restaurant {
-    width: calc(100% - 344px);
+    flex: 1;
 }
 
 .column-start-start {
@@ -149,8 +149,8 @@ button {
 }
 
 .favorite-button {
-    display: none;
     margin-bottom: -16px;
+    display: none;
 }
 
 .customer-review {
@@ -161,7 +161,6 @@ button {
 .star {
     width: 20px;
     height: 20px;
-    /* background-color: #F36805; */
     object-fit: contain;
     object-position: center;
 }
@@ -179,10 +178,10 @@ button {
 }
 
 .slide-menu {
-    display: none;
     width: 100%;
     min-height: 56px;
     margin-bottom: 8px;
+    display: none;
 }
 
 .menu-of-restaurant {

@@ -63,18 +63,15 @@
                     <div class="delivery-hint">Kostenlose Lieferung ab 20,00 €</div>
                 </div>
             </section>
-
             <nav id="slide-menu" class="slide-menu">
                 <!-- placeholder of slide menu -->
             </nav>
-
             <section class="menu-of-restaurant">
                 <h2 class="menu-category">Speisekarte</h2>
                 <div id="dish-card-collector" class="dish-card-collector">
                     <!-- rendering dish cards -->
                 </div>
             </section>
-
             <section class="imprint column-start-start">
                 <h3 class="imprint-headline">Impressum</h3>
                 <address class="imprint-address column-start-start">
@@ -101,16 +98,14 @@
                 <div class="delivery-options">
                     <button id="delivery-button" class="delivery-button delivery-button-activated">
                         <span class="delivery-button-text fw-700">Lieferung</span>
-                        <span class="delivery-button-time">ab 17:45</span>
+                        <span class="delivery-button-time">ab 11:15</span>
                     </button>
                     <button id="collection-button" class="delivery-button">
                         <span class="delivery-button-text">Abholung</span>
-                        <span class="delivery-button-time">ab 17:45</span>
+                        <span class="delivery-button-time">ab 11:15</span>
                     </button>
                 </div>
             </section>
-
-            <!-- Bitte rendern!!! -->
             <section id="shopping-cart-guide" class="shopping-cart-guide">
                 <div class="shopping-cart-guide-icon">
                     <img src="./img/bag.png" alt="bag">
@@ -120,7 +115,6 @@
                     Füge einige leckere Gerichte aus der Speisekarte hinzu und bestelle dein Essen.
                 </p>
             </section>
-
             <section id="shopping-cart-item-collector" class="shopping-cart-item-collector">
                 <!-- rendering shopping cart items -->
             </section>
@@ -128,17 +122,15 @@
                 <div class="sum-block column-start-start">
                     <div id="subtotal-group" class="width-100 display-between-center">
                         <span>Zwischensumme</span>
-                        <span><output id="subtotal">7,50</output> €</span>
+                        <span><output id="subtotal">0,00</output> €</span>
                     </div>
                     <div id="delivery-costs-group" class="width-100 display-between-center">
                         <span>Lieferkosten</span>
-                        <span><output id="delivery-costs">3,00</output> €</span>
-
+                        <span><output id="delivery-costs">0,00</output> €</span>
                     </div>
                     <div id="total-group" class="width-100 display-between-center fw-700">
                         <span>Gesamt</span>
-                        <span><output id="total">8,50</output> €</span>
-
+                        <span><output id="total">0,00</output> €</span>
                     </div>
                 </div>
                 <button id="order-button" class="order-button" onclick="submitOrder()">
@@ -157,8 +149,9 @@
     </footer>
 
     <div id="shopping-cart-mobile" class="shopping-cart-mobile">
-        <button id="cart-button-mobile" class="cart-button-mobile" onclick="showShoppingCart()">Warenkorb (<output
-                id="mobile-button-total">0,00</output> €)</button>
+        <button id="cart-button-mobile" class="cart-button-mobile" onclick="showShoppingCart()">
+            Warenkorb (<output id="mobile-button-total">0,00</output> €)
+        </button>
     </div>
 </body>
 
