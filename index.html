@@ -89,8 +89,12 @@
             </section>
         </main>
 
-        <aside id="shopping-cart-window" class="shopping-cart-window">
-            <h2 class="shopping-cart-headline">Warenkorb</h2>
+        <aside id="shopping-cart-window" class="shopping-cart-window display-unset">
+            <div class="display-between-center">
+                <h2 class="shopping-cart-headline">Warenkorb</h2>
+                <button id="shopping-cart-hide-button" class="shopping-cart-hide-button"
+                    onclick="hideShoppingCart()"></button>
+            </div>
             <section id="delivery-options-box" class="delivery-options-box">
                 <div class="delivery-options">
                     <button id="delivery-button" class="delivery-button delivery-button-activated">
@@ -107,7 +111,7 @@
             <!-- Bitte rendern!!! -->
             <section id="shopping-cart-guide" class="shopping-cart-guide">
                 <div class="shopping-cart-guide-icon">
-                    [Bitte shopping-cart-icon einfügen]
+                    <img src="./img/bag.png" alt="bag">
                 </div>
                 <h2 class="shopping-cart-guide-text">Fülle deinen Warenkorb</h2>
                 <p class="shopping-cart-guide-hint">
@@ -151,7 +155,7 @@
     </footer>
 
     <div id="shopping-cart-mobile" class="shopping-cart-mobile">
-        <button id="cart-button-mobile" class="cart-button-mobile">Warenkorb</button>
+        <button id="cart-button-mobile" class="cart-button-mobile" onclick="showShoppingCart()">Warenkorb (<output id="mobile-button-total">0,00</output> €)</button>
     </div>
 </body>
 

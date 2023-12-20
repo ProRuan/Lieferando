@@ -349,6 +349,7 @@ function submitOrder() {
     resetInCart();
     saveAndRender();
     showFinalDialog();
+    hideShoppingCart();
     setTimeout(closeDialog, 2500);
 }
 

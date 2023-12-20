@@ -134,9 +134,9 @@ function getOptionOfDish(i) {
 
 function writeNotesAndAmount(i) {
     return `
-        <div class="mt-8 display-between-center gap-20">
-            <div class="width-50 item-notes">Anmerkungen hinzufügen</div>
-            <div class="width-50 display-between-center">
+        <div class="mt-8 width-100 display-between-center gap-20">
+            <div class="item-notes">Anmerkungen hinzufügen</div>
+            <div class="display-between-center">
                 <button id="menu-plus-button-${i}" class="button" onclick="increaseItemInCart(${i})">+</button>
                 <output id="item-amount-${i}" class="item-amount">${getAmountInCart(i)}</output>
                 <button id="menu-minus-button-${i}" class="button" onclick="decreaseItemInCart(${i})">-</button>
@@ -281,8 +281,10 @@ function outputTotal() {
     let total = totalUnformatted.toFixed(2);
     let output = selectOutput('total');
     let outputButton = selectOutput('order-button-total');
+    let outputMobileButton = selectOutput('mobile-button-total');
     output.innerHTML = total.replace('.', ',');
     outputButton.innerHTML = total.replace('.', ',');
+    outputMobileButton.innerHTML = total.replace('.', ',');
 }
 
 
@@ -347,33 +349,38 @@ function updateItemId() {
     }
 }
 
-// Funktion schreiben!!!
-window.onscroll = function () {
-    let heightWindow = window.innerHeight;
-    let heightBody = body.scrollHeight;
-    let heightHeader = 72;
-    let heightFooter = 128;
-    let maxScrollHeight = heightBody - heightWindow;
-    let shoppingCartWindow = document.getElementById('shopping-cart-window');
 
-    if (scrollY > maxScrollHeight - heightFooter) {
-        let delta = scrollY - (maxScrollHeight - heightFooter);
-        let newHeight = heightWindow - delta;
-        let output = newHeight.toString() + "px";
-        shoppingCartWindow.style.height = output;
-        calculateHeight(newHeight);
-    } else if (scrollY > heightHeader) {
-        shoppingCartWindow.style.height = "100vh";
-        let element = document.getElementById('shopping-cart-item-collector');
-        element.style.height = "calc(100vh - 328px)";
+window.onscroll = function () {
+    let maxWidth = body.scrollWidth;
+    let shoppingCartWindow = document.getElementById('shopping-cart-window');
+    if (maxWidth > 1024) {
+        let heightWindow = window.innerHeight;
+        let heightBody = body.scrollHeight;
+        let heightHeader = 72;
+        let heightFooter = 128;
+        let maxScrollHeight = heightBody - heightWindow;
+        if (scrollY > maxScrollHeight - heightFooter) {
+            let delta = scrollY - (maxScrollHeight - heightFooter);
+            let newHeight = heightWindow - delta;
+            let output = newHeight.toString() + "px";
+            shoppingCartWindow.style.height = output;
+            calculateHeight(newHeight);
+        } else if (scrollY > heightHeader) {
+            shoppingCartWindow.style.height = "100vh";
+            let element = document.getElementById('shopping-cart-item-collector');
+            element.style.height = "calc(100vh - 328px)";
+        } else {
+            let delta = heightHeader - scrollY;
+            let newHeight = heightWindow - delta;
+            let output = newHeight.toString() + "px";
+            shoppingCartWindow.style.height = output;
+            calculateHeight(newHeight);
+        }
     } else {
-        let delta = heightHeader - scrollY;
-        let newHeight = heightWindow - delta;
-        let output = newHeight.toString() + "px";
-        shoppingCartWindow.style.height = output;
-        calculateHeight(newHeight);
+        shoppingCartWindow.style.height = "100vh";    // notwendig? - nein!
     }
 }
+
 
 
 function calculateHeight(newHeight) {
@@ -381,4 +388,20 @@ function calculateHeight(newHeight) {
     let heightElement = newHeight - 328;
     let output = heightElement.toString() + "px";
     element.style.height = output;
+}
+
+
+function showShoppingCart() {
+    let shoppingCartWindow = document.getElementById('shopping-cart-window');
+    shoppingCartWindow.classList.remove('display-unset');
+    let shoppingCartMobile = document.getElementById('shopping-cart-mobile');
+    shoppingCartMobile.classList.add('display-none');
+}
+
+
+function hideShoppingCart() {
+    let shoppingCartWindow = document.getElementById('shopping-cart-window');
+    shoppingCartWindow.classList.add('display-unset');
+    let shoppingCartMobile = document.getElementById('shopping-cart-mobile');
+    shoppingCartMobile.classList.remove('display-none');
 }
