@@ -1,19 +1,19 @@
 // Variables
 let dishes = [
-    {
-        'original': true,
-        'title': 'Pizza Mexicana',
-        'description': 'Paradeiser, Käse, Hühnerfleisch, Paprika, Mais, Chilli',
-        'price': 9.50,
-        'option': 'große Pizza',
-        'upcharge': 2.40,
-        'option-selected': false,
-        'in-cart': false
+    {    // dish 0
+        'original': true,    // original dish (without upgrade)
+        'title': 'Pizza Mexicana',    // title of dish
+        'description': 'Paradeiser, Käse, Hühnerfleisch, Paprika, Mais, Chilli',    // description of dish
+        'price': 9.50,    // price of dish
+        'option': 'große Pizza',    // optional upgrade of dish
+        'upcharge': 2.40,    // upcharge (only if option selected)
+        'option-selected': false,    // true, if option selected
+        'in-cart': false    // true, if dish is already in shopping cart
     },
-    {
-        'original': false,
-        'title': 'Große Pizza Mexicana',
-        'in-cart': false
+    {   // dish 1
+        'original': false,    // upgrade of dish 0
+        'title': 'Große Pizza Mexicana',    // title of upgraded dish
+        'in-cart': false    // true, if dish is already in shopping cart
     },
     {
         'original': true,
@@ -50,7 +50,7 @@ let dishes = [
         'title': 'Spaghetti Bolognese',
         'description': 'Fleischsauce',
         'price': 9.90,
-        'option': false,
+        'option': false,    // no upgrade available
         'in-cart': false
     },
     {
@@ -99,53 +99,57 @@ let dishes = [
         'title': 'Nusspalatschinken Plus',
         'in-cart': false
     }
-];
+];    // contains all available dishes
 
 
 // Functions
 loadDishes();
 
 
-function render() {
-    showDishes();
-    showItems();
-
-    outputSubtotal();
-    outputDeliveryCosts();
-    outputTotal();
+function render() {    // renders ...
+    showDishes();    // dishes of restaurant
+    showItems();    // items of shopping cart
+    outputSubtotal();    // value of subtotal
+    outputDeliveryCosts();    // value of delivery costs
+    outputTotal();    // value of total
 }
 
 
 function showDishes() {    // shows all available dishes of restaurant
-    let dishCardCollector = document.getElementById('dish-card-collector');    // contains the element 'dish-card-collector'
+    let dishCardCollector = getElement('dish-card-collector');    // contains the element 'dish-card-collector'
     dishCardCollector.innerHTML = '';    // empties dishCardCollector
     fillDishCardCollector(dishCardCollector);
-    save();    // notwendig?
+    save();
 }
 
 
-function fillDishCardCollector(dishCardCollector) {    // fills dishCardCollector with dish cards
+function getElement(id) {    // provides an element by the parameter 'id'
+    return document.getElementById(id);
+}
+
+
+function fillDishCardCollector(dishCardCollector) {    // fills dishCardCollector with i dish cards
     for (let i = 0; i < dishes.length; i++) {
-        let original = getOriginal(i);
-        if (original) {
-            dishCardCollector.innerHTML += writeDishCard(i);
+        let original = getOriginal(i);    // contains true or false
+        if (original) {    // if this is an orignal dish (without upgrade) ...
+            dishCardCollector.innerHTML += writeDishCard(i);    // writes dish card i
         }
     }
 }
 
 
-function getOriginal(i) {
+function getOriginal(i) {    // provides 'original' of dish i
     return dishes[i]['original'];
 }
 
 
-function writeDishCard(i) {
+function writeDishCard(i) {    // writes the HTML code of dish i
     return `
         <article id="dish-card-${i}" class="dish-card">
             ${writeHeader(i)}
             ${writeDescription(i)}
         </article>
-    `;    // writes the dish card i
+    `;
 }
 
 
@@ -165,11 +169,11 @@ function getTitle(i) {    // provides the title of dish card i
 
 
 function showDialogOrAddItem(i) {
-    let optionAvailable = getOption(i);
-    if (optionAvailable) {
-        showDialog(i);
-    } else {
-        addOneItem(i);
+    let optionAvailable = getOption(i);    // contains 'text' or false
+    if (optionAvailable) {    // if there is an option available ...
+        showDialog(i);    // open dialog
+    } else {    // else ...
+        addOneItem(i);    // add item directly (without dialog)
         sortItems();
         updateItemId();
         saveAndRender();
@@ -177,24 +181,59 @@ function showDialogOrAddItem(i) {
 }
 
 
-function addOneItem(i) {
-    let inCart = getInCart(i);
-    if (inCart) {
-        let itemId = getItemId(i);
-        let price = getPrice(i);
-        shoppingCart[itemId]['amount']++;
-        shoppingCart[itemId]['price'] += price;
-    } else {
-        let newIndex = getNewIndex();
-        shoppingCart[newIndex] = {
-            'dish-id': i,
-            'amount': 1,
-            'title': getTitle(i),
-            'price': getPrice(i)
-        };
-        dishes[i]['in-cart'] = true;
-        dishes[i]['item-id'] = newIndex;
+function getOption(i) {    // provides the option of dish card i
+    return dishes[i]['option'];
+}
+
+
+function addOneItem(i) {    // adds one item of dish i to the shopping cart
+    let inCart = getInCart(i);    // contains true or false
+    if (inCart) {    // if dish i is already in the shopping cart ...
+        increaseAmountAndPrice(i);    // increase amount and price of dish i in the shopping cart
+    } else {    // else ...
+        addNewItem(i);    // add dish i to the shopping cart
     }
+}
+
+
+function getInCart(i) {    // provides 'in-cart' of dish i
+    return dishes[i]['in-cart'];
+}
+
+
+function increaseAmountAndPrice(i) {
+    let itemId = getItemId(i);    // contains the item-id of dish i
+    let price = getPrice(i);    // contains the price of dish i 
+    shoppingCart[itemId]['amount']++;    // increases amount of item
+    shoppingCart[itemId]['price'] += price;    // increases price of item
+}
+
+
+function getItemId(i) {    // provides 'item-id' of dish i
+    return dishes[i]['item-id'];
+}
+
+
+function getPrice(i) {    // provides the price of dish i
+    return dishes[i]['price'];
+}
+
+
+function addNewItem(i) {
+    let newIndex = getNewIndex();    // contains the index of new item
+    shoppingCart[newIndex] = {
+        'dish-id': i,    // contains the index of dish i
+        'amount': 1,    // contains amount 1
+        'title': getTitle(i),    // contains the title of dish i
+        'price': getPrice(i)    // contains the price of dish i
+    };
+    dishes[i]['in-cart'] = true;
+    dishes[i]['item-id'] = newIndex;
+}
+
+
+function getNewIndex() {    // provides the index of new item
+    return shoppingCart.length;
 }
 
 
@@ -224,20 +263,10 @@ function getDescription(i) {    // provides the description of dish card i
 }
 
 
-function getOption(i) {    // provides the option of dish card i
-    return dishes[i]['option'];
-}
-
-
 function getDecimalPrice(i) {
     let priceUnformatted = getPrice(i);
     let price = priceUnformatted.toFixed(2);
     return price.replace('.', ',');
-}
-
-
-function getPrice(i) {    // provides the price of dish card i
-    return dishes[i]['price'];
 }
 
 
