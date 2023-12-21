@@ -380,3 +380,13 @@ function hideShoppingCart() {
 function addDisplayUnset(id) {    // adds display:unset to the element 'id'
     document.getElementById(id).classList.add('display-unset');
 }
+
+
+function showShoppingCartMobileIf() {
+    let subtotal = getSubtotal();
+    if (subtotal < 0.01) {
+        addDisplayNone('shopping-cart-mobile');
+    } else {
+        removeDisplayNone('shopping-cart-mobile');
+    }
+}

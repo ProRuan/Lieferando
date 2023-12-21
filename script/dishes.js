@@ -112,6 +112,7 @@ function render() {    // renders ...
     outputSubtotal();    // value of subtotal
     outputDeliveryCosts();    // value of delivery costs
     outputTotal();    // value of total
+    showShoppingCartMobileIf();
 }
 
 
@@ -306,12 +307,7 @@ function loadDishes() {    // loads the variable dishes
 
 window.onscroll = function () {    // resizes height of shopping cart window during scrolling
     let shoppingCartWindow = getElement('shopping-cart-window');    // contains the element 'shopping-cart-window'
-    let maxScrollWidth = body.scrollWidth;    // contains the maximum scroll width of body
-    if (maxScrollWidth > 1024) {    // if maximum scroll width is greater than 1024 ...
-        updateHeightShoppingCart(shoppingCartWindow);    // update height of shopping cart window
-    } else {    // else ...
-        setHeightMax(shoppingCartWindow);    // set height 100vh for shopping cart window
-    }
+    updateHeightShoppingCart(shoppingCartWindow);    // updates height of shopping cart window
 }
 
 
