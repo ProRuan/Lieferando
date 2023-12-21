@@ -223,6 +223,10 @@ table {
     border-radius: 100px;
 }
 
+.order-button:hover {
+    filter: brightness(110%);
+}
+
 .shopping-cart-mobile {
     padding: 8px 8px 32px 8px;
     background-color: #FCFCFC;
@@ -230,7 +234,6 @@ table {
     position: sticky;
     bottom: 0;
     left: 0;
-    display: none;
 }
 
 .cart-button-mobile {
@@ -246,10 +249,14 @@ table {
     border-radius: 100px;
 }
 
+.cart-button-mobile:hover {
+    filter: brightness(110%);
+}
+
 .display-unset {
     display: unset;
 }
 
 .display-none {
-    display: none !important;
+    display: none;
 }

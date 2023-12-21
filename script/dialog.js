@@ -69,6 +69,7 @@ function resetOptionSelected() {    // resets 'option-selected' of dish i
     if (index > -1) {    // if index greater then -1
         dishes[index]['option-selected'] = false;    // reset 'option-selected' of dish i
     }
+    save();
 }
 
 
@@ -359,7 +360,7 @@ function submitOrder() {    // opens the final dialog and resets all settings of
     saveAndRender();
     showFinalDialog();
     hideShoppingCart();
-    setTimeout(closeDialog, 2500);
+    setTimeout(closeDialog, 3000);
 }
 
 

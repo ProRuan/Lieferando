@@ -57,10 +57,6 @@
         display: unset;
     }
 
-    .shopping-cart-mobile {
-        display: flex;
-    }
-
     /* dialog */
     .dialog-background {
         padding: 0;
