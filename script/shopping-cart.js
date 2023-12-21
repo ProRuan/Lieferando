@@ -6,57 +6,31 @@ let shoppingCart = [];    // contains all selected dishes
 loadShoppingCart();
 
 
-function loadShoppingCart() {
-    let shopingCartAsText = localStorage.getItem('shoppingCart');
-    if (shopingCartAsText) {
-        shoppingCart = JSON.parse(shopingCartAsText);
+function loadShoppingCart() {    // loads the variabel shoppingCart
+    let shopingCartAsText = localStorage.getItem('shoppingCart');    // gets the item 'shoppingCart'
+    if (shopingCartAsText) {    // if text ...
+        shoppingCart = JSON.parse(shopingCartAsText);    // parse the String to the variable shoppingCart
     }
 }
 
 
-function showItems() {
-    let itemCollector = document.getElementById('shopping-cart-item-collector');
-    itemCollector.innerHTML = '';
+function showItems() {    // shows all items in the shopping cart
+    let itemCollector = getElement('shopping-cart-item-collector');    // contains the element 'shopping-cart-item-collector'
+    itemCollector.innerHTML = '';    // empties itemCollector
     fillItemCollector(itemCollector);
-    setDisplayNone();
+    setShoppingCartSections();
     save();
 }
 
 
-function setDisplayNone() {
-    let cartEmpty = (shoppingCart.length < 1);
-    if (cartEmpty) {
-        addDisplayNone('shopping-cart-item-collector');
-        addDisplayNone('sum-and-order');
-        removeDisplayNone('shopping-cart-guide');
-    } else {
-        addDisplayNone('shopping-cart-guide');
-        removeDisplayNone('shopping-cart-item-collector');
-        removeDisplayNone('sum-and-order');
-    }
-}
-
-
-function addDisplayNone(id) {
-    let element = document.getElementById(id);
-    element.classList.add('display-none');
-}
-
-
-function removeDisplayNone(id) {
-    let element = document.getElementById(id);
-    element.classList.remove('display-none');
-}
-
-
-function fillItemCollector(itemCollector) {
+function fillItemCollector(itemCollector) {    // fills itemCollector with i items
     for (let i = 0; i < shoppingCart.length; i++) {
         itemCollector.innerHTML += writeItem(i);
     }
 }
 
 
-function writeItem(i) {
+function writeItem(i) {    // writes the item i in the shopping cart
     return `
     <div id="shopping-cart-item-${i}" class="shopping-cart-item">
         <table>
@@ -67,7 +41,7 @@ function writeItem(i) {
 }
 
 
-function writeTableTr(i) {
+function writeTableTr(i) {    // writes the table row i in the shopping cart
     return `
         <tr>
             <td id="item-index-${i}" class="item-index fw-700">${getAmountInCart(i)}</td>
@@ -81,12 +55,12 @@ function writeTableTr(i) {
 }
 
 
-function getAmountInCart(i) {
+function getAmountInCart(i) {    // provides the amount of dish i in the shopping cart
     return shoppingCart[i]['amount'];
 }
 
 
-function writeTitleAndPrice(i) {
+function writeTitleAndPrice(i) {    // writes title and price of dish i in the shopping cart
     return `
         <div id="item-title-and-price-${i}" class="width-100 display-between-center gap-20">
             <div id="item-title-${i}" class="added-item-title fw-700">${getTitleOfDish(i)}</div>
@@ -96,43 +70,43 @@ function writeTitleAndPrice(i) {
 }
 
 
-function getTitleOfDish(i) {
+function getTitleOfDish(i) {    // provides the title of dish i
     let dishId = getDishId(i);
     return dishes[dishId]['title'];
 }
 
 
-function getDishId(i) {
+function getDishId(i) {    // provides the index of dish for this item
     return shoppingCart[i]['dish-id'];
 }
 
 
-function getDecimalPriceInCart(i) {
-    let priceUnformatted = getPriceInCart(i);
-    let price = priceUnformatted.toFixed(2);
-    return price.replace('.', ',');
+function getDecimalPriceInCart(i) {    // provides the price of item i as formatted String
+    let priceUnformatted = getPriceInCart(i);    // contains the price as number
+    let price = priceUnformatted.toFixed(2);    // contains the price as String number with 2 decimals
+    return price.replace('.', ',');    // outputs the price with comma
 }
 
 
-function getPriceInCart(i) {
+function getPriceInCart(i) {    // provides the price of item i in the shopping cart
     return shoppingCart[i]['price'];
 }
 
 
-function writeOption(i) {
+function writeOption(i) {    // writes the option of item i in the shopping cart
     return `
         <div id="added-option-${i}" class="added-options">${getOptionOfDish(i)}</div>
     `;
 }
 
 
-function getOptionOfDish(i) {
+function getOptionOfDish(i) {    // nicht in Verwendung
     let dishId = getDishId(i);
     return dishes[dishId]['option'];
 }
 
 
-function writeNotesAndAmount(i) {
+function writeNotesAndAmount(i) {    // writes notes and amount of item i in the shopping cart
     return `
         <div class="mt-8 width-100 display-between-center gap-20">
             <div class="item-notes">Anmerkungen hinzufügen</div>
@@ -143,6 +117,30 @@ function writeNotesAndAmount(i) {
             </div>
         </div>
     `;
+}
+
+
+function setShoppingCartSections() {    // shows and hides sections of the shopping cart
+    let cartEmpty = (shoppingCart.length < 1);
+    if (cartEmpty) {
+        addDisplayNone('shopping-cart-item-collector');
+        addDisplayNone('sum-and-order');
+        removeDisplayNone('shopping-cart-guide');
+    } else {
+        addDisplayNone('shopping-cart-guide');
+        removeDisplayNone('shopping-cart-item-collector');
+        removeDisplayNone('sum-and-order');
+    }
+}
+
+
+function addDisplayNone(id) {    // adds display:none to an element
+    document.getElementById(id).classList.add('display-none');
+}
+
+
+function removeDisplayNone(id) {    // removes display:none from an element
+    document.getElementById(id).classList.remove('display-none');
 }
 
 
@@ -159,86 +157,100 @@ function saveAndRender() {
 }
 
 
-function increaseAmountInCart(i) {
-    shoppingCart[i]['amount']++;
+function increaseAmountInCart(i) {    // increases the amount of item i in the shopping cart
+    shoppingCart[i]['amount']++;    // amount + 1
 }
 
 
-function increasePriceInCart(i) {
-    let dishId = getDishId(i);
-    let original = getOriginal(dishId);
-    if (original) {
-        let price = getPrice(dishId);
-        shoppingCart[i]['price'] += price;
-    } else {
-        originalDishId = downgradeIndex(dishId);
-        let priceOfItem = getPrice(originalDishId);
-        let upcharge = getUpcharge(originalDishId);
-        let totalPrice = priceOfItem + upcharge;
-        shoppingCart[i]['price'] += totalPrice;
-    }
+function increasePriceInCart(i) {    // increases the price of item i in cart
+    let dishId = getDishId(i);    // contains the index of the related dish
+    let original = getOriginal(dishId);    // contains true or false
+    (original) ? increasePriceOfOriginal(dishId) : increasePriceOfOriginal(dishId);
 }
 
 
-function downgradeIndex(dishId) {
-    return --dishId;
+function increasePriceOfOriginal(dishId) {    // increases the price of original item in the shopping cart
+    let price = getPrice(dishId);
+    shoppingCart[i]['price'] += price;
 }
 
 
-function decreaseItemInCart(i) {
+function downgradeIndex(dishId) {    // reduces the index of upgraded dish to get the index of original dish
+    return --dishId;    // index of upgraded dish - 1
+}
+
+
+function increasePriceOfUpgraded(dishId) {    // increases the price of upgraded item in the shopping cart
+    originalDishId = downgradeIndex(dishId);    // reduces the index of upgraded dish to get the original dish
+    let priceOfItem = getPrice(originalDishId);    // contains the price of original dish
+    let upcharge = getUpcharge(originalDishId);    // contains the upcharge of original dish
+    let totalPrice = priceOfItem + upcharge;        // contains the adding total price of item i
+    shoppingCart[i]['price'] += totalPrice;    // increases the total price of item i
+}
+
+
+function decreaseItemInCart(i) {    // decreases the price of item i in the shopping cart
     decreaseOrDeleteItem(i);
     updateItemId();
     saveAndRender();
 }
 
 
-function decreaseOrDeleteItem(i) {
-    let amount = getAmountInCart(i);
-    if (amount > 1) {
-        decreaseAmountInCart(i);
-        decreasePriceInCart(i);
-    } else {
-        let dishId = getDishId(i);
-        dishes[dishId]['in-cart'] = false;
-        delete dishes[dishId]['item-id'];
-        shoppingCart.splice(i, 1);
+function decreaseOrDeleteItem(i) {    // decreases or delete item i in the shopping cart
+    let amount = getAmountInCart(i);    // contains the amount of item i
+    if (amount > 1) {    // if the amount is greater than 1 ...
+        decreaseAmountInCart(i);    // decrease amount of item i
+        decreasePriceInCart(i);    // decrease price of item i
+    } else {    // else ...
+        deleteItem(i);    // delete item i
     }
 }
 
 
-function decreaseAmountInCart(i) {
-    shoppingCart[i]['amount']--;
+function decreaseAmountInCart(i) {    // decreasese the amount of item i in the shopping cart
+    shoppingCart[i]['amount']--;    // amount - 1
 }
 
 
-function decreasePriceInCart(i) {
-    let dishId = getDishId(i);
-    let original = getOriginal(dishId);
-    if (original) {
-        let price = getPrice(dishId);
-        shoppingCart[i]['price'] -= price;
-    } else {
-        originalDishId = downgradeIndex(dishId);
-        let priceOfItem = getPrice(originalDishId);
-        let upcharge = getUpcharge(originalDishId);
-        let totalPrice = priceOfItem + upcharge;
-        shoppingCart[i]['price'] -= totalPrice;
-    }
+function decreasePriceInCart(i) {    // decreases the price of item i in the shopping cart
+    let dishId = getDishId(i);    // contains the index of the related dish
+    let original = getOriginal(dishId);    // contains true or false
+    (original) ? decreasePriceOfOriginal(dishId) : decreasePriceOfUpgraded(dishId);
 }
 
 
-function outputSubtotal() {
-    let subtotalUnformatted = calculateSubtotal();
-    let subtotal = subtotalUnformatted.toFixed(2);
-    let output = selectOutput('subtotal');
-    output.innerHTML = subtotal.replace('.', ',');
+function decreasePriceOfOriginal(dishId) {    // decreases the price of original item in the shopping cart
+    let price = getPrice(dishId);
+    shoppingCart[i]['price'] -= price;
 }
 
 
-// Bitte neue output function verwenden!!!
+function decreasePriceOfUpgraded(dishId) {    // decreases the price of upgraded item in the shopping cart
+    originalDishId = downgradeIndex(dishId);    // reduces the index of upgraded dish to get the original dish
+    let priceOfItem = getPrice(originalDishId);    // contains the price of original dish
+    let upcharge = getUpcharge(originalDishId);    // contains the upcharge of the original dish
+    let totalPrice = priceOfItem + upcharge;    // contains the adding total price of item i
+    shoppingCart[i]['price'] -= totalPrice;    // decreases the total price of item i
+}
 
 
-function calculateSubtotal() {
+function deleteItem(i) {    // removes item i from the shopping cart
+    let dishId = getDishId(i);    // contains the index of related dish
+    dishes[dishId]['in-cart'] = false;    // sets 'in-cart' of related dish to false
+    delete dishes[dishId]['item-id'];    // deletes 'item-id' of related dish
+    shoppingCart.splice(i, 1);    // removes the item i from the shopping cart
+}
+
+
+function outputSubtotal() {    // outputs the subtotal in the shopping cart
+    let subtotalUnformatted = calculateSubtotal();    // contains the subtotal as number
+    let subtotal = subtotalUnformatted.toFixed(2);    // contains the subtotal as String number with 2 decimals
+    let output = selectOutput('subtotal');    // contains the output element 'subtotal'
+    output = subtotal.replace('.', ',');    // outputs the subtotal with comma
+}
+
+
+function calculateSubtotal() {    // calculates the subtotal of all items in the shopping cart
     let subtotal = 0;
     for (let i = 0; i < shoppingCart.length; i++) {
         subtotal += getPriceInCart(i);
@@ -247,58 +259,47 @@ function calculateSubtotal() {
 }
 
 
-function outputDeliveryCosts() {
-    let deliveryCostsUnformatted = calculateDeliveryCosts();
-    let deliveryCosts = deliveryCostsUnformatted.toFixed(2);
-    let output = selectOutput('delivery-costs');
-    output.innerHTML = deliveryCosts.replace('.', ',');
+function outputDeliveryCosts() {    // outputs the delivery costs in the shopping cart
+    let deliveryCostsUnformatted = calculateDeliveryCosts();    // contains the delivery costs as number
+    let deliveryCosts = deliveryCostsUnformatted.toFixed(2);    // contains the delivery costs as String number with 2 decimals
+    let output = selectOutput('delivery-costs');    // contains the output element 'delivery-costs'
+    output = deliveryCosts.replace('.', ',');    // outputs the delivery costs with comma
 }
 
 
-function calculateDeliveryCosts() {
-    // let subtotal = calculateSubtotal();
-    let subtotal = getSubtotal();
-    return (subtotal < 20) ? 3.90 : 0;
-    // if (subtotal < 30) {
-    //     return 30;
-    // } else {
-    //     return 0;
-    // }
+function calculateDeliveryCosts() {    // calculates the delivery costs of the shopping cart
+    let subtotal = getSubtotal();    // contains the subtotal
+    return (subtotal < 20) ? 3.90 : 0;    // true: 3.90 | false: 0
 }
 
 
-function getSubtotal() {
-    let subtotalFormatted = document.getElementById('subtotal').innerHTML;
-    let subtotal = Number(subtotalFormatted.replace(',', '.'));
-    return subtotal;
+function getSubtotal() {    // provides the subtotal from the output element 'subtotal'
+    let subtotalFormatted = selectOutput('subtotal');    // contains the subtotal as String number
+    return Number(subtotalFormatted.replace(',', '.'));    // returns the subtotal as number
 }
 
 
-function outputTotal() {
-    let totalUnformatted = calculateTotal();
-    let total = totalUnformatted.toFixed(2);
-    let output = selectOutput('total');
-    let outputButton = selectOutput('order-button-total');
-    let outputMobileButton = selectOutput('mobile-button-total');
-    output.innerHTML = total.replace('.', ',');
-    outputButton.innerHTML = total.replace('.', ',');
-    outputMobileButton.innerHTML = total.replace('.', ',');
+function outputTotal() {    // outputs the total in the shopping cart
+    let totalUnformatted = calculateTotal();    // contains the total as number
+    let total = totalUnformatted.toFixed(2);    // contains the total as String number with 2 decimals
+    let outputs = ['total', 'order-button-total', 'mobile-button-total'];    // contains the ids of output elements
+    for (let i = 0; i < outputs.length; i++) {
+        let output = selectOutput(outputs[i]);    // contains the output element i
+        output = total.replace('.', ',');    // outputs the total with comma
+    }
 }
 
 
-function calculateTotal() {
-    // let subtotal = calculateSubtotal();
-    // let deliveryCosts = calculateDeliveryCosts();
-    let subtotal = getSubtotal();
-    let deliveryCosts = getDeliveryCosts();
-    return subtotal + deliveryCosts;
+function calculateTotal() {    // calculates the total of the shopping cart
+    let subtotal = getSubtotal();    // contains the subtotal
+    let deliveryCosts = getDeliveryCosts();    // contains the delivery costs
+    return subtotal + deliveryCosts;    // returns the total
 }
 
 
-function getDeliveryCosts() {
-    let deliveryCostsFormatted = document.getElementById('delivery-costs').innerHTML;
-    let deliveryCosts = Number(deliveryCostsFormatted.replace(',', '.'));
-    return deliveryCosts;
+function getDeliveryCosts() {    // provides the delivery costs
+    let deliveryCostsFormatted = selectOutput('delivery-costs');    // contains the delivery costs as String number
+    return Number(deliveryCostsFormatted.replace(',', '.'));    // returns the delivery costs as number
 }
 
 

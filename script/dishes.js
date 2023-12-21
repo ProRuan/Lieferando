@@ -132,7 +132,7 @@ function fillDishCardCollector(dishCardCollector) {    // fills dishCardCollecto
     for (let i = 0; i < dishes.length; i++) {
         let original = getOriginal(i);    // contains true or false
         if (original) {    // if this is an orignal dish (without upgrade) ...
-            dishCardCollector.innerHTML += writeDishCard(i);    // writes dish card i
+            dishCardCollector.innerHTML += writeDishCard(i);    // writes the dish card i
         }
     }
 }
@@ -297,7 +297,7 @@ function stringifyAndSetItem(keys, variables) {    // creates Strings and sets i
 
 
 function loadDishes() {    // loads the variable dishes
-    let dishesAsText = localStorage.getItem('dishes');    // get Item 'dishes'
+    let dishesAsText = localStorage.getItem('dishes');    // gets the item 'dishes'
     if (dishesAsText) {    // if 'text' ...
         dishes = JSON.parse(dishesAsText);    // parse the String to the variable dishes
     }
