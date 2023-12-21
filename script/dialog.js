@@ -41,14 +41,15 @@ function writeDialogBoxHeader(i) {    // writes the header of dialog box
     return `
         <div class="dialog-box-header display-between-center">
             <h2 class="dialog-box-headline">${getTitle(i)}</h2>
-            <button id="dialog-box-close-button" class="dialog-box-close-button" onclick="closeDialog()"></button>
+            <button id="dialog-box-close-button" class="dialog-box-close-button" onclick="closeDialog(${i})"></button>
         </div>
     `;
 }
 
 
-function closeDialog() {    // closes the dialog
+function closeDialog(i) {    // closes the dialog
     resetDialogContent();
+    resetOptionSelected(i);
     removeOverflowYHidden();
     let dialog = getElement('dialog');
     dialog.close();
@@ -58,6 +59,11 @@ function closeDialog() {    // closes the dialog
 function resetDialogContent() {    // resets the dialog's content
     let output = selectOutput('dialog-box');
     output.innerHTML = '<!-- rendering content of dialog box -->';
+}
+
+
+function resetOptionSelected(i) {    // resets 'option-selected' of dish i
+    dishes[i]['option-selected'] = false;
 }
 
 
@@ -74,7 +80,7 @@ function closeDialogIf(id) {    // closes the dialog on one condition
         closeDialog();    // close dialog
         counter = 1;    // set counter = 1
     }
-}
+}    // funktioniert nicht mehr!!!
 
 
 function writeDialogBoxContent(i) {    // writes the content of dialog box
@@ -256,8 +262,7 @@ function disableButton(id) {    // disables a button
 
 function confirmAction(i) {    // confirms adding or increasing of items
     addOrIncreaseItem(i);
-    resetOptionSelected(i);
-    closeDialog();
+    closeDialog(i);
 }
 
 
@@ -314,42 +319,41 @@ function addNewUpgradedItem(newIndex) {    // adds a new upgraded item to the sh
 }
 
 
-function addOrIncreaseItemOriginalItem(i) {
-    let inCart = getInCart(i);
-    (inCart) ? increaseItem(i) : addItem(i);
+function addOrIncreaseItemOriginalItem(i) {    // adds or increase an original item
+    let inCart = getInCart(i);    // contains true or false
+    (inCart) ? increaseOriginalItem(i) : addOriginalItem(i);
 }
 
 
-function increaseItem(i) {
+function increaseOriginalItem(i) {    // increases the original item in the shopping cart
     let amount = getAmountOfDialog();
     let totalPrice = getTotalPriceOfDialog();
     let itemId = getItemId(i);
-    shoppingCart[itemId]['amount'] += amount;
-    shoppingCart[itemId]['price'] += totalPrice;
+    shoppingCart[itemId]['amount'] += amount;    // increases the amount of original item
+    shoppingCart[itemId]['price'] += totalPrice;    // increases the amount of orignial item
 }
 
 
-function addItem(i) {
+function addOriginalItem(i) {    // adds an original item including related settings
     let newIndex = getNewIndex();
+    addNewOriginalItem(i, newIndex);
+    setInCartTrue(i);
+    setItemId(i, newIndex);
+}
+
+
+function addNewOriginalItem(i, newIndex) {    // adds a new original item to the shopping cart
     shoppingCart[newIndex] = {
         'dish-id': i,
         'amount': getAmountOfDialog(),
         'title': getTitle(i),
         'price': getTotalPriceOfDialog()
     };
-    dishes[i]['in-cart'] = true;
-    dishes[i]['item-id'] = newIndex;
 }
 
 
-function resetOptionSelected(i) {
-    dishes[i]['option-selected'] = false;
-}
-
-
-function submitOrder() {
-    let dialog = document.getElementById('dialog');
-    dialog.show();
+function submitOrder() {    // opens the final dialog and resets all settings of the website
+    openDialog();
     emptyShoppingCart();
     resetInCart();
     saveAndRender();
@@ -359,14 +363,26 @@ function submitOrder() {
 }
 
 
-function showFinalDialog() {
-    dialogBox = document.getElementById('dialog-box');
+function emptyShoppingCart() {    // empties the shopping cart
+    shoppingCart = [];
+}
+
+
+function resetInCart() {    // sets 'in-cart' of all dishes to false
+    for (let i = 0; i < dishes.length; i++) {
+        dishes[i]['in-cart'] = false;
+    }
+}
+
+
+function showFinalDialog() {    // shows the final dialog
+    dialogBox = getElement('dialog-box');
     dialogBox.innerHTML = '';
     writeOrderConfirmation(dialogBox);
 }
 
 
-function writeOrderConfirmation() {
+function writeOrderConfirmation(dialogBox) {    // writes the order confirmation at the dialog box
     dialogBox.innerHTML = `
         <div class="dialog-box-header">
             <h2 class="dialog-box-headline ta-center">Vielen Dank, dass Sie Ruanizer nutzen!</h2>
@@ -377,16 +393,4 @@ function writeOrderConfirmation() {
             </p>
         </div>
     `;
-}
-
-
-function emptyShoppingCart() {
-    shoppingCart = [];
-}
-
-
-function resetInCart() {
-    for (let i = 0; i < dishes.length; i++) {
-        dishes[i]['in-cart'] = false;
-    }
 }
