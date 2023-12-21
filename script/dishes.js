@@ -302,3 +302,74 @@ function loadDishes() {    // loads the variable dishes
         dishes = JSON.parse(dishesAsText);    // parse the String to the variable dishes
     }
 }
+
+
+window.onscroll = function () {    // resizes height of shopping cart window during scrolling
+    let shoppingCartWindow = getElement('shopping-cart-window');    // contains the element 'shopping-cart-window'
+    let maxScrollWidth = body.scrollWidth;    // contains the maximum scroll width of body
+    if (maxScrollWidth > 1024) {    // if maximum scroll width is greater than 1024 ...
+        updateHeightShoppingCart(shoppingCartWindow);    // update height of shopping cart window
+    } else {    // else ...
+        setHeightMax(shoppingCartWindow);    // set height 100vh for shopping cart window
+    }
+}
+
+
+function updateHeightShoppingCart(shoppingCartWindow) {    // updates the height of the shopping cart window
+    let heightBody = body.scrollHeight;    // contains the scroll height of 'body'
+    let heightWindow = window.innerHeight;    // contains the inner height of window
+    let maxScrollHeight = heightBody - heightWindow;    // contains the difference of body height and window height
+    let heightHeader = getElement('header').offsetHeight;    // contains the offset height of 'header'
+    let heightFooter = getElement('footer').offsetHeight;    // contains the offset height of 'footer'
+    if (scrollY > maxScrollHeight - heightFooter) {    // if scrolling reaches the footer area ...
+        updateHeightShoppingCartAreaFooter(shoppingCartWindow);
+    } else if (scrollY > heightHeader) {    // if scrolling reaches the 'content' area ...
+        updateHeightShoppingCartAreaContent(shoppingCartWindow);
+    } else {     // scrolling reaches the header area ...
+        updateHeightShoppingCartAreaHeader(shoppingCartWindow);
+    }
+}
+
+
+function updateHeightShoppingCartAreaFooter(shoppingCartWindow) {    // updates the height of shopping cart window in regard to the 'footer' area
+    let heightBody = body.scrollHeight;
+    let heightWindow = window.innerHeight;
+    let maxScrollHeight = heightBody - heightWindow;
+    let heightFooter = 128;
+    let delta = scrollY - (maxScrollHeight - heightFooter);    // contains the difference of height which is to subtract from height of shopping cart window
+    let newHeight = heightWindow - delta;    // contains the updated height of shopping cart
+    let output = newHeight.toString() + "px";    // contains the updated height as a String
+    shoppingCartWindow.style.height = output;    // sets the updated height as new style
+    calculateHeightItemCollector(newHeight);
+}
+
+
+function calculateHeightItemCollector(newHeight) {    // calculates the new height of the element 'shopping-cart-item-collector'
+    let element = getElement('shopping-cart-item-collector');    // contains the element 'shopping-cart-item-collector'
+    let heightElement = newHeight - 328;    // contains the updated height (328 is the height of other elements in the 'shopping-cart-window')
+    let newValue = heightElement.toString() + "px";    // contains the updated height as String
+    element.style.height = newValue;    // sets the updated height as new style
+}
+
+
+function updateHeightShoppingCartAreaContent(shoppingCartWindow) {     // updates the height of shopping cart window in regard to the 'content' area
+    shoppingCartWindow.style.height = "100vh";
+    let element = document.getElementById('shopping-cart-item-collector');
+    element.style.height = "calc(100vh - 328px)";
+}
+
+
+function updateHeightShoppingCartAreaHeader(shoppingCartWindow) {    // updates the height of shopping cart window in regard to the 'header' area
+    let heightWindow = window.innerHeight;
+    let heightHeader = 72;
+    let delta = heightHeader - scrollY;
+    let newHeight = heightWindow - delta;
+    let newValue = newHeight.toString() + "px";
+    shoppingCartWindow.style.height = newValue;
+    calculateHeightItemCollector(newHeight);
+}
+
+
+function setHeightMax(shoppingCartWindow) {    // sets height 100vh for the element 'shopping-cart-window'
+    shoppingCartWindow.style.height = "100vh";
+}

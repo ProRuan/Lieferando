@@ -360,83 +360,23 @@ function updateItemId() {    // updates the itemId of dishes
 }
 
 
-window.onscroll = function () {
-    let shoppingCartWindow = getElement('shopping-cart-window');
-    let maxScrollWidth = body.scrollWidth;
-    if (maxScrollWidth > 1024) {
-        updateHeightShoppingCart(shoppingCartWindow);
-    } else {
-        shoppingCartWindow.style.height = "100vh";
-    }
-}
-
-
-function updateHeightShoppingCart(shoppingCartWindow) {
-    let heightBody = body.scrollHeight;
-    let heightWindow = window.innerHeight;
-    let maxScrollHeight = heightBody - heightWindow;
-    let heightHeader = 72;
-    let heightFooter = 128;
-    if (scrollY > maxScrollHeight - heightFooter) {
-        updateHeightShoppingCartAreaFooter(shoppingCartWindow);
-    } else if (scrollY > heightHeader) {
-        updateHeightShoppingCartAreaContent(shoppingCartWindow);
-    } else {
-        updateHeightShoppingCartAreaHeader(shoppingCartWindow);
-    }
-}
-
-
-function updateHeightShoppingCartAreaFooter(shoppingCartWindow) {
-    let heightBody = body.scrollHeight;
-    let heightWindow = window.innerHeight;
-    let maxScrollHeight = heightBody - heightWindow;
-    let heightFooter = 128;
-    let delta = scrollY - (maxScrollHeight - heightFooter);
-    let newHeight = heightWindow - delta;
-    let output = newHeight.toString() + "px";
-    shoppingCartWindow.style.height = output;
-    calculateHeightItemCollector(newHeight);
-}
-
-
-function calculateHeightItemCollector(newHeight) {
-    let element = getElement('shopping-cart-item-collector');
-    let heightElement = newHeight - 328;
-    let newValue = heightElement.toString() + "px";
-    element.style.height = newValue;
-}
-
-
-function updateHeightShoppingCartAreaContent(shoppingCartWindow) {
-    shoppingCartWindow.style.height = "100vh";
-    let element = document.getElementById('shopping-cart-item-collector');
-    element.style.height = "calc(100vh - 328px)";
-}
-
-
-function updateHeightShoppingCartAreaHeader(shoppingCartWindow) {
-    let heightWindow = window.innerHeight;
-    let heightHeader = 72;
-    let delta = heightHeader - scrollY;
-    let newHeight = heightWindow - delta;
-    let newValue = newHeight.toString() + "px";
-    shoppingCartWindow.style.height = newValue;
-    calculateHeightItemCollector(newHeight);
-}
-
-
 function showShoppingCart() {
-    let shoppingCartWindow = document.getElementById('shopping-cart-window');
-    shoppingCartWindow.classList.remove('display-unset');
-    let shoppingCartMobile = document.getElementById('shopping-cart-mobile');
-    shoppingCartMobile.classList.add('display-none');
+    removeDisplayUnset('shopping-cart-window');    // shows the element 'shopping-cart-window'
+    addDisplayNone('shopping-cart-mobile');    // hides the element 'shopping-cart-mobile'
+}
+
+
+function removeDisplayUnset(id) {    // removes display:unset to the element 'id'
+    document.getElementById(id).classList.remove('display-unset');
 }
 
 
 function hideShoppingCart() {
-    let shoppingCartWindow = document.getElementById('shopping-cart-window');
-    shoppingCartWindow.classList.add('display-unset');
-    let shoppingCartMobile = document.getElementById('shopping-cart-mobile');
-    shoppingCartMobile.classList.remove('display-none');
+    addDisplayUnset('shopping-cart-window');    // hides the element 'shopping-cart-window'
+    removeDisplayNone('shopping-cart-mobile');    // shows the element 'shopping-cart-mobile'
+}
+
+
+function addDisplayUnset(id) {    // adds display:unset to the element 'id'
+    document.getElementById(id).classList.add('display-unset');
 }
