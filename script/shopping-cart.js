@@ -165,11 +165,11 @@ function increaseAmountInCart(i) {    // increases the amount of item i in the s
 function increasePriceInCart(i) {    // increases the price of item i in cart
     let dishId = getDishId(i);    // contains the index of the related dish
     let original = getOriginal(dishId);    // contains true or false
-    (original) ? increasePriceOfOriginal(dishId) : increasePriceOfOriginal(dishId);
+    (original) ? increasePriceOfOriginal(i, dishId) : increasePriceOfUpgraded(i, dishId);
 }
 
 
-function increasePriceOfOriginal(dishId) {    // increases the price of original item in the shopping cart
+function increasePriceOfOriginal(i, dishId) {    // increases the price of original item in the shopping cart
     let price = getPrice(dishId);
     shoppingCart[i]['price'] += price;
 }
@@ -180,7 +180,7 @@ function downgradeIndex(dishId) {    // reduces the index of upgraded dish to ge
 }
 
 
-function increasePriceOfUpgraded(dishId) {    // increases the price of upgraded item in the shopping cart
+function increasePriceOfUpgraded(i, dishId) {    // increases the price of upgraded item in the shopping cart
     originalDishId = downgradeIndex(dishId);    // reduces the index of upgraded dish to get the original dish
     let priceOfItem = getPrice(originalDishId);    // contains the price of original dish
     let upcharge = getUpcharge(originalDishId);    // contains the upcharge of original dish
@@ -215,17 +215,17 @@ function decreaseAmountInCart(i) {    // decreasese the amount of item i in the 
 function decreasePriceInCart(i) {    // decreases the price of item i in the shopping cart
     let dishId = getDishId(i);    // contains the index of the related dish
     let original = getOriginal(dishId);    // contains true or false
-    (original) ? decreasePriceOfOriginal(dishId) : decreasePriceOfUpgraded(dishId);
+    (original) ? decreasePriceOfOriginal(i, dishId) : decreasePriceOfUpgraded(i, dishId);
 }
 
 
-function decreasePriceOfOriginal(dishId) {    // decreases the price of original item in the shopping cart
+function decreasePriceOfOriginal(i, dishId) {    // decreases the price of original item in the shopping cart
     let price = getPrice(dishId);
     shoppingCart[i]['price'] -= price;
 }
 
 
-function decreasePriceOfUpgraded(dishId) {    // decreases the price of upgraded item in the shopping cart
+function decreasePriceOfUpgraded(i, dishId) {    // decreases the price of upgraded item in the shopping cart
     originalDishId = downgradeIndex(dishId);    // reduces the index of upgraded dish to get the original dish
     let priceOfItem = getPrice(originalDishId);    // contains the price of original dish
     let upcharge = getUpcharge(originalDishId);    // contains the upcharge of the original dish
@@ -245,8 +245,8 @@ function deleteItem(i) {    // removes item i from the shopping cart
 function outputSubtotal() {    // outputs the subtotal in the shopping cart
     let subtotalUnformatted = calculateSubtotal();    // contains the subtotal as number
     let subtotal = subtotalUnformatted.toFixed(2);    // contains the subtotal as String number with 2 decimals
-    let output = selectOutput('subtotal');    // contains the output element 'subtotal'
-    output = subtotal.replace('.', ',');    // outputs the subtotal with comma
+    let output = getElement('subtotal');    // contains the output element 'subtotal'
+    output.innerHTML = subtotal.replace('.', ',');    // outputs the subtotal with comma
 }
 
 
@@ -262,8 +262,8 @@ function calculateSubtotal() {    // calculates the subtotal of all items in the
 function outputDeliveryCosts() {    // outputs the delivery costs in the shopping cart
     let deliveryCostsUnformatted = calculateDeliveryCosts();    // contains the delivery costs as number
     let deliveryCosts = deliveryCostsUnformatted.toFixed(2);    // contains the delivery costs as String number with 2 decimals
-    let output = selectOutput('delivery-costs');    // contains the output element 'delivery-costs'
-    output = deliveryCosts.replace('.', ',');    // outputs the delivery costs with comma
+    let output = getElement('delivery-costs');    // contains the output element 'delivery-costs'
+    output.innerHTML = deliveryCosts.replace('.', ',');    // outputs the delivery costs with comma
 }
 
 
@@ -284,8 +284,8 @@ function outputTotal() {    // outputs the total in the shopping cart
     let total = totalUnformatted.toFixed(2);    // contains the total as String number with 2 decimals
     let outputs = ['total', 'order-button-total', 'mobile-button-total'];    // contains the ids of output elements
     for (let i = 0; i < outputs.length; i++) {
-        let output = selectOutput(outputs[i]);    // contains the output element i
-        output = total.replace('.', ',');    // outputs the total with comma
+        let output = getElement(outputs[i]);    // contains the output element i
+        output.innerHTML = total.replace('.', ',');    // outputs the total with comma
     }
 }
 
@@ -303,32 +303,15 @@ function getDeliveryCosts() {    // provides the delivery costs
 }
 
 
-function sortItems() {
-    let copy = copyOfShoppingCart();
-    shoppingCart = [];
-    for (let i = 0; i < copy.length; i++) {
-        let min = dishes.length;
-        let itemId = 0;
-        for (let j = 0; j < copy.length; j++) {
-            let dishId = copy[j]['dish-id'];
-            if (dishId < min) {
-                min = dishId;
-                itemId = j;
-            }
-        }
-        shoppingCart[i] = {
-            'dish-id': copy[itemId]['dish-id'],
-            'amount': copy[itemId]['amount'],
-            'title': copy[itemId]['title'],
-            'price': copy[itemId]['price']
-        }
-        copy[itemId]['dish-id'] = dishes.length;
-    }
+function sortItems() {    // sorts items in the order of dishes
+    let copy = copyOfShoppingCart();    // contains a copy of shoppingCart
+    emptyShoppingCart();
+    refillShoppingCart(copy);
 }
 
 
-function copyOfShoppingCart() {
-    let copy = [];
+function copyOfShoppingCart() {    // creates a copy of shoppingCart
+    let copy = [];    // defines the empty JSON array copy
     for (let i = 0; i < shoppingCart.length; i++) {
         copy[i] = {
             'dish-id': shoppingCart[i]['dish-id'],
@@ -337,14 +320,42 @@ function copyOfShoppingCart() {
             'price': shoppingCart[i]['price']
         };
     }
-    return copy;
+    return copy;    // returns the whole copy
 }
 
 
-function updateItemId() {
+function refillShoppingCart(copy) {    // refills the variable shoppingCart
+    for (let i = 0; i < copy.length; i++) {
+        let min = dishes.length;    // defines the current minimum index
+        let itemId = getLowestItemId(copy, min);    // contains the lowest itemID
+        shoppingCart[i] = {
+            'dish-id': copy[itemId]['dish-id'],
+            'amount': copy[itemId]['amount'],
+            'title': copy[itemId]['title'],
+            'price': copy[itemId]['price']
+        };    // adds the item i to the shopping cart
+        copy[itemId]['dish-id'] = dishes.length;    // sets the index of copied item i out of range
+    }
+}
+
+
+function getLowestItemId(copy, min) {    // provides the lowest itemId
+    let itemId = 0;
+    for (let j = 0; j < copy.length; j++) {
+        let dishId = copy[j]['dish-id'];    // contains the dishId of copied item j
+        if (dishId < min) {    // if dishId less than minimum index ...
+            min = dishId;    // set minimum index = dishID
+            itemId = j;    // set current lowest itemId
+        }
+    }
+    return itemId;    // returns final lowest index
+}
+
+
+function updateItemId() {    // updates the itemId of dishes
     for (let i = 0; i < shoppingCart.length; i++) {
-        let dishId = getDishId(i);
-        dishes[dishId]['item-id'] = i;
+        let dishId = getDishId(i);    // contains the dishId of item i
+        dishes[dishId]['item-id'] = i;    // sets itemId to related dish
     }
 }
 

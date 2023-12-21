@@ -167,8 +167,8 @@ function updateTotalPriceDialog(i) {    // updates the total price of the 'dialo
     let upcharge = setUpcharge(i);
     let totalPriceUnformatted = amount * (price + upcharge);    // contains the total price as number
     let totalPrice = totalPriceUnformatted.toFixed(2);    // contains the total price as String number with 2 decimals
-    let output = selectOutput('dialog-box-total-price');    // contains the output element 'dialog-box-total-price'
-    output = totalPrice.replace('.', ',');    // outputs total price with comma
+    let output = getElement('dialog-box-total-price');    // contains the output element 'dialog-box-total-price'
+    output.innerHTML = totalPrice.replace('.', ',');    // outputs total price with comma
 }
 
 
@@ -213,9 +213,9 @@ function increaseItemDialog(i) {    // increases the item at the dialog box
 
 
 function increaseAmountDialog() {    // increases the amount of item at the dialog box
-    let output = selectOutput('dialog-box-amount');    // contains the output element
-    let amount = +output;    // contains the amount
-    output = ++amount;    // outputs amount + 1
+    let output = getElement('dialog-box-amount');    // contains the output element
+    let amount = +output.innerHTML;    // contains the amount
+    output.innerHTML = ++amount;    // outputs amount + 1
 }
 
 
@@ -240,9 +240,9 @@ function decreaseItemDialog(i) {    // decreases the item at the dialog box
 
 
 function decreaseAmountDialog() {    // decreases the amount of item at the dialog box
-    let output = selectOutput('dialog-box-amount');    /// contains the output element
-    let amount = +output;    // contains the amount
-    output = --amount;    // outputs amount - 1
+    let output = getElement('dialog-box-amount');    /// contains the output element
+    let amount = +output.innerHTML;    // contains the amount
+    output.innerHTML = --amount;    // outputs amount - 1
 }
 
 
@@ -282,7 +282,7 @@ function addOrIncreaseItem(i) {
 function addOrIncreaseUpgradedItem(i) {    // adds or increase an upgraded item
     let index = i + 1;    // increase i to get the index of upgraded item
     let inCart = getInCart(index);    // contains true or false
-    (inCart) ? increaseUpgradedItem() : addUpgradedItem();
+    (inCart) ? increaseUpgradedItem(index) : addUpgradedItem(index);
 }
 
 
@@ -303,13 +303,13 @@ function getTotalPriceOfDialog() {    // provides the total price of item from t
 
 function addUpgradedItem(index) {    // adds an upgraded item including related settings
     let newIndex = getNewIndex();
-    addNewUpgradedItem(index);
+    addNewUpgradedItem(index, newIndex);
     setInCartTrue(index);
     setItemId(index, newIndex);
 }
 
 
-function addNewUpgradedItem(newIndex) {    // adds a new upgraded item to the shopping cart
+function addNewUpgradedItem(index, newIndex) {    // adds a new upgraded item to the shopping cart
     shoppingCart[newIndex] = {
         'dish-id': index,
         'amount': getAmountOfDialog(),
