@@ -112,7 +112,7 @@ function render() {    // renders ...
     outputSubtotal();    // value of subtotal
     outputDeliveryCosts();    // value of delivery costs
     outputTotal();    // value of total
-    hideShoppingCartMobileIf();
+    showShoppingCartMobileIf();    // shows the element 'shopping-cart-mobile' on one condition
 }
 
 
@@ -371,21 +371,21 @@ function setHeightMax(shoppingCartWindow) {    // sets height 100vh for the elem
 }
 
 
-function hideShoppingCartMobileIf() {
-    let itemAmount = shoppingCart.length;
-    if (itemAmount > 0) {
-        addDisplayFlex('shopping-cart-mobile');
-    } else {
-        removeDisplayFlex('shopping-cart-mobile');
+function showShoppingCartMobileIf() {    // shows the element 'shopping-cart-mobile' on one condition
+    let itemAmount = shoppingCart.length;    // contains the number of items in the shopping cart
+    if (itemAmount > 0) {    // if itemAmount is greater than 0 ...
+        addDisplayFlex('shopping-cart-mobile');    // show the element 'shopping-cart-mobile'
+    } else {    // else ...
+        removeDisplayFlex('shopping-cart-mobile');    // hide the element 'shopping-cart-mobile'
     }
 }
 
 
-function addDisplayFlex(id) {
+function addDisplayFlex(id) {    // adds display:flex to the element 'id'
     document.getElementById(id).classList.add('display-flex');
 }
 
 
-function removeDisplayFlex(id) {
+function removeDisplayFlex(id) {    // removes display:flex from the element 'id'
     document.getElementById(id).classList.remove('display-flex');
 }

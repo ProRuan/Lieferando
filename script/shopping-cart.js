@@ -122,11 +122,11 @@ function writeNotesAndAmount(i) {    // writes notes and amount of item i in the
 
 function setShoppingCartSections() {    // shows and hides sections of the shopping cart
     let cartEmpty = (shoppingCart.length < 1);
-    if (cartEmpty) {
+    if (cartEmpty) {    // if shoppingCart is empty ...
         removeDisplayNone('shopping-cart-guide');
         addDisplayNone('shopping-cart-item-collector');
         addDisplayNone('sum-and-order');
-    } else {
+    } else {    // shopping cart contains one or more items ...
         addDisplayNone('shopping-cart-guide');
         removeDisplayNone('shopping-cart-item-collector');
         removeDisplayNone('sum-and-order');
@@ -361,7 +361,7 @@ function updateItemId() {    // updates the itemId of dishes
 
 
 function showShoppingCart() {
-    addOverflowYResponsive('body');
+    addOverflowYResponsive('body');    // stops scrolling in y direction
     removeDisplayUnset('shopping-cart-window');    // shows the element 'shopping-cart-window'
     addDisplayNone('shopping-cart-mobile');    // hides the element 'shopping-cart-mobile'
 }
@@ -372,13 +372,13 @@ function removeDisplayUnset(id) {    // removes display:unset to the element 'id
 }
 
 
-function addOverflowYResponsive(id) {
+function addOverflowYResponsive(id) {    // adds overflow-y:hidden to the element 'id'
     document.getElementById(id).classList.add('overflowY-responsive');
 }
 
 
 function hideShoppingCart() {
-    removeOverflowYResponsive('body');
+    removeOverflowYResponsive('body');    // releases body for scrolling in y direction
     addDisplayUnset('shopping-cart-window');    // hides the element 'shopping-cart-window'
     removeDisplayNone('shopping-cart-mobile');    // shows the element 'shopping-cart-mobile'
 }
@@ -389,6 +389,6 @@ function addDisplayUnset(id) {    // adds display:unset to the element 'id'
 }
 
 
-function removeOverflowYResponsive(id) {
+function removeOverflowYResponsive(id) {    // removes overflow-y:hidden from the element 'id'
     document.getElementById(id).classList.remove('overflowY-responsive');
 }
