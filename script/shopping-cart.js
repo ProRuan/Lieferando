@@ -361,43 +361,68 @@ function updateItemId() {    // updates the itemId of dishes
 
 
 window.onscroll = function () {
-    let maxWidth = body.scrollWidth;
-    let shoppingCartWindow = document.getElementById('shopping-cart-window');
-    if (maxWidth > 1024) {
-        let heightWindow = window.innerHeight;
-        let heightBody = body.scrollHeight;
-        let heightHeader = 72;
-        let heightFooter = 128;
-        let maxScrollHeight = heightBody - heightWindow;
-        if (scrollY > maxScrollHeight - heightFooter) {
-            let delta = scrollY - (maxScrollHeight - heightFooter);
-            let newHeight = heightWindow - delta;
-            let output = newHeight.toString() + "px";
-            shoppingCartWindow.style.height = output;
-            calculateHeight(newHeight);
-        } else if (scrollY > heightHeader) {
-            shoppingCartWindow.style.height = "100vh";
-            let element = document.getElementById('shopping-cart-item-collector');
-            element.style.height = "calc(100vh - 328px)";
-        } else {
-            let delta = heightHeader - scrollY;
-            let newHeight = heightWindow - delta;
-            let output = newHeight.toString() + "px";
-            shoppingCartWindow.style.height = output;
-            calculateHeight(newHeight);
-        }
+    let shoppingCartWindow = getElement('shopping-cart-window');
+    let maxScrollWidth = body.scrollWidth;
+    if (maxScrollWidth > 1024) {
+        updateHeightShoppingCart(shoppingCartWindow);
     } else {
-        shoppingCartWindow.style.height = "100vh";    // notwendig? - nein!
+        shoppingCartWindow.style.height = "100vh";
     }
 }
 
 
+function updateHeightShoppingCart(shoppingCartWindow) {
+    let heightBody = body.scrollHeight;
+    let heightWindow = window.innerHeight;
+    let maxScrollHeight = heightBody - heightWindow;
+    let heightHeader = 72;
+    let heightFooter = 128;
+    if (scrollY > maxScrollHeight - heightFooter) {
+        updateHeightShoppingCartAreaFooter(shoppingCartWindow);
+    } else if (scrollY > heightHeader) {
+        updateHeightShoppingCartAreaContent(shoppingCartWindow);
+    } else {
+        updateHeightShoppingCartAreaHeader(shoppingCartWindow);
+    }
+}
 
-function calculateHeight(newHeight) {
-    let element = document.getElementById('shopping-cart-item-collector');
+
+function updateHeightShoppingCartAreaFooter(shoppingCartWindow) {
+    let heightBody = body.scrollHeight;
+    let heightWindow = window.innerHeight;
+    let maxScrollHeight = heightBody - heightWindow;
+    let heightFooter = 128;
+    let delta = scrollY - (maxScrollHeight - heightFooter);
+    let newHeight = heightWindow - delta;
+    let output = newHeight.toString() + "px";
+    shoppingCartWindow.style.height = output;
+    calculateHeightItemCollector(newHeight);
+}
+
+
+function calculateHeightItemCollector(newHeight) {
+    let element = getElement('shopping-cart-item-collector');
     let heightElement = newHeight - 328;
-    let output = heightElement.toString() + "px";
-    element.style.height = output;
+    let newValue = heightElement.toString() + "px";
+    element.style.height = newValue;
+}
+
+
+function updateHeightShoppingCartAreaContent(shoppingCartWindow) {
+    shoppingCartWindow.style.height = "100vh";
+    let element = document.getElementById('shopping-cart-item-collector');
+    element.style.height = "calc(100vh - 328px)";
+}
+
+
+function updateHeightShoppingCartAreaHeader(shoppingCartWindow) {
+    let heightWindow = window.innerHeight;
+    let heightHeader = 72;
+    let delta = heightHeader - scrollY;
+    let newHeight = heightWindow - delta;
+    let newValue = newHeight.toString() + "px";
+    shoppingCartWindow.style.height = newValue;
+    calculateHeightItemCollector(newHeight);
 }
 
 
