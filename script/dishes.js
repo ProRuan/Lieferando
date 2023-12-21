@@ -112,7 +112,7 @@ function render() {    // renders ...
     outputSubtotal();    // value of subtotal
     outputDeliveryCosts();    // value of delivery costs
     outputTotal();    // value of total
-    showShoppingCartMobileIf();
+    hideShoppingCartMobileIf();
 }
 
 
@@ -368,4 +368,24 @@ function updateHeightShoppingCartAreaHeader(shoppingCartWindow) {    // updates 
 
 function setHeightMax(shoppingCartWindow) {    // sets height 100vh for the element 'shopping-cart-window'
     shoppingCartWindow.style.height = "100vh";
+}
+
+
+function hideShoppingCartMobileIf() {
+    let itemAmount = shoppingCart.length;
+    if (itemAmount > 0) {
+        addDisplayFlex('shopping-cart-mobile');
+    } else {
+        removeDisplayFlex('shopping-cart-mobile');
+    }
+}
+
+
+function addDisplayFlex(id) {
+    document.getElementById(id).classList.add('display-flex');
+}
+
+
+function removeDisplayFlex(id) {
+    document.getElementById(id).classList.remove('display-flex');
 }

@@ -123,9 +123,9 @@ function writeNotesAndAmount(i) {    // writes notes and amount of item i in the
 function setShoppingCartSections() {    // shows and hides sections of the shopping cart
     let cartEmpty = (shoppingCart.length < 1);
     if (cartEmpty) {
+        removeDisplayNone('shopping-cart-guide');
         addDisplayNone('shopping-cart-item-collector');
         addDisplayNone('sum-and-order');
-        removeDisplayNone('shopping-cart-guide');
     } else {
         addDisplayNone('shopping-cart-guide');
         removeDisplayNone('shopping-cart-item-collector');
@@ -361,6 +361,7 @@ function updateItemId() {    // updates the itemId of dishes
 
 
 function showShoppingCart() {
+    addOverflowYResponsive('body');
     removeDisplayUnset('shopping-cart-window');    // shows the element 'shopping-cart-window'
     addDisplayNone('shopping-cart-mobile');    // hides the element 'shopping-cart-mobile'
 }
@@ -371,7 +372,13 @@ function removeDisplayUnset(id) {    // removes display:unset to the element 'id
 }
 
 
+function addOverflowYResponsive(id) {
+    document.getElementById(id).classList.add('overflowY-responsive');
+}
+
+
 function hideShoppingCart() {
+    removeOverflowYResponsive('body');
     addDisplayUnset('shopping-cart-window');    // hides the element 'shopping-cart-window'
     removeDisplayNone('shopping-cart-mobile');    // shows the element 'shopping-cart-mobile'
 }
@@ -382,11 +389,6 @@ function addDisplayUnset(id) {    // adds display:unset to the element 'id'
 }
 
 
-function showShoppingCartMobileIf() {
-    let subtotal = getSubtotal();
-    if (subtotal < 0.01) {
-        addDisplayNone('shopping-cart-mobile');
-    } else {
-        removeDisplayNone('shopping-cart-mobile');
-    }
+function removeOverflowYResponsive(id) {
+    document.getElementById(id).classList.remove('overflowY-responsive');
 }

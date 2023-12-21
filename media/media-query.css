@@ -43,10 +43,14 @@
     /* shopping cart */
     .shopping-cart-window {
        width: 100%;
-       height: 100vh;
+       height: 100vh !important;
        background-color: white;
        position: fixed;
        left: 0;
+    }
+
+    .shopping-cart-item-collector {
+        height: calc(100vh - 328px) !important;
     }
 
     .display-unset {
@@ -55,6 +59,14 @@
 
     .shopping-cart-hide-button {
         display: unset;
+    }
+
+    .display-flex {
+        display: flex;
+    }
+
+    .overflowY-responsive {
+        overflow-y: hidden;
     }
 
     /* dialog */
