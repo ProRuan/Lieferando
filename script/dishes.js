@@ -319,8 +319,8 @@ function updateHeightShoppingCart(shoppingCartWindow) {    // updates the height
     let heightBody = body.scrollHeight;    // contains the scroll height of 'body'
     let heightWindow = window.innerHeight;    // contains the inner height of window
     let maxScrollHeight = heightBody - heightWindow;    // contains the difference of body height and window height
-    let heightHeader = getElement('header').offsetHeight;    // contains the offset height of 'header'
-    let heightFooter = getElement('footer').offsetHeight;    // contains the offset height of 'footer'
+    let heightHeader = header.offsetHeight;    // contains the offset height of 'header'
+    let heightFooter = footer.offsetHeight;    // contains the offset height of 'footer'
     if (scrollY > maxScrollHeight - heightFooter) {    // if scrolling reaches the footer area ...
         updateHeightShoppingCartAreaFooter(shoppingCartWindow);
     } else if (scrollY > heightHeader) {    // if scrolling reaches the 'content' area ...

@@ -144,7 +144,7 @@ function removeDisplayNone(id) {    // removes display:none from an element
 }
 
 
-function increaseItemInCart(i) {
+function increaseItemInCart(i) {    // increases item i in the shopping cart
     increaseAmountInCart(i);
     increasePriceInCart(i);
     saveAndRender();
@@ -189,7 +189,7 @@ function increasePriceOfUpgraded(i, dishId) {    // increases the price of upgra
 }
 
 
-function decreaseItemInCart(i) {    // decreases the price of item i in the shopping cart
+function decreaseItemInCart(i) {    // decreases item i in the shopping cart
     decreaseOrDeleteItem(i);
     updateItemId();
     saveAndRender();

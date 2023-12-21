@@ -17,8 +17,8 @@
 </head>
 
 <body id="body" onload="render()">
-    <dialog id="dialog" class="dialog-background">
-        <section id="dialog-box" class="dialog-box">
+    <dialog id="dialog" class="dialog-background" onclick="closeDialog()">
+        <section id="dialog-box" class="dialog-box" onclick="stop(event)">
             <!-- rendering content of dialog box -->
         </section>
     </dialog>

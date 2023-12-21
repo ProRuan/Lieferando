@@ -1,7 +1,3 @@
-// Variables
-let counter = 0;    // needed for the function closeDialogIf()
-
-
 // Functions
 function showDialog(i) {    // shows the dialog with the content of dish card i
     openDialog();
@@ -40,19 +36,25 @@ function fillDialogBox(i, dialogBox) {    // fills dialogBox with the content of
 function writeDialogBoxHeader(i) {    // writes the header of dialog box
     return `
         <div class="dialog-box-header display-between-center">
+            <output id="hidden-index" hidden>${i}</output>
             <h2 class="dialog-box-headline">${getTitle(i)}</h2>
-            <button id="dialog-box-close-button" class="dialog-box-close-button" onclick="closeDialog(${i})"></button>
+            <button id="dialog-box-close-button" class="dialog-box-close-button" onclick="closeDialog()"></button>
         </div>
     `;
 }
 
 
-function closeDialog(i) {    // closes the dialog
+function closeDialog() {    // closes the dialog
     resetDialogContent();
-    resetOptionSelected(i);
+    resetOptionSelected();
     removeOverflowYHidden();
     let dialog = getElement('dialog');
     dialog.close();
+}
+
+
+function stop(event) {    // stops the following onclick function 'closeDialog()'
+    event.stopPropagation();
 }
 
 
@@ -62,25 +64,23 @@ function resetDialogContent() {    // resets the dialog's content
 }
 
 
-function resetOptionSelected(i) {    // resets 'option-selected' of dish i
-    dishes[i]['option-selected'] = false;
+function resetOptionSelected() {    // resets 'option-selected' of dish i
+    let index = getHiddenIndex();    // contains hidden index
+    if (index > -1) {    // if index greater then -1
+        dishes[index]['option-selected'] = false;    // reset 'option-selected' of dish i
+    }
+}
+
+
+function getHiddenIndex() {    // provides the hidden index of dish i
+    let index = getElement('hidden-index');    // contains the element 'hidden-index'
+    return +index.innerHTML;    // returns the (hidden) index of as number
 }
 
 
 function removeOverflowYHidden() {    // removes overflow-y:hidden from the element 'body'
     body.classList.remove('overflowY-hidden');
 }
-
-
-function closeDialogIf(id) {    // closes the dialog on one condition
-    if (id == 'dialog-box') {    // if the clicked element is 'dialog-box' ...
-        counter = 3;    // increase counter to keep the dialog box open
-    }
-    if (--counter < 1) {    // if counter equals 0 ...
-        closeDialog();    // close dialog
-        counter = 1;    // set counter = 1
-    }
-}    // funktioniert nicht mehr!!!
 
 
 function writeDialogBoxContent(i) {    // writes the content of dialog box
@@ -385,6 +385,7 @@ function showFinalDialog() {    // shows the final dialog
 function writeOrderConfirmation(dialogBox) {    // writes the order confirmation at the dialog box
     dialogBox.innerHTML = `
         <div class="dialog-box-header">
+        <output id="hidden-index" hidden>-1</output>
             <h2 class="dialog-box-headline ta-center">Vielen Dank, dass Sie Ruanizer nutzen!</h2>
         </div>
         <div class="dialog-box-description">
