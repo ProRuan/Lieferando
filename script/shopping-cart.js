@@ -97,33 +97,31 @@ function setShoppingCartSections() {    // shows and hides sections of the shopp
 
 
 function increaseItemInCart(i) {    // increases item i in the shopping cart
-    increaseAmountInCart(i);
+    increaseJSONIndexValue(shoppingCart, i, 'amount', 1);
     increasePriceInCart(i);
     saveAndRender();
 }
 
 
-function saveAndRender() {
-    saveAll();
-    render();
-}
-
-
-function increaseAmountInCart(i) {    // increases the amount of item i in the shopping cart
-    shoppingCart[i]['amount']++;    // amount + 1
-}
-
-
 function increasePriceInCart(i) {    // increases the price of item i in cart
-    let dishId = getDishId(i);    // contains the index of the related dish
-    let original = getOriginal(dishId);    // contains true or false
+    let dishId = getJSONIndexValue(shoppingCart, i, 'dish-id');    // contains the index of the related dish
+    let original = getJSONIndexValue(dishes, dishId, 'original');    // contains true or false
     (original) ? increasePriceOfOriginal(i, dishId) : increasePriceOfUpgraded(i, dishId);
 }
 
 
 function increasePriceOfOriginal(i, dishId) {    // increases the price of original item in the shopping cart
-    let price = getPrice(dishId);
-    shoppingCart[i]['price'] += price;
+    let price = getJSONIndexValue(dishes, dishId, 'price');
+    increaseJSONIndexValue(shoppingCart, i, 'price', price);
+}
+
+
+function increasePriceOfUpgraded(i, dishId) {    // increases the price of upgraded item in the shopping cart
+    originalDishId = downgradeIndex(dishId);    // reduces the index of upgraded dish to get the original dish
+    let priceOfItem = getJSONIndexValue(dishes, originalDishId, 'price');
+    let upcharge = getJSONIndexValue(dishes, originalDishId, 'upcharge');
+    let totalPrice = priceOfItem + upcharge;        // contains the adding total price of item i
+    increaseJSONIndexValue(shoppingCart, i, 'price', totalPrice);
 }
 
 
@@ -132,12 +130,9 @@ function downgradeIndex(dishId) {    // reduces the index of upgraded dish to ge
 }
 
 
-function increasePriceOfUpgraded(i, dishId) {    // increases the price of upgraded item in the shopping cart
-    originalDishId = downgradeIndex(dishId);    // reduces the index of upgraded dish to get the original dish
-    let priceOfItem = getPrice(originalDishId);    // contains the price of original dish
-    let upcharge = getUpcharge(originalDishId);    // contains the upcharge of original dish
-    let totalPrice = priceOfItem + upcharge;        // contains the adding total price of item i
-    shoppingCart[i]['price'] += totalPrice;    // increases the total price of item i
+function saveAndRender() {
+    saveAll();
+    render();
 }
 
 
@@ -344,6 +339,7 @@ function addDisplayUnset(id) {    // adds display:unset to the element 'id'
 function removeOverflowYResponsive(id) {    // removes overflow-y:hidden from the element 'id'
     document.getElementById(id).classList.remove('overflowY-responsive');
 }
+
 
 
 
