@@ -3,7 +3,15 @@ let shoppingCart = [];    // contains all selected dishes
 
 
 // Functions
-load(shoppingCart, 'shoppingCart');
+loadShoppingCart();
+
+
+function loadShoppingCart() {    // loads the variabel shoppingCart
+    let shopingCartAsText = localStorage.getItem('shoppingCart');    // gets the item 'shoppingCart'
+    if (shopingCartAsText) {    // if text ...
+        shoppingCart = JSON.parse(shopingCartAsText);    // parse the String to the variable shoppingCart
+    }
+}
 
 
 function showItems() {    // shows all items in the shopping cart
@@ -11,7 +19,7 @@ function showItems() {    // shows all items in the shopping cart
     itemCollector.innerHTML = '';    // empties itemCollector
     fillItemCollector(itemCollector);
     setShoppingCartSections();
-    save(shoppingCart, 'shoppingCart');
+    save();
 }
 
 
@@ -34,10 +42,9 @@ function writeItem(i) {    // writes the item i in the shopping cart
 
 
 function writeTableTr(i) {    // writes the table row i in the shopping cart
-    let amount = getJSONIndexValue(shoppingCart, i, 'amount');
     return `
         <tr>
-            <td id="item-index-${i}" class="item-index fw-700">${amount}</td>
+            <td id="item-index-${i}" class="item-index fw-700">${getAmountInCart(i)}</td>
             <td class="column-start-start item-details">
                 ${writeTitleAndPrice(i)}
                 ${writeOption(i)}
@@ -48,33 +55,64 @@ function writeTableTr(i) {    // writes the table row i in the shopping cart
 }
 
 
+function getAmountInCart(i) {    // provides the amount of dish i in the shopping cart
+    return shoppingCart[i]['amount'];
+}
+
+
 function writeTitleAndPrice(i) {    // writes title and price of dish i in the shopping cart
-    let title = getJSONIndexValue(shoppingCart, i, 'title');
-    let price = getDecimal(shoppingCart, i, 'price');
     return `
         <div id="item-title-and-price-${i}" class="width-100 display-between-center gap-20">
-            <div id="item-title-${i}" class="added-item-title fw-700">${title}</div>
-            <output id="item-price-${i}" class="item-price fw-700">${price} €</output>
+            <div id="item-title-${i}" class="added-item-title fw-700">${getTitleOfDish(i)}</div>
+            <output id="item-price-${i}" class="item-price fw-700">${getDecimalPriceInCart(i)} €</output>
         </div>
     `;
 }
 
 
+function getTitleOfDish(i) {    // provides the title of dish i
+    let dishId = getDishId(i);
+    return dishes[dishId]['title'];
+}
+
+
+function getDishId(i) {    // provides the index of dish for this item
+    return shoppingCart[i]['dish-id'];
+}
+
+
+function getDecimalPriceInCart(i) {    // provides the price of item i as formatted String
+    let priceUnformatted = getPriceInCart(i);    // contains the price as number
+    let price = priceUnformatted.toFixed(2);    // contains the price as String number with 2 decimals
+    return price.replace('.', ',');    // outputs the price with comma
+}
+
+
+function getPriceInCart(i) {    // provides the price of item i in the shopping cart
+    return shoppingCart[i]['price'];
+}
+
+
 function writeOption(i) {    // writes the option of item i in the shopping cart
     return `
-        <div id="added-option-${i}" class="added-options">${i}</div>
+        <div id="added-option-${i}" class="added-options">${getOptionOfDish(i)}</div>
     `;
 }
 
 
+function getOptionOfDish(i) {    // nicht in Verwendung
+    let dishId = getDishId(i);
+    return dishes[dishId]['option'];
+}
+
+
 function writeNotesAndAmount(i) {    // writes notes and amount of item i in the shopping cart
-    let amount = getJSONIndexValue(shoppingCart, i, 'amount');
     return `
         <div class="mt-8 width-100 display-between-center gap-20">
             <div class="item-notes">Anmerkungen hinzufügen</div>
             <div class="display-between-center">
                 <button id="menu-plus-button-${i}" class="button" onclick="increaseItemInCart(${i})">+</button>
-                <output id="item-amount-${i}" class="item-amount">${amount}</output>
+                <output id="item-amount-${i}" class="item-amount">${getAmountInCart(i)}</output>
                 <button id="menu-minus-button-${i}" class="button" onclick="decreaseItemInCart(${i})">-</button>
             </div>
         </div>
@@ -85,14 +123,24 @@ function writeNotesAndAmount(i) {    // writes notes and amount of item i in the
 function setShoppingCartSections() {    // shows and hides sections of the shopping cart
     let cartEmpty = (shoppingCart.length < 1);
     if (cartEmpty) {    // if shoppingCart is empty ...
-        setClassOnCommand('shopping-cart-guide', 'display-none', 'remove');
-        setClassOnCommand('shopping-cart-item-collector', 'display-none', 'add');
-        setClassOnCommand('sum-and-order', 'display-none', 'add');
+        removeDisplayNone('shopping-cart-guide');
+        addDisplayNone('shopping-cart-item-collector');
+        addDisplayNone('sum-and-order');
     } else {    // shopping cart contains one or more items ...
-        setClassOnCommand('shopping-cart-guide', 'display-none', 'add');
-        setClassOnCommand('shopping-cart-item-collector', 'display-none', 'remove');
-        setClassOnCommand('sum-and-order', 'display-none', 'remove');
+        addDisplayNone('shopping-cart-guide');
+        removeDisplayNone('shopping-cart-item-collector');
+        removeDisplayNone('sum-and-order');
     }
+}
+
+
+function addDisplayNone(id) {    // adds display:none to an element
+    document.getElementById(id).classList.add('display-none');
+}
+
+
+function removeDisplayNone(id) {    // removes display:none from an element
+    document.getElementById(id).classList.remove('display-none');
 }
 
 
@@ -104,7 +152,7 @@ function increaseItemInCart(i) {    // increases item i in the shopping cart
 
 
 function saveAndRender() {
-    saveAll();
+    save();
     render();
 }
 
@@ -343,12 +391,4 @@ function addDisplayUnset(id) {    // adds display:unset to the element 'id'
 
 function removeOverflowYResponsive(id) {    // removes overflow-y:hidden from the element 'id'
     document.getElementById(id).classList.remove('overflowY-responsive');
-}
-
-
-
-
-function getJSONIndexValueByMaster(variable, index, key, master, primary) {
-    let dishId = getJSONIndexValue(variable, index, key);
-    return getJSONIndexValue(master, dishId, primary);
 }
