@@ -144,9 +144,9 @@ function decreaseItemInCart(i) {    // decreases item i in the shopping cart
 
 
 function decreaseOrDeleteItem(i) {    // decreases or delete item i in the shopping cart
-    let amount = getAmountInCart(i);    // contains the amount of item i
+    let amount = getJSONIndexValue(shoppingCart, i, 'amount');    // contains the amount of item i
     if (amount > 1) {    // if the amount is greater than 1 ...
-        decreaseAmountInCart(i);    // decrease amount of item i
+        increaseJSONIndexValue(shoppingCart, i, 'amount', -1);
         decreasePriceInCart(i);    // decrease price of item i
     } else {    // else ...
         deleteItem(i);    // delete item i
@@ -154,36 +154,31 @@ function decreaseOrDeleteItem(i) {    // decreases or delete item i in the shopp
 }
 
 
-function decreaseAmountInCart(i) {    // decreasese the amount of item i in the shopping cart
-    shoppingCart[i]['amount']--;    // amount - 1
-}
-
-
 function decreasePriceInCart(i) {    // decreases the price of item i in the shopping cart
-    let dishId = getDishId(i);    // contains the index of the related dish
-    let original = getOriginal(dishId);    // contains true or false
+    let dishId = getJSONIndexValue(shoppingCart, i, 'dish-id');    // contains the index of the related dish
+    let original = getJSONIndexValue(dishes, dishId, 'original');    // contains true or false
     (original) ? decreasePriceOfOriginal(i, dishId) : decreasePriceOfUpgraded(i, dishId);
 }
 
 
 function decreasePriceOfOriginal(i, dishId) {    // decreases the price of original item in the shopping cart
-    let price = getPrice(dishId);
-    shoppingCart[i]['price'] -= price;
+    let price = getJSONIndexValue(dishes, dishId, 'price');
+    increaseJSONIndexValue(shoppingCart, i, 'price', price);
 }
 
 
 function decreasePriceOfUpgraded(i, dishId) {    // decreases the price of upgraded item in the shopping cart
     originalDishId = downgradeIndex(dishId);    // reduces the index of upgraded dish to get the original dish
-    let priceOfItem = getPrice(originalDishId);    // contains the price of original dish
-    let upcharge = getUpcharge(originalDishId);    // contains the upcharge of the original dish
+    let priceOfItem = getJSONIndexValue(dishes, originalDishId, 'price');
+    let upcharge = getJSONIndexValue(dishes, originalDishId, 'upcharge');
     let totalPrice = priceOfItem + upcharge;    // contains the adding total price of item i
     shoppingCart[i]['price'] -= totalPrice;    // decreases the total price of item i
 }
 
 
 function deleteItem(i) {    // removes item i from the shopping cart
-    let dishId = getDishId(i);    // contains the index of related dish
-    dishes[dishId]['in-cart'] = false;    // sets 'in-cart' of related dish to false
+    let dishId = getJSONIndexValue(shoppingCart, i, 'dish-id');    // contains the index of related dish
+    setJSONIndexValue(dishes, dishId, 'in-cart', false);
     delete dishes[dishId]['item-id'];    // deletes 'item-id' of related dish
     shoppingCart.splice(i, 1);    // removes the item i from the shopping cart
 }
