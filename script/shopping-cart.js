@@ -138,7 +138,6 @@ function saveAndRender() {
 
 function decreaseItemInCart(i) {    // decreases item i in the shopping cart
     decreaseOrDeleteItem(i);
-    updateItemId();
     saveAndRender();
 }
 
@@ -150,6 +149,7 @@ function decreaseOrDeleteItem(i) {    // decreases or delete item i in the shopp
         decreasePriceInCart(i);    // decrease price of item i
     } else {    // else ...
         deleteItem(i);    // delete item i
+        updateItemId();
     }
 }
 
@@ -163,7 +163,7 @@ function decreasePriceInCart(i) {    // decreases the price of item i in the sho
 
 function decreasePriceOfOriginal(i, dishId) {    // decreases the price of original item in the shopping cart
     let price = getJSONIndexValue(dishes, dishId, 'price');
-    increaseJSONIndexValue(shoppingCart, i, 'price', price);
+    increaseJSONIndexValue(shoppingCart, i, 'price', -price);
 }
 
 
@@ -172,174 +172,162 @@ function decreasePriceOfUpgraded(i, dishId) {    // decreases the price of upgra
     let priceOfItem = getJSONIndexValue(dishes, originalDishId, 'price');
     let upcharge = getJSONIndexValue(dishes, originalDishId, 'upcharge');
     let totalPrice = priceOfItem + upcharge;    // contains the adding total price of item i
-    shoppingCart[i]['price'] -= totalPrice;    // decreases the total price of item i
+    increaseJSONIndexValue(shoppingCart, i, 'price', -totalPrice);
 }
 
 
 function deleteItem(i) {    // removes item i from the shopping cart
     let dishId = getJSONIndexValue(shoppingCart, i, 'dish-id');    // contains the index of related dish
     setJSONIndexValue(dishes, dishId, 'in-cart', false);
-    delete dishes[dishId]['item-id'];    // deletes 'item-id' of related dish
-    shoppingCart.splice(i, 1);    // removes the item i from the shopping cart
+    deleteJSONObjectValue(dishes, dishId, 'item-id');
+    deleteJSONObject(shoppingCart, i, 1);
+}
+
+
+function deleteJSONObjectValue(variable, index, key) {
+    delete variable[index][key];
+}
+
+
+function deleteJSONObject(variable, index, value) {
+    variable.splice(index, value);
 }
 
 
 function outputSubtotal() {    // outputs the subtotal in the shopping cart
-    let subtotalUnformatted = calculateSubtotal();    // contains the subtotal as number
-    let subtotal = subtotalUnformatted.toFixed(2);    // contains the subtotal as String number with 2 decimals
-    let output = getElement('subtotal');    // contains the output element 'subtotal'
-    output.innerHTML = subtotal.replace('.', ',');    // outputs the subtotal with comma
+    let subtotal = calculateSubtotal();
+    let subtotalAsDecimal = formatAsDecimal(subtotal);
+    outputValue('subtotal', subtotalAsDecimal);
 }
 
 
 function calculateSubtotal() {    // calculates the subtotal of all items in the shopping cart
     let subtotal = 0;
     for (let i = 0; i < shoppingCart.length; i++) {
-        subtotal += getPriceInCart(i);
+        subtotal += getJSONIndexValue(shoppingCart, i, 'price');
     }
     return subtotal;
 }
 
 
+function formatAsDecimal(number) {
+    return number.toFixed(2).replace('.', ',');
+}
+
+
+function outputValue(id, decimal) {
+    document.getElementById(id).innerHTML = decimal;
+}
+
+
 function outputDeliveryCosts() {    // outputs the delivery costs in the shopping cart
-    let deliveryCostsUnformatted = calculateDeliveryCosts();    // contains the delivery costs as number
-    let deliveryCosts = deliveryCostsUnformatted.toFixed(2);    // contains the delivery costs as String number with 2 decimals
-    let output = getElement('delivery-costs');    // contains the output element 'delivery-costs'
-    output.innerHTML = deliveryCosts.replace('.', ',');    // outputs the delivery costs with comma
+    let deliveryCosts = calculateDeliveryCosts();
+    let deliveryCostsAsDecimal = formatAsDecimal(deliveryCosts);
+    outputValue('delivery-costs', deliveryCostsAsDecimal);
 }
 
 
 function calculateDeliveryCosts() {    // calculates the delivery costs of the shopping cart
-    let subtotal = getSubtotal();    // contains the subtotal
+    let subtotal = getUnformattedNumber('subtotal');    // contains the subtotal
     return (subtotal < 20) ? 3.90 : 0;    // true: 3.90 | false: 0
 }
 
 
-function getSubtotal() {    // provides the subtotal from the output element 'subtotal'
-    let subtotalFormatted = selectOutput('subtotal');    // contains the subtotal as String number
-    return Number(subtotalFormatted.replace(',', '.'));    // returns the subtotal as number
+function getUnformattedNumber(id) {
+    let numberFormatted = selectOutput(id);
+    return Number(numberFormatted.replace(',', '.'));
 }
 
 
 function outputTotal() {    // outputs the total in the shopping cart
-    let totalUnformatted = calculateTotal();    // contains the total as number
-    let total = totalUnformatted.toFixed(2);    // contains the total as String number with 2 decimals
-    let outputs = ['total', 'order-button-total', 'mobile-button-total'];    // contains the ids of output elements
+    let total = calculateTotal();
+    let totalAsDecimal = formatAsDecimal(total);
+    let ids = ['total', 'order-button-total', 'mobile-button-total'];    // contains the ids of output elements
     for (let i = 0; i < outputs.length; i++) {
-        let output = getElement(outputs[i]);    // contains the output element i
-        output.innerHTML = total.replace('.', ',');    // outputs the total with comma
+        let id = ids[i];
+        outputValue(id, totalAsDecimal);
     }
 }
 
 
 function calculateTotal() {    // calculates the total of the shopping cart
-    let subtotal = getSubtotal();    // contains the subtotal
-    let deliveryCosts = getDeliveryCosts();    // contains the delivery costs
+    let subtotal = getUnformattedNumber('subtotal');    // contains the subtotal
+    let deliveryCosts = getUnformattedNumber('delivery-costs');    // contains the delivery costs
     return subtotal + deliveryCosts;    // returns the total
 }
 
 
-function getDeliveryCosts() {    // provides the delivery costs
-    let deliveryCostsFormatted = selectOutput('delivery-costs');    // contains the delivery costs as String number
-    return Number(deliveryCostsFormatted.replace(',', '.'));    // returns the delivery costs as number
-}
-
-
 function sortItems() {    // sorts items in the order of dishes
-    let copy = copyOfShoppingCart();    // contains a copy of shoppingCart
-    emptyShoppingCart();
-    refillShoppingCart(copy);
+    let copy = copyJSON(shoppingCart);    // contains a copy of shoppingCart
+    emptyJSON(shoppingCart);
+    refillJSON(copy);
 }
 
 
-function copyOfShoppingCart() {    // creates a copy of shoppingCart
+function copyJSON(variable) {
     let copy = [];    // defines the empty JSON array copy
-    for (let i = 0; i < shoppingCart.length; i++) {
+    for (let i = 0; i < variable.length; i++) {
         copy[i] = {
-            'dish-id': shoppingCart[i]['dish-id'],
-            'amount': shoppingCart[i]['amount'],
-            'title': shoppingCart[i]['title'],
-            'price': shoppingCart[i]['price']
+            'dish-id': getJSONIndexValue(variable, i, 'dish-id'),
+            'amount': getJSONIndexValue(variable, i, 'amount'),
+            'title': getJSONIndexValue(variable, i, 'title'),
+            'price': getJSONIndexValue(variable, i, 'price')
         };
     }
     return copy;    // returns the whole copy
 }
 
 
-function refillShoppingCart(copy) {    // refills the variable shoppingCart
+function emptyJSON(variable) {
+    variable = [];
+}
+
+
+function refillJSON(variable, master, copy) {
     for (let i = 0; i < copy.length; i++) {
-        let min = dishes.length;    // defines the current minimum index
-        let itemId = getLowestItemId(copy, min);    // contains the lowest itemID
-        shoppingCart[i] = {
-            'dish-id': copy[itemId]['dish-id'],
-            'amount': copy[itemId]['amount'],
-            'title': copy[itemId]['title'],
-            'price': copy[itemId]['price']
+        let min = getJSONLength(master);
+        let lowest = getLowestIndex(copy, min);    // contains the lowest itemID
+        variable[i] = {
+            'dish-id': getJSONIndexValue(copy, lowest, 'dish-id'),
+            'amount': getJSONIndexValue(copy, lowest, 'amount'),
+            'title': getJSONIndexValue(copy, lowest, 'title'),
+            'price': getJSONIndexValue(copy, lowest, 'price')
         };    // adds the item i to the shopping cart
-        copy[itemId]['dish-id'] = dishes.length;    // sets the index of copied item i out of range
+        setJSONIndexValue(copy, lowest, 'dish-id', master.length);
     }
 }
 
 
-function getLowestItemId(copy, min) {    // provides the lowest itemId
-    let itemId = 0;
-    for (let j = 0; j < copy.length; j++) {
-        let dishId = copy[j]['dish-id'];    // contains the dishId of copied item j
+function getLowestIndex(copy, min) {    // provides the lowest itemId
+    let lowest = 0;
+    for (let i = 0; i < copy.length; i++) {
+        let dishId = getJSONIndexValue(copy, i, 'dish-id');    // contains the dishId of copied item j
         if (dishId < min) {    // if dishId less than minimum index ...
             min = dishId;    // set minimum index = dishID
-            itemId = j;    // set current lowest itemId
+            lowest = i;    // set current lowest itemId
         }
     }
-    return itemId;    // returns final lowest index
+    return lowest;    // returns final lowest index
 }
 
 
 function updateItemId() {    // updates the itemId of dishes
     for (let i = 0; i < shoppingCart.length; i++) {
-        let dishId = getDishId(i);    // contains the dishId of item i
-        dishes[dishId]['item-id'] = i;    // sets itemId to related dish
+        let dishId = getJSONIndexValue(shoppingCart, i, 'dish-id');    // contains the dishId of item i
+        setJSONIndexValue(dishes, dishId, 'item-id', i);
     }
 }
 
 
 function showShoppingCart() {
-    addOverflowYResponsive('body');    // stops scrolling in y direction
-    removeDisplayUnset('shopping-cart-window');    // shows the element 'shopping-cart-window'
-    addDisplayNone('shopping-cart-mobile');    // hides the element 'shopping-cart-mobile'
-}
-
-
-function removeDisplayUnset(id) {    // removes display:unset to the element 'id'
-    document.getElementById(id).classList.remove('display-unset');
-}
-
-
-function addOverflowYResponsive(id) {    // adds overflow-y:hidden to the element 'id'
-    document.getElementById(id).classList.add('overflowY-responsive');
+    setClassOnCommand('body', 'overflowY-responsive', 'add');
+    setClassOnCommand('shopping-cart-window', 'display-unset', 'remove');
+    setClassOnCommand('shopping-cart-mobile', 'display-none', 'add');
 }
 
 
 function hideShoppingCart() {
-    removeOverflowYResponsive('body');    // releases body for scrolling in y direction
-    addDisplayUnset('shopping-cart-window');    // hides the element 'shopping-cart-window'
-    removeDisplayNone('shopping-cart-mobile');    // shows the element 'shopping-cart-mobile'
-}
-
-
-function addDisplayUnset(id) {    // adds display:unset to the element 'id'
-    document.getElementById(id).classList.add('display-unset');
-}
-
-
-function removeOverflowYResponsive(id) {    // removes overflow-y:hidden from the element 'id'
-    document.getElementById(id).classList.remove('overflowY-responsive');
-}
-
-
-
-
-
-function getJSONIndexValueByMaster(variable, index, key, master, primary) {
-    let dishId = getJSONIndexValue(variable, index, key);
-    return getJSONIndexValue(master, dishId, primary);
+    setClassOnCommand('body', 'overflowY-responsive', 'remove');
+    setClassOnCommand('shopping-cart-window', 'display-unset', 'add');
+    setClassOnCommand('shopping-cart-mobile', 'display-none', 'remove');
 }
