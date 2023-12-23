@@ -1,19 +1,13 @@
 // Functions
 function showDialog(i) {    // shows the dialog with the content of dish card i
     openDialog();
-    addOverflowYHidden();
+    setClassOnCommand('dialog', 'overflowY-hidden', 'add');
     showDialogBox(i);
 }
 
 
 function openDialog() {    // opens the dialog
-    let dialog = getElement('dialog');
-    dialog.show();
-}
-
-
-function addOverflowYHidden() {    // adds overflow-y:hidden to the element 'body'
-    body.classList.add('overflowY-hidden');
+    document.getElementById('dialog').show();
 }
 
 
@@ -34,22 +28,14 @@ function fillDialogBox(i, dialogBox) {    // fills dialogBox with the content of
 
 
 function writeDialogBoxHeader(i) {    // writes the header of dialog box
+    let title = getJSONIndexValue(dishes, i, 'title');
     return `
         <div class="dialog-box-header display-between-center">
             <output id="hidden-index" hidden>${i}</output>
-            <h2 class="dialog-box-headline">${getTitle(i)}</h2>
+            <h2 class="dialog-box-headline">${title}</h2>
             <button id="dialog-box-close-button" class="dialog-box-close-button" onclick="closeDialog()"></button>
         </div>
     `;
-}
-
-
-function closeDialog() {    // closes the dialog
-    resetDialogContent();
-    resetOptionSelected();
-    removeOverflowYHidden();
-    let dialog = getElement('dialog');
-    dialog.close();
 }
 
 
@@ -58,29 +44,36 @@ function stop(event) {    // stops the following onclick function 'closeDialog()
 }
 
 
+function closeDialog() {    // closes the dialog
+    resetDialogContent();
+    resetOptionSelected();
+    setClassOnCommand('body', 'overflowY-hidden', 'remove');
+    hideDialog();
+}
+
+
 function resetDialogContent() {    // resets the dialog's content
-    let output = selectOutput('dialog-box');
-    output.innerHTML = '<!-- rendering content of dialog box -->';
+    let comment = '<!-- rendering content of dialog box -->';
+    outputValue('dialog-box', comment);
 }
 
 
 function resetOptionSelected() {    // resets 'option-selected' of dish i
-    let index = getHiddenIndex();    // contains hidden index
+    let index = getInnerHTMLValue('hidden-index');    // contains hidden index
     if (index > -1) {    // if index greater then -1
-        dishes[index]['option-selected'] = false;    // reset 'option-selected' of dish i
+        setJSONIndexValue(dishes, index, 'object-selected', false);
     }
-    save();
+    save(dishes, 'dishes');
 }
 
 
-function getHiddenIndex() {    // provides the hidden index of dish i
-    let index = getElement('hidden-index');    // contains the element 'hidden-index'
-    return +index.innerHTML;    // returns the (hidden) index of as number
+function getInnerHTMLValue(id) {    // provides the hidden index of dish i
+    return +document.getElementById(id).innerHTML;
 }
 
 
-function removeOverflowYHidden() {    // removes overflow-y:hidden from the element 'body'
-    body.classList.remove('overflowY-hidden');
+function hideDialog() {
+    document.getElementById('dialog').close();
 }
 
 
@@ -95,21 +88,25 @@ function writeDialogBoxContent(i) {    // writes the content of dialog box
 
 
 function writeDialogBoxDescripton(i) {    // writes the description of dialog box
+    let description = getJSONIndexValue(dishes, i, 'description');
+    let price = getDecimal(dishes, i, 'price');
     return `
         <div class="dialog-box-description column-start-start">
-            <p class="dialog-box-ingredients">${getDescription(i)}</p>
-            <span class="dialog-box-price"><output id="dialog-box-price">${getDecimalPrice(i)}</output> €</span>
+            <p class="dialog-box-ingredients">${description}</p>
+            <span class="dialog-box-price"><output id="dialog-box-price">${price}</output> €</span>
         </div>
     `;
 }
 
 
 function writeDialogBoxOption(i) {    // writes the option of dialog box
+    let option = getJSONIndexValue(dishes, i, 'option')
+    let upcharge = getDecimal(dishes, i, 'upgcharge');
     return `
         <div class="dialog-box-option">
             <div class="dialog-box-option-text">Ihre Option:</div>
             <div class="dialog-box-option-group display-between-center">
-                <span>${getOption(i)} (+ <output id="dialog-box-option-price">${getDecimalUpcharge(i)}</output> €)</span>
+                <span>${option} (+ <output id="dialog-box-option-price">${upcharge}</output> €)</span>
                 <button id="option-button" class="option-button" onclick="setOptionSelected(${(i)})">Auswählen</button>
             </div>
         </div>
@@ -117,65 +114,40 @@ function writeDialogBoxOption(i) {    // writes the option of dialog box
 }
 
 
-function getDecimalUpcharge(i) {    // provides the upcharge of dish i as formatted decimal number
-    let upchargeUnformatted = getUpcharge(i);    // contains the upcharge of dish i
-    let upcharge = upchargeUnformatted.toFixed(2);    // contains a String number with 2 decimals
-    return upcharge.replace('.', ',');    // outputs the upcharge with comma
-}
-
-
-function getUpcharge(i) {    // provides the upcharge of dish i
-    return dishes[i]['upcharge'];
-}
-
-
 function setOptionSelected(i) {    // sets 'option-selected' of dish i and related settings
-    let optionSelected = getOptionSelected(i);    // contains true or false
-    if (optionSelected) {    // if true ...
-        setOptionSettingsFalse(i);    // deselect option
-    } else {    // else ...
-        setOptionSettingsTrue(i);    // add option
-    }
-    save();
+    let optionSelected = getJSONIndexValue(dishes, i, 'option-selected');    // contains true or false
+    (optionSelected) ? setOptionSettingsFalse(i) : setOptionSettingsTrue(i);
+    save(dishes, 'dishes');
     updateTotalPriceDialog(i);
 }
 
 
-function getOptionSelected(i) {    // provides 'option-selected' from dish i
-    return dishes[i]['option-selected'];
-}
-
-
 function setOptionSettingsFalse(i) {    // sets option related settings (false)
-    dishes[i]['option-selected'] = false;
-    let button = getElement('option-button');
-    button.innerHTML = 'auswählen';
-    button.classList.remove('option-button-activated');
+    setJSONIndexValue(dishes, i, 'option-selected', false);
+    outputValue('option-button', 'auswählen');
+    setClassOnCommand('option-button', 'option-button-activated', 'remove');
 }
 
 
 function setOptionSettingsTrue(i) {    // sets option related settings (true)
-    dishes[i]['option-selected'] = true;
-    let button = getElement('option-button');
-    button.innerHTML = 'aktiviert';
-    button.classList.add('option-button-activated');
+    setJSONIndexValue(dishes, i, 'option-selected', true);
+    outputValue('option-button', 'aktiviert');
+    setClassOnCommand('option-button', 'option-button-activated', 'add');
 }
 
 
 function updateTotalPriceDialog(i) {    // updates the total price of the 'dialog-box-add-button'
-    let amount = getAmountOfDialog();
-    let price = getPrice(i);
+    let amount = getInnerHTMLValue('dialog-box-amount');
+    let price = getJSONIndexValue(dishes, i, 'price');
     let upcharge = setUpcharge(i);
-    let totalPriceUnformatted = amount * (price + upcharge);    // contains the total price as number
-    let totalPrice = totalPriceUnformatted.toFixed(2);    // contains the total price as String number with 2 decimals
-    let output = getElement('dialog-box-total-price');    // contains the output element 'dialog-box-total-price'
-    output.innerHTML = totalPrice.replace('.', ',');    // outputs total price with comma
+    let totalPrice = amount * (price + upcharge);
+    let totalPriceAsDecimal = formatAsDecimal(totalPrice);
+    outputValue('dialog-box-total-price', totalPriceAsDecimal);
 }
 
 
-function getAmountOfDialog() {    // provides the current amount of dish i at the dialog
-    return +document.getElementById('dialog-box-amount').innerHTML;
-}
+
+
 
 
 function setUpcharge(i) {    // sets the value of upcharge

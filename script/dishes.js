@@ -252,8 +252,7 @@ function writeOptionIf(i) {    // writes the option of dish card i on one condit
 
 function getDecimal(variable, index, key) {
     let number = getJSONIndexValue(variable, index, key);
-    let numberFormatted = number.toFixed(2);
-    return numberFormatted.replace('.', ',');
+    return number.toFixed(2).replace('.', ',');
 }
 
 

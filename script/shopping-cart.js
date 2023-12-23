@@ -243,7 +243,7 @@ function outputTotal() {    // outputs the total in the shopping cart
     let total = calculateTotal();
     let totalAsDecimal = formatAsDecimal(total);
     let ids = ['total', 'order-button-total', 'mobile-button-total'];    // contains the ids of output elements
-    for (let i = 0; i < outputs.length; i++) {
+    for (let i = 0; i < ids.length; i++) {
         let id = ids[i];
         outputValue(id, totalAsDecimal);
     }
