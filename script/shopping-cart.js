@@ -3,7 +3,7 @@ let shoppingCart = [];    // contains all selected dishes
 
 
 // Functions
-load(shoppingCart, 'shoppingCart');
+load('shoppingCart');
 
 
 function showItems() {    // shows all items in the shopping cart
@@ -260,7 +260,7 @@ function calculateTotal() {    // calculates the total of the shopping cart
 function sortItems() {    // sorts items in the order of dishes
     let copy = copyJSON(shoppingCart);    // contains a copy of shoppingCart
     emptyJSON(shoppingCart);
-    refillJSON(copy);
+    refillJSON(shoppingCart, dishes, copy);
 }
 
 

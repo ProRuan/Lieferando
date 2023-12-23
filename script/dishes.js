@@ -103,7 +103,7 @@ let dishes = [
 
 
 // Functions
-load(dishes, 'dishes');
+load('dishes');
 
 
 function render() {    // renders ...
@@ -159,19 +159,19 @@ function writeHeader(i) {    // writes the header of dish card i
     return `
         <div id="dish-card-header-${i}" class="display-between-center">
             <h3 id="dish-card-title-${i}" class="dish-card-title">${title}</h3>
-            <button id="add-dish-button-${i}" class="button dish-card-button" onclick="showDialogOrAddItem(${i})">+</button>
+            <button id="add-dish-button-${i}" class="button dish-card-button" onclick="showDialogOrUpdateItem(${i})">+</button>
         </div>
     `;
 }
 
 
-function showDialogOrAddItem(i) {
+function showDialogOrUpdateItem(i) {
     let optionAvailable = getJSONIndexValue(dishes, i, 'option');    // contains 'text' or false
-    (optionAvailable) ? showDialog(i) : addOrIncreaseItem(i);
+    (optionAvailable) ? showDialog(i) : updateItem(i);
 }
 
 
-function addOrIncreaseItem(i) {    // adds one item of dish i to the shopping cart
+function updateItem(i) {    // adds one item of dish i to the shopping cart
     let inCart = getJSONIndexValue(dishes, i, 'in-cart');    // contains true or false
     (inCart) ? increaseItem(i) : addItem(i);
     sortUpdateSaveRender();
@@ -179,23 +179,39 @@ function addOrIncreaseItem(i) {    // adds one item of dish i to the shopping ca
 
 
 function increaseItem(i) {
-    let itemId = getJSONIndexValue(dishes, i, 'item-id');    // contains the item-id of dish i
-    let price = getJSONIndexValue(dishes, i, 'price');    // contains the price of dish i 
+    let original = getJSONIndexValue(dishes, i, 'original');
+    (original) ? increaseOriginal(i) : increaseUpgraded(i);
+}
+
+
+function increaseOriginal(i) {
+    let price = getJSONIndexValue(dishes, i, 'price');
+    let itemId = getJSONIndexValue(dishes, i, 'item-id');
     increaseJSONIndexValue(shoppingCart, itemId, 'amount', 1);
     increaseJSONIndexValue(shoppingCart, itemId, 'price', price);
 }
 
 
-function increaseJSONIndexValue(variable, index, key, value) {
-    variable[index][key] += value;;
+function increaseUpgraded(i) {
+    let priceOriginal = getJSONIndexValue(dishes, i, 'price');
+    let upcharge = getJSONIndexValue(dishes, i, 'upcharge');
+    let price = priceOriginal + upcharge;
+    let dishId = i + 1;
+    let itemId = getJSONIndexValue(dishes, dishId, 'item-id');
+    increaseJSONIndexValue(shoppingCart, itemId, 'amount', 1);
+    increaseJSONIndexValue(shoppingCart, itemId, 'price', price);
+}
+
+
+function increaseJSONIndexValue(variable, index, key, input) {
+    variable[index][key] += input;
 }
 
 
 function addItem(i) {
-    let serial = getJSONLength(shoppingCart);    // contains the index of new item
-    addJSONObject(shoppingCart, serial, dishes, i);
-    setJSONIndexValue(dishes, i, 'in-cart', true);
-    setJSONIndexValue(dishes, i, 'item-id', serial);
+    let serial = getJSONLength(shoppingCart);
+    let original = getJSONIndexValue(dishes, i, 'original');
+    (original) ? addOriginal(i, serial) : addUpgraded(i, serial);
 }
 
 
@@ -204,18 +220,45 @@ function getJSONLength(variable) {    // provides the index of new item
 }
 
 
-function addJSONObject(variable, serial, master, index) {
+function addOriginal(i, serial) {
+    let title = getJSONIndexValue(dishes, i, 'title');
+    let price = getJSONIndexValue(dishes, i, 'price');
+    addJSONObject(shoppingCart, serial, i);
+    setJSONIndexValue(shoppingCart, serial, 'amount', 1);
+    setJSONIndexValue(shoppingCart, serial, 'title', title);
+    setJSONIndexValue(shoppingCart, serial, 'price', price);
+    setJSONIndexValue(dishes, i, 'in-cart', true);
+    setJSONIndexValue(dishes, i, 'item-id', serial);
+}
+
+
+function addJSONObject(variable, serial, primary) {
     variable[serial] = {
-        'dish-id': index,
-        'amount': 1,
-        'title': getJSONIndexValue(master, index, 'title'),
-        'price': getJSONIndexValue(master, index, 'price')
+        'dish-id': primary,
+        'amount': 0,
+        'title': 'title',
+        'price': 0
     }
 }
 
 
-function setJSONIndexValue(variable, index, key, value) {
-    variable[index][key] = value;
+function setJSONIndexValue(variable, index, key, input) {
+    variable[index][key] = input;
+}
+
+
+function addUpgraded(i, serial) {
+    let dishId = i + 1;
+    let title = getJSONIndexValue(dishes, dishId, 'title');
+    let priceOriginal = getJSONIndexValue(dishes, i, 'price');
+    let upcharge = getJSONIndexValue(dishes, i, 'upcharge');
+    let price = priceOriginal + upcharge;
+    addJSONObject(shoppingCart, serial, dishId);
+    setJSONIndexValue(shoppingCart, serial, 'amount', 1);
+    setJSONIndexValue(shoppingCart, serial, 'title', title);
+    setJSONIndexValue(shoppingCart, serial, 'price', price);
+    setJSONIndexValue(dishes, dishId, 'in-cart', true);
+    setJSONIndexValue(dishes, dishId, 'item-id', serial);
 }
 
 
@@ -273,10 +316,17 @@ function save(variable, key) {
 }
 
 
-function load(variable, key) {
-    let variableAsText = localStorage.getItem(key);
-    if (variableAsText) {
-        variable = JSON.parse(variableAsText);
+function load(key) {
+    if (key == 'dishes') {
+        let dishesAsText = localStorage.getItem(key);
+        if (dishesAsText) {
+            dishes = JSON.parse(dishesAsText);
+        }
+    } else {
+        let shoppingCartAsText = localStorage.getItem(key);
+        if (shoppingCartAsText) {
+            shoppingCart = JSON.parse(shoppingCartAsText);
+        }
     }
 }
 
