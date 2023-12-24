@@ -163,9 +163,9 @@ function writeDialogBoxFooter(i) {    // writes the footer of dialog box
     return `
         <div class="dialog-box-footer display-start-center">
             <div class="dialog-box-amount-group display-between-center">
-                <button id="dialog-box-plus-button" class="button" onclick="increaseItemDialog(${i})">+</button>
+                <button id="dialog-box-plus-button" class="button" onclick="stepUpDialog(${i})">+</button>
                 <span id="dialog-box-item-amount" class="item-amount"><output id="dialog-box-amount">1</output></span>
-                <button id="dialog-box-minus-button" class="button" disabled onclick="decreaseItemDialog(${i})">-</button>
+                <button id="dialog-box-minus-button" class="button" disabled onclick="stepDownDialog(${i})">-</button>
             </div>
             <button id="dialog-box-add-button" class="dialog-box-add-button" onclick="confirmAction(${i})">
                 <span><output id="dialog-box-total-price">${price}</output> €</span>
@@ -175,7 +175,7 @@ function writeDialogBoxFooter(i) {    // writes the footer of dialog box
 }
 
 
-function increaseItemDialog(i) {    // increases the item at the dialog box
+function stepUpDialog(i) {    // increases the item at the dialog box
     increaseAmountDialog();
     updateTotalPriceDialog(i);
     enableButtonIf('dialog-box-minus-button');
@@ -201,7 +201,7 @@ function enableButton(id) {    // enables a button
 }
 
 
-function decreaseItemDialog(i) {    // decreases the item at the dialog box
+function stepDownDialog(i) {    // decreases the item at the dialog box
     decreaseAmountDialog();
     updateTotalPriceDialog(i);
     disableButtonIf('dialog-box-minus-button');
@@ -228,73 +228,71 @@ function disableButton(id) {    // disables a button
 
 
 function confirmAction(i) {    // confirms adding or increasing of items
-    addOrIncreaseItemDialog(i);
+    updateItemDialog(i);
     closeDialog(i);
 }
 
 
-function addOrIncreaseItemDialog(i) {
-    let optionSelected = getJSONIndexValue(dishes, i, 'option-selected');    // contains true or false
-    (optionSelected) ? addOrIncreaseUpgradedItem(i) : addOrIncreaseItemOriginalItem(i);
-    sortUpdateSaveRender();
-}
+// function updateItemDialog(i) {
+//     let optionSelected = getJSONIndexValue(dishes, i, 'option-selected');
+//     (optionSelected) ? updateUpgradedDialog(i) : updateOriginalDialog(i);
+//     sortUpdateSaveRender();
+// }
 
 
-function addOrIncreaseUpgradedItem(i) {    // adds or increase an upgraded item
-    let index = i + 1;    // increase i to get the index of upgraded item
-    let inCart = getJSONIndexValue(dishes, index, 'in-cart');    // contains true or false
-    (inCart) ? increaseUpgradedItem(index) : addUpgradedItem(index);
-}
+// function updateUpgradedDialog(i) {
+//     let dishId = i + 1;
+//     let amount = getInnerHTMLValue('dialog-box-amount');
+//     let price = getUnformattedNumber('dialog-box-total-price');
+//     let inCart = getJSONIndexValue(dishes, dishId, 'in-cart');
+//     (inCart) ? increaseUpgradedDialog(dishId, amount, price) : addUpgradedDialog(dishId, amount, price);
+// }
 
 
-function increaseUpgradedItem(index) {    // increases the upgraded item in the shopping cart
-    let amount = getInnerHTMLValue('dialog-box-amount');
-    let totalPrice = getUnformattedNumber('dialog-box-total-price');
-    let itemId = getJSONIndexValue(dishes, index, 'item-id');    // contains the item index of this dish
-    setJSONIndexValue(shoppingCart, itemId, 'amount', amount);
-    setJSONIndexValue(shoppingCart, itemId, 'price', totalPrice);
-}
+// function increaseUpgradedDialog(dishId, amount, price) {
+//     let itemId = getJSONIndexValue(dishes, dishId, 'item-id');
+//     increaseJSONIndexValue(shoppingCart, itemId, 'amount', amount);
+//     increaseJSONIndexValue(shoppingCart, itemId, 'price', price);
+// }
 
 
-function addUpgradedItem(index) {    // adds an upgraded item including related settings
-    let serial = getJSONLength(shoppingCart);
-    addJSONObjectDialog(shoppingCart, serial, dishes, index);
-    setJSONIndexValue(dishes, index, 'in-cart', true);
-    setJSONIndexValue(dishes, index, 'item-id', serial);
-}
+// function addUpgradedDialog(dishId, amount, price) {
+//     let serial = getJSONLength(shoppingCart);
+//     let title = getJSONIndexValue(dishes, dishId, 'title');
+//     addJSONObject(shoppingCart, serial, dishId);
+//     setJSONIndexValue(shoppingCart, serial, 'amount', amount);
+//     setJSONIndexValue(shoppingCart, serial, 'title', title);
+//     setJSONIndexValue(shoppingCart, serial, 'price', price);
+//     setJSONIndexValue(dishes, dishId, 'in-cart', true);
+//     setJSONIndexValue(dishes, dishId, 'item-id', serial);
+// }
 
 
-function addJSONObjectDialog(variable, serial, master, index) {    // adds a new upgraded item to the shopping cart
-    variable[serial] = {
-        'dish-id': index,
-        'amount': getInnerHTMLValue('dialog-box-amount'),
-        'title': getJSONIndexValue(master, index, 'title'),
-        'price': getUnformattedNumber('dialog-box-total-price')
-    };
-}
+// function updateOriginalDialog(i) {
+//     let amount = getInnerHTMLValue('dialog-box-amount');
+//     let price = getUnformattedNumber('dialog-box-total-price');
+//     let inCart = getJSONIndexValue(dishes, i, 'in-cart');
+//     (inCart) ? increaseOriginalDialog(i, amount, price) : addOriginalDialog(i, amount, price);
+// }
 
 
-function addOrIncreaseItemOriginalItem(i) {    // adds or increase an original item
-    let inCart = getJSONIndexValue(dishes, i, 'in-cart');    // contains true or false
-    (inCart) ? increaseOriginalItem(i) : addOriginalItem(i);
-}
+// function increaseOriginalDialog(i, amount, price) {
+//     let itemId = getJSONIndexValue(dishes, i, 'item-id');
+//     increaseJSONIndexValue(shoppingCart, itemId, 'amount', amount);
+//     increaseJSONIndexValue(shoppingCart, itemId, 'price', price);
+// }
 
 
-function increaseOriginalItem(i) {    // increases the original item in the shopping cart
-    let amount = getInnerHTMLValue('dialog-box-amount');
-    let totalPrice = getUnformattedNumber('dialog-box-total-price');
-    let itemId = getJSONIndexValue(dishes, i, 'item-id');
-    increaseJSONIndexValue(shoppingCart, itemId, 'amount', amount);
-    increaseJSONIndexValue(shoppingCart, itemId, 'price', totalPrice);
-}
-
-
-function addOriginalItem(i) {    // adds an original item including related settings
-    let serial = getJSONLength(shoppingCart);
-    addJSONObjectDialog(shoppingCart, serial, dishes, i);
-    setJSONIndexValue(dishes, i, 'in-cart', true);
-    setJSONIndexValue(dishes, i, 'item-id', serial);
-}
+// function addOriginalDialog(i, amount, price) {
+//     let serial = getJSONLength(shoppingCart);
+//     let title = getJSONIndexValue(dishes, i, 'title');
+//     addJSONObject(shoppingCart, serial, i);
+//     setJSONIndexValue(shoppingCart, serial, 'amount', amount);
+//     setJSONIndexValue(shoppingCart, serial, 'title', title);
+//     setJSONIndexValue(shoppingCart, serial, 'price', price);
+//     setJSONIndexValue(dishes, i, 'in-cart', true);
+//     setJSONIndexValue(dishes, i, 'item-id', serial);
+// }
 
 
 function submitOrder() {    // opens the final dialog and resets all settings of the website
