@@ -118,7 +118,7 @@ function render() {    // renders ...
 
 function showDishes() {    // shows all available dishes of restaurant
     let dishCardCollector = getElement('dish-card-collector');    // contains the element 'dish-card-collector'
-    emptyInnerHTML(dishCardCollector);
+    dishCardCollector.innerHTML = '';
     fillDishCardCollector(dishCardCollector);
     save(dishes, 'dishes');
 }
@@ -126,11 +126,6 @@ function showDishes() {    // shows all available dishes of restaurant
 
 function getElement(id) {    // provides an element by the parameter 'id'
     return document.getElementById(id);
-}
-
-
-function emptyInnerHTML(variable) {
-    variable.innerHTML = '';
 }
 
 
@@ -172,6 +167,71 @@ function writeHeader(i) {    // writes the header of dish card i
 }
 
 
+function writeDescription(i) {    // writes the description of dish card i
+    let description = getDishesObjectValue(i, 'description');
+    let price = getDecimal(dishes, i, 'price');
+    return `
+        <div id="dish-card-description-${i}" class="column-start-start">
+            <p id="dish-card-ingredients-${i}" class="dish-card-ingredients">${description}</p>
+            ${writeOptionIf(i)}
+            <output id="dish-card-price-${i}" class="dish-card-price">${price} €</output>
+        </div>
+    `;
+}
+
+
+function getDecimal(variable, index, key) {
+    let number = getJSONObjectValue(variable, index, key);
+    return number.toFixed(2).replace('.', ',');
+}
+
+
+function getJSONObjectValue(variable, index, key) {
+    return variable[index][key];
+}
+
+
+function writeOptionIf(i) {    // writes the option of dish card i on one condition
+    let option = getDishesObjectValue(i, 'option');    // contains 'text' or false
+    if (option) {    // if true ...
+        return `<p id="dish-card-option-${i}" class="dish-card-option">Option: ${option}</p>`;    // write option of dish card i ...
+    } else {
+        return '';    // no content
+    }
+}
+
+
+function calculatePriceOfUpgraded(i) {
+    let previous = i - 1;
+    let price = getDishesObjectValue(previous, 'price');
+    let upcharge = getDishesObjectValue(previous, 'upcharge');
+    price += upcharge;
+    setDishesObjectValue(i, 'price', price);
+}
+
+
+function saveAll() {
+    save(dishes, 'dishes');
+    save(shoppingCart, 'shoppingCart');
+}
+
+
+function save(variable, key) {
+    let variableAsText = JSON.stringify(variable);
+    localStorage.setItem(key, variableAsText);
+}
+
+
+function load(key) {
+    let variableAsText = localStorage.getItem(key);
+    if (variableAsText && key == 'shoppingCart') {
+        shoppingCart = JSON.parse(variableAsText);
+    } else if (variableAsText && key == 'dishes') {
+        dishes = JSON.parse(variableAsText);
+    }
+}
+
+
 function showDialogOrUpdateItem(i) {
     let optionAvailable = getDishesObjectValue(i, 'option');
     (optionAvailable) ? showDialog(i) : updateItem(i);
@@ -201,11 +261,8 @@ function addItem(i) {
     let serial = getJSONLength(shoppingCart);
     let title = getDishesObjectValue(i, 'title');
     let price = getDishesObjectValue(i, 'price');
-    addCartObject(serial);
-    setCartObjectValue(serial, 'dish-id', i);
-    setCartObjectValue(serial, 'amount', 1);
-    setCartObjectValue(serial, 'title', title);
-    setCartObjectValue(serial, 'price', price);
+    let values = [i, 1, title, price];
+    addCartObject(serial, values);
     setDishesObjectValue(i, 'in-cart', true);
     setDishesObjectValue(i, 'item-id', serial);
 }
@@ -216,18 +273,13 @@ function getJSONLength(variable) {    // provides the index of new item
 }
 
 
-function addCartObject(serial) {
-    shoppingCart[serial] = {
-        'dish-id': 0,
-        'amount': 0,
-        'title': 'undefined',
-        'price': 0
+function addCartObject(index, values) {
+    shoppingCart[index] = {
+        'dish-id': values[0],
+        'amount': values[1],
+        'title': values[2],
+        'price': values[3]
     }
-}
-
-
-function setCartObjectValue(index, key, value) {
-    shoppingCart[index][key] = value;
 }
 
 
@@ -244,132 +296,67 @@ function sortUpdateSaveRender() {
 }
 
 
-function writeDescription(i) {    // writes the description of dish card i
-    let description = getDishesObjectValue(i, 'description');
-    let price = getDecimal(dishes, i, 'price');
-    return `
-        <div id="dish-card-description-${i}" class="column-start-start">
-            <p id="dish-card-ingredients-${i}" class="dish-card-ingredients">${description}</p>
-            ${writeOptionIf(i)}
-            <output id="dish-card-price-${i}" class="dish-card-price">${price} €</output>
-        </div>
-    `;
-}
-
-
-function writeOptionIf(i) {    // writes the option of dish card i on one condition
-    let option = getDishesObjectValue(i, 'option');    // contains 'text' or false
-    if (option) {    // if true ...
-        return `<p id="dish-card-option-${i}" class="dish-card-option">Option: ${option}</p>`;    // write option of dish card i ...
+window.onscroll = function() {
+    let hHTML = html.clientHeight;
+    let hDeltaHTML = calculateHTMLDeltaHeight();
+    let hHeader = header.offsetHeight;
+    if (scrollY > hDeltaHTML) {
+        updateShoppingCartHeightFooter(hHTML, hDeltaHTML);
+    } else if (scrollY > hHeader) {
+        updateShoppingCartHeightContent();
     } else {
-        return '';    // no content
+        updateShoppingCartHeightHeader(hHTML, hHeader);
     }
 }
 
 
-function getDecimal(variable, index, key) {
-    let number = getJSONObjectValue(variable, index, key);
-    return number.toFixed(2).replace('.', ',');
-}
-
-
-function getJSONObjectValue(variable, index, key) {
-    return variable[index][key];
-}
-
-
-function calculatePriceOfUpgraded(i) {
-    let previous = i - 1;
-    let price = getDishesObjectValue(previous, 'price');
-    let upcharge = getDishesObjectValue(previous, 'upcharge');
-    price += upcharge;
-    setDishesObjectValue(i, 'price', price);
-}
-
-
-function saveAll() {
-    save(dishes, 'dishes');
-    save(shoppingCart, 'shoppingCart');
-}
-
-
-function save(variable, key) {
-    let variableAsText = JSON.stringify(variable);
-    localStorage.setItem(key, variableAsText);
-}
-
-
-function load(key) {
-    let variableAsText = localStorage.getItem(key);
-    if (variableAsText && key == 'shoppingCart') {
-        shoppingCart = JSON.parse(variableAsText);
-    } else if (variableAsText) {
-        dishes = JSON.parse(variableAsText);
-    }
-}
-
-
-window.onscroll = function () {    // resizes height of shopping cart window during scrolling
-    let shoppingCartWindow = getElement('shopping-cart-window');    // contains the element 'shopping-cart-window'
-    updateHeightShoppingCart(shoppingCartWindow);    // updates height of shopping cart window
-}
-
-
-function updateHeightShoppingCart(shoppingCartWindow) {    // updates the height of the shopping cart window
-    let heightWindow = window.innerHeight;
-    let maxScrollHeight = calculateMaxScrollHeight(heightWindow);
-    let heightHeader = header.offsetHeight;    // contains the offset height of 'header'
-    let deltaWindow = calculateDeltaWindow(maxScrollHeight);
-    if (scrollY > deltaWindow) {    // if scrolling reaches the footer area ...
-        updateHeightShoppingCartAreaFooter(shoppingCartWindow, heightWindow, deltaWindow);
-    } else if (scrollY > heightHeader) {    // if scrolling reaches the 'content' area ...
-        updateHeightShoppingCartAreaContent(shoppingCartWindow);
-    } else {     // scrolling reaches the header area ...
-        updateHeightShoppingCartAreaHeader(shoppingCartWindow, heightWindow, heightHeader);
-    }
-}
-
-
-function calculateMaxScrollHeight(hWindow) {
-    return body.scrollHeight - hWindow;
-}
-
-
-function calculateDeltaWindow(hMaxScroll) {
+function calculateHTMLDeltaHeight() {
+    let hMaxScroll = calculateMaxScrollHeight();
     return hMaxScroll - footer.offsetHeight;
 }
 
 
-function updateHeightShoppingCartAreaFooter(shoppingCartWindow, hWindow, deltaWindow) {    // updates the height of shopping cart window in regard to the 'footer' area
-    let delta = scrollY - deltaWindow;    // contains the difference of height which is to subtract from height of shopping cart window
-    let heightUnformatted = hWindow - delta;    // contains the updated height of shopping cart
-    let newHeight = heightUnformatted.toString() + "px";    // contains the updated height as a String
-    shoppingCartWindow.style.height = newHeight;    // sets the updated height as new style
-    calculateHeightItemCollector(newHeight);
+function calculateMaxScrollHeight() {
+    return body.scrollHeight - html.clientHeight;
 }
 
 
-function calculateHeightItemCollector(newHeight) {    // calculates the new height of the element 'shopping-cart-item-collector'
-    let element = getElement('shopping-cart-item-collector');    // contains the element 'shopping-cart-item-collector'
-    let heightUnformatted = newHeight - 328;    // contains the updated height (328 is the height of other elements in the 'shopping-cart-window')
-    let newValue = heightUnformatted.toString() + "px";    // contains the updated height as String
-    element.style.height = newValue;    // sets the updated height as new style
+function updateShoppingCartHeightFooter(hWindow, hDeltaWindow) {
+    let hDelta = scrollY - hDeltaWindow;
+    let hNew = getFormattedHeight(hWindow, hDelta);
+    setNewHeight('shopping-cart-window', hNew);
+    calculateItemCollectorHeight(hNew);
 }
 
 
-function updateHeightShoppingCartAreaContent(shoppingCartWindow) {     // updates the height of shopping cart window in regard to the 'content' area
-    shoppingCartWindow.style.height = "100vh";
-    let element = getElement('shopping-cart-item-collector');
-    element.style.height = "calc(100vh - 328px)";
+function getFormattedHeight(minuend, subtrahend) {
+    heightUnformatted = minuend - subtrahend;
+    return 'height: ' + heightUnformatted.toString() + 'px';
 }
 
 
-function updateHeightShoppingCartAreaHeader(shoppingCartWindow, hWindow, hHeader) {    // updates the height of shopping cart window in regard to the 'header' area
-    let delta = hHeader - scrollY;
-    let heightUnformatted = hWindow - delta;
-    let newHeight = heightUnformatted.toString() + "px";
-    shoppingCartWindow.style.height = newHeight;
-    calculateHeightItemCollector(newHeight);
+function setNewHeight(id, hNew) {
+    document.getElementById(id).style = hNew;
+}
+
+
+function calculateItemCollectorHeight(newHeight) {
+    let hNew = getFormattedHeight(newHeight, 328);
+    setNewHeight('shopping-cart-item-collector', hNew);
+}
+
+
+function updateShoppingCartHeightContent() {
+    setNewHeight('shopping-cart-window', 'height: 100vh');
+    setNewHeight('shopping-cart-item-collector', 'height: calc(100vh- 328px)')
+}
+
+
+function updateShoppingCartHeightHeader(hWindow, hHeader) {
+    let hDelta = hHeader - scrollY;
+    let hNew = getFormattedHeight(hWindow, hDelta);
+    setNewHeight('shopping-cart-window', hNew);
+    calculateItemCollectorHeight(hNew);
 }
 
 
