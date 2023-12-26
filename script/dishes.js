@@ -6,14 +6,14 @@ let dishes = [
         'description': 'Paradeiser, Käse, Hühnerfleisch, Paprika, Mais, Chilli',    // description of dish
         'price': 9.50,    // price of dish
         'option': 'große Pizza',    // optional upgrade of dish
-        'upcharge': 2.40,    // upcharge (only if option selected)
-        'option-selected': false,    // true, if option selected
-        'in-cart': false    // true, if dish is already in shopping cart
+        'upcharge': 2.40,    // upcharge (if option selected)
+        'option-selected': false,    // true (if option selected)
+        'in-cart': false    // true (if dish is already in shopping cart)
     },
     {   // dish 1
         'original': false,    // upgrade of dish 0
         'title': 'Große Pizza Mexicana',    // title of upgraded dish
-        'in-cart': false    // true, if dish is already in shopping cart
+        'in-cart': false
     },
     {
         'original': true,
@@ -107,24 +107,24 @@ load('dishes');
 
 
 function render() {    // renders ...
-    showDishes();    // dishes of restaurant
-    showItems();    // items of shopping cart
-    outputSubtotal();    // value of subtotal
-    outputDeliveryCosts();    // value of delivery costs
-    outputTotal();    // value of total
+    showDishes();    // the available dishes
+    showItems();    // the items in the shopping cart
+    outputSubtotal();    // the subtotal
+    outputDeliveryCosts();    // the delivery costs
+    outputTotal();    // the total
     showShoppingCartMobileIf();    // shows the element 'shopping-cart-mobile' on one condition
 }
 
 
 function showDishes() {    // shows all available dishes of restaurant
     let dishCardCollector = getElement('dish-card-collector');    // contains the element 'dish-card-collector'
-    dishCardCollector.innerHTML = '';
+    dishCardCollector.innerHTML = '';    // empties dishCardCollector
     fillDishCardCollector(dishCardCollector);
     save(dishes, 'dishes');
 }
 
 
-function getElement(id) {    // provides an element by the parameter 'id'
+function getElement(id) {    // provides an element by the parameter id
     return document.getElementById(id);
 }
 
@@ -132,16 +132,16 @@ function getElement(id) {    // provides an element by the parameter 'id'
 function fillDishCardCollector(dishCardCollector) {    // fills dishCardCollector with i dish cards
     for (let i = 0; i < dishes.length; i++) {
         let original = getDishesObjectValue(i, 'original');    // contains true or false
-        if (original) {    // if this is an orignal dish (without upgrade) ...
+        if (original) {    // if this is an orignal dish ...
             dishCardCollector.innerHTML += writeDishCard(i);    // writes the dish card i
-        } else {
-            calculatePriceOfUpgraded(i);
+        } else {    // else ...
+            calculatePriceOfUpgraded(i);    // calculate the price of upgraded dish i
         }
     }
 }
 
 
-function getDishesObjectValue(index, key) {
+function getDishesObjectValue(index, key) {    // provides an object value of dishes by index and key
     return dishes[index][key];
 }
 
@@ -157,7 +157,7 @@ function writeDishCard(i) {    // writes the HTML code of dish card i
 
 
 function writeHeader(i) {    // writes the header of dish card i
-    let title = getDishesObjectValue(i, 'title');
+    let title = getDishesObjectValue(i, 'title');    // contains the title of dish i
     return `
         <div id="dish-card-header-${i}" class="display-between-center">
             <h3 id="dish-card-title-${i}" class="dish-card-title">${title}</h3>
@@ -168,8 +168,8 @@ function writeHeader(i) {    // writes the header of dish card i
 
 
 function writeDescription(i) {    // writes the description of dish card i
-    let description = getDishesObjectValue(i, 'description');
-    let price = getDecimal(dishes, i, 'price');
+    let description = getDishesObjectValue(i, 'description');    // contains the description of dish i
+    let price = getDecimal(dishes, i, 'price');    // contains the price of dish i formatted as a decimal
     return `
         <div id="dish-card-description-${i}" class="column-start-start">
             <p id="dish-card-ingredients-${i}" class="dish-card-ingredients">${description}</p>
@@ -180,88 +180,88 @@ function writeDescription(i) {    // writes the description of dish card i
 }
 
 
-function getDecimal(variable, index, key) {
-    let number = getJSONObjectValue(variable, index, key);
-    return number.toFixed(2).replace('.', ',');
+function getDecimal(variable, index, key) {    // provides the formatted decimal of a number
+    let number = getJSONObjectValue(variable, index, key);    // contains the value of any JSON
+    return number.toFixed(2).replace('.', ',');    // outputs a number with 2 decimals and comma
 }
 
 
-function getJSONObjectValue(variable, index, key) {
+function getJSONObjectValue(variable, index, key) {    // provides an object value of any JSON by variable, index and key
     return variable[index][key];
 }
 
 
 function writeOptionIf(i) {    // writes the option of dish card i on one condition
-    let option = getDishesObjectValue(i, 'option');    // contains 'text' or false
+    let option = getDishesObjectValue(i, 'option');    // contains a String or false
     if (option) {    // if true ...
         return `<p id="dish-card-option-${i}" class="dish-card-option">Option: ${option}</p>`;    // write option of dish card i ...
-    } else {
-        return '';    // no content
+    } else {    // else ...
+        return '';    // empty
     }
 }
 
 
-function calculatePriceOfUpgraded(i) {
-    let previous = i - 1;
-    let price = getDishesObjectValue(previous, 'price');
-    let upcharge = getDishesObjectValue(previous, 'upcharge');
-    price += upcharge;
+function calculatePriceOfUpgraded(i) {    // calculates the price of upgraded dish i
+    let previous = i - 1;    // contains the index of previous (original) dish
+    let price = getDishesObjectValue(previous, 'price');    // contains the price of previous (original) dish
+    let upcharge = getDishesObjectValue(previous, 'upcharge');    // provides the price of previous (original) dish
+    price += upcharge;    // (total) price of dish i
     setDishesObjectValue(i, 'price', price);
 }
 
 
-function saveAll() {
-    save(dishes, 'dishes');
-    save(shoppingCart, 'shoppingCart');
+function saveAll() {    // saves ...
+    save(dishes, 'dishes');    // the variable dishes
+    save(shoppingCart, 'shoppingCart');    // the variable shoppingCart
 }
 
 
-function save(variable, key) {
+function save(variable, key) {    // saves a variable by variable and key
     let variableAsText = JSON.stringify(variable);
     localStorage.setItem(key, variableAsText);
 }
 
 
-function load(key) {
+function load(key) {    // loads a variable by key
     let variableAsText = localStorage.getItem(key);
     if (variableAsText && key == 'shoppingCart') {
-        shoppingCart = JSON.parse(variableAsText);
+        shoppingCart = JSON.parse(variableAsText);    // shoppingCart
     } else if (variableAsText && key == 'dishes') {
-        dishes = JSON.parse(variableAsText);
+        dishes = JSON.parse(variableAsText);    // dishes
     }
 }
 
 
-function showDialogOrUpdateItem(i) {
-    let optionAvailable = getDishesObjectValue(i, 'option');
-    (optionAvailable) ? showDialog(i) : updateItem(i);
+function showDialogOrUpdateItem(i) {    // onclick function (of dish card i)
+    let optionAvailable = getDishesObjectValue(i, 'option');    // contains the option of dish i
+    (optionAvailable) ? showDialog(i) : updateItem(i);    // true: show dialog | false: update item
 }
 
 
-function updateItem(i) {    // adds one item of dish i to the shopping cart
-    let inCart = getDishesObjectValue(i, 'in-cart');
-    (inCart) ? increaseItem(i) : addItem(i);
+function updateItem(i) {
+    let inCart = getDishesObjectValue(i, 'in-cart');    // contains true or false
+    (inCart) ? increaseItem(i) : addItem(i);    // true: increase item | false: add item
     sortUpdateSaveRender();
 }
 
 
-function increaseItem(i) {
-    let price = getDishesObjectValue(i, 'price');
-    let itemId = getDishesObjectValue(i, 'item-id');
+function increaseItem(i) {    // increase the item i in the shopping cart
+    let price = getDishesObjectValue(i, 'price');    // contains the price of dish i
+    let itemId = getDishesObjectValue(i, 'item-id');    // contains the item id of dish i
     increaseCartObjectValue(itemId, 'amount', 1);
     increaseCartObjectValue(itemId, 'price', price);
 }
 
-function increaseCartObjectValue(index, key, increment) {
+function increaseCartObjectValue(index, key, increment) {    // increases an object value of dishes by an increment
     shoppingCart[index][key] += increment;
 }
 
 
-function addItem(i) {
-    let serial = getJSONLength(shoppingCart);
-    let title = getDishesObjectValue(i, 'title');
-    let price = getDishesObjectValue(i, 'price');
-    let values = [i, 1, title, price];
+function addItem(i) {    // adds item i to the shopping cart
+    let serial = getJSONLength(shoppingCart);    // contains the serial number of new item
+    let title = getDishesObjectValue(i, 'title');    // contains the title of dish i
+    let price = getDishesObjectValue(i, 'price');    // contains the price of dish i
+    let values = [i, 1, title, price];    // contains the index, amount, title and price of new item
     addCartObject(serial, values);
     setDishesObjectValue(i, 'in-cart', true);
     setDishesObjectValue(i, 'item-id', serial);
@@ -273,22 +273,22 @@ function getJSONLength(variable) {    // provides the index of new item
 }
 
 
-function addCartObject(index, values) {
-    shoppingCart[index] = {
-        'dish-id': values[0],
-        'amount': values[1],
-        'title': values[2],
-        'price': values[3]
+function addCartObject(index, values) {    // adds a new item to the shopping cart
+    shoppingCart[index] = {    // contains the serial number of new item
+        'dish-id': values[0],    // contains the index of related dish
+        'amount': values[1],    // contains the amount of item
+        'title': values[2],    // contains the title of item
+        'price': values[3]    // contains the price of item
     }
 }
 
 
-function setDishesObjectValue(index, key, value) {
+function setDishesObjectValue(index, key, value) {    // sets an object value of dishes by a value
     dishes[index][key] = value;
 }
 
 
-function sortUpdateSaveRender() {
+function sortUpdateSaveRender() {    // collector function
     sortItems();
     updateItemId();
     saveAll();
@@ -296,7 +296,7 @@ function sortUpdateSaveRender() {
 }
 
 
-window.onscroll = function() {
+window.onscroll = function () {    // resizes the height of the 'shopping-cart-window' depending on the scrolling area
     let hHTML = html.clientHeight;
     let hDeltaHTML = calculateHTMLDeltaHeight();
     let hHeader = header.offsetHeight;
@@ -310,18 +310,18 @@ window.onscroll = function() {
 }
 
 
-function calculateHTMLDeltaHeight() {
+function calculateHTMLDeltaHeight() {    // calculates the difference of maxScrollHeight and footerHeight
     let hMaxScroll = calculateMaxScrollHeight();
     return hMaxScroll - footer.offsetHeight;
 }
 
 
-function calculateMaxScrollHeight() {
+function calculateMaxScrollHeight() {    // calculates the difference of body's scrollHeight and the html's clientHeight
     return body.scrollHeight - html.clientHeight;
 }
 
 
-function updateShoppingCartHeightFooter(hWindow, hDeltaWindow) {
+function updateShoppingCartHeightFooter(hWindow, hDeltaWindow) {    // rezising function of footer area
     let hDelta = scrollY - hDeltaWindow;
     let hNew = getFormattedHeight(hWindow, hDelta);
     setNewHeight('shopping-cart-window', hNew);
@@ -329,30 +329,30 @@ function updateShoppingCartHeightFooter(hWindow, hDeltaWindow) {
 }
 
 
-function getFormattedHeight(minuend, subtrahend) {
+function getFormattedHeight(minuend, subtrahend) {    // formats the height for subsequent style settings
     heightUnformatted = minuend - subtrahend;
     return 'height: ' + heightUnformatted.toString() + 'px';
 }
 
 
-function setNewHeight(id, hNew) {
+function setNewHeight(id, hNew) {    // sets a new style (height) to an element
     document.getElementById(id).style = hNew;
 }
 
 
-function calculateItemCollectorHeight(newHeight) {
+function calculateItemCollectorHeight(newHeight) {    // resizes the height of the element 'shopping-cart-item-collector'
     let hNew = getFormattedHeight(newHeight, 328);
     setNewHeight('shopping-cart-item-collector', hNew);
 }
 
 
-function updateShoppingCartHeightContent() {
+function updateShoppingCartHeightContent() {    // resizing function of content area
     setNewHeight('shopping-cart-window', 'height: 100vh');
     setNewHeight('shopping-cart-item-collector', 'height: calc(100vh- 328px)')
 }
 
 
-function updateShoppingCartHeightHeader(hWindow, hHeader) {
+function updateShoppingCartHeightHeader(hWindow, hHeader) {    // resizing function of header area
     let hDelta = hHeader - scrollY;
     let hNew = getFormattedHeight(hWindow, hDelta);
     setNewHeight('shopping-cart-window', hNew);

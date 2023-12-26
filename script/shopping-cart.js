@@ -292,7 +292,6 @@ function hideShoppingCart() {
 }
 
 
-
 function setClassOnCommand(id, command, className) {
     (command == 'toggle') ? toggleClass(id, className) : addOrRemoveClass(id, command, className);
 }
