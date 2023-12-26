@@ -1,7 +1,7 @@
 // Functions
 function showDialog(i) {    // shows the dialog with the content of dish card i
     openDialog();
-    setClassOnCommand('dialog', 'overflowY-hidden', 'add');
+    setClassOnCommand('dialog', 'add', 'overflowY-hidden');
     showDialogBox(i);
 }
 
@@ -28,7 +28,7 @@ function fillDialogBox(i, dialogBox) {    // fills dialogBox with the content of
 
 
 function writeDialogBoxHeader(i) {    // writes the header of dialog box
-    let title = getJSONIndexValue(dishes, i, 'title');
+    let title = getDishesObjectValue(i, 'title');
     return `
         <div class="dialog-box-header display-between-center">
             <output id="hidden-index" hidden>${i}</output>
@@ -47,21 +47,15 @@ function stop(event) {    // stops the following onclick function 'closeDialog()
 function closeDialog() {    // closes the dialog
     resetOptionSelected();
     resetDialogContent();
-    setClassOnCommand('body', 'overflowY-hidden', 'remove');
+    setClassOnCommand('body', 'remove', 'overflowY-hidden');
     hideDialog();
-}
-
-
-function resetDialogContent() {    // resets the dialog's content
-    let comment = '<!-- rendering content of dialog box -->';
-    outputValue('dialog-box', comment);
 }
 
 
 function resetOptionSelected() {    // resets 'option-selected' of dish i
     let index = getInnerHTMLValue('hidden-index');    // contains hidden index
     if (index > -1) {    // if index greater then -1
-        setJSONIndexValue(dishes, index, 'object-selected', false);
+        setDishesObjectValue(index, 'object-selected', false);
     }
     save(dishes, 'dishes');
 }
@@ -69,6 +63,12 @@ function resetOptionSelected() {    // resets 'option-selected' of dish i
 
 function getInnerHTMLValue(id) {    // provides the hidden index of dish i
     return +document.getElementById(id).innerHTML;
+}
+
+
+function resetDialogContent() {    // resets the dialog's content
+    let comment = '<!-- rendering content of dialog box -->';
+    outputValue('dialog-box', comment);
 }
 
 
@@ -88,7 +88,7 @@ function writeDialogBoxContent(i) {    // writes the content of dialog box
 
 
 function writeDialogBoxDescripton(i) {    // writes the description of dialog box
-    let description = getJSONIndexValue(dishes, i, 'description');
+    let description = getDishesObjectValue(i, 'description');
     let price = getDecimal(dishes, i, 'price');
     return `
         <div class="dialog-box-description column-start-start">
@@ -100,45 +100,45 @@ function writeDialogBoxDescripton(i) {    // writes the description of dialog bo
 
 
 function writeDialogBoxOption(i) {    // writes the option of dialog box
-    let option = getJSONIndexValue(dishes, i, 'option')
+    let option = getDishesObjectValue(i, 'option')
     let upcharge = getDecimal(dishes, i, 'upcharge');
     return `
         <div class="dialog-box-option">
             <div class="dialog-box-option-text">Ihre Option:</div>
             <div class="dialog-box-option-group display-between-center">
                 <span>${option} (+ <output id="dialog-box-option-price">${upcharge}</output> €)</span>
-                <button id="option-button" class="option-button" onclick="setOptionSelected(${(i)})">Auswählen</button>
+                <button id="option-button" class="option-button" onclick="upgradeOrDowngradeDish(${(i)})">auswählen</button>
             </div>
         </div>
     `;
 }
 
-
-function setOptionSelected(i) {    // sets 'option-selected' of dish i and related settings
-    let optionSelected = getJSONIndexValue(dishes, i, 'option-selected');    // contains true or false
-    (optionSelected) ? setOptionSettingsFalse(i) : setOptionSettingsTrue(i);
+// Bitte bearbeiten!!!
+function upgradeOrDowngradeDish(i) {    // sets 'option-selected' of dish i and related settings
+    let optionSelected = getDishesObjectValue(i, 'option-selected');    // contains true or false
+    (optionSelected) ? setOriginalDish(i) : setUpgradedDish(i);
     save(dishes, 'dishes');
     updateTotalPriceDialog(i);
 }
 
 
-function setOptionSettingsFalse(i) {    // sets option related settings (false)
-    setJSONIndexValue(dishes, i, 'option-selected', false);
+function setOriginalDish(i) {    // sets option related settings (false)
     outputValue('option-button', 'auswählen');
-    setClassOnCommand('option-button', 'option-button-activated', 'remove');
+    setClassOnCommand('option-button', 'remove', 'option-button-activated');
+    setDishesObjectValue(i, 'option-selected', false);
 }
 
 
-function setOptionSettingsTrue(i) {    // sets option related settings (true)
-    setJSONIndexValue(dishes, i, 'option-selected', true);
+function setUpgradedDish(i) {    // sets option related settings (true)
     outputValue('option-button', 'aktiviert');
-    setClassOnCommand('option-button', 'option-button-activated', 'add');
+    setClassOnCommand('option-button', 'add', 'option-button-activated');
+    setDishesObjectValue(i, 'option-selected', true);
 }
 
 
 function updateTotalPriceDialog(i) {    // updates the total price of the 'dialog-box-add-button'
     let amount = getInnerHTMLValue('dialog-box-amount');
-    let price = getJSONIndexValue(dishes, i, 'price');
+    let price = getDishesObjectValue(i, 'price');
     let upcharge = setUpcharge(i);
     let totalPrice = amount * (price + upcharge);
     let totalPriceAsDecimal = formatAsDecimal(totalPrice);
@@ -147,12 +147,12 @@ function updateTotalPriceDialog(i) {    // updates the total price of the 'dialo
 
 
 function setUpcharge(i) {    // sets the value of upcharge
-    let optionSelected = getJSONIndexValue(dishes, i, 'option-selected');
-    let upcharge = getJSONIndexValue(dishes, i, 'upcharge');
+    let optionSelected = getDishesObjectValue(i, 'option-selected');
+    let upcharge = getDishesObjectValue(i, 'upcharge');
     return (optionSelected) ? upcharge : 0;    // return 0, if option is not selected
 }
 
-
+// Umbenennen?
 function selectOutput(id) {    // selects the element 'id' including innerHTML
     return document.getElementById(id).innerHTML;
 }
@@ -178,7 +178,7 @@ function writeDialogBoxFooter(i) {    // writes the footer of dialog box
 function stepUpDialog(i) {    // increases the item at the dialog box
     increaseAmountDialog();
     updateTotalPriceDialog(i);
-    enableButtonIf('dialog-box-minus-button');
+    setButtonIf('dialog-box-minus-button', false);
 }
 
 
@@ -188,16 +188,18 @@ function increaseAmountDialog() {    // increases the amount of item at the dial
 }
 
 
-function enableButtonIf(id) {
-    let buttondisabled = getElement(id);    // contains the minus button of the dialog box
+function setButtonIf(id, value) {
+    let buttondisabled = getElement(id).disabled;    // contains the minus button of the dialog box
     if (buttondisabled) {    // if the minus button is disabled ...
-        enableButton(id);    // enable minus button
+        setButton(id, false);    // enable minus button
+    } else {
+        setButton(id, true);
     }
 }
 
 
-function enableButton(id) {    // enables a button
-    document.getElementById(id).disabled = false;
+function setButton(id, value) {    // enables a button
+    document.getElementById(id).disabled = value;
 }
 
 
@@ -217,82 +219,77 @@ function decreaseAmountDialog() {    // decreases the amount of item at the dial
 function disableButtonIf(id) {
     let amount = getInnerHTMLValue('dialog-box-amount');    // contains the amount
     if (amount < 2) {    // if amount less than 2 ...
-        disableButton(id);    // disable minus button
+        setButton(id, true);    // disable minus button
     }
-}
-
-
-function disableButton(id) {    // disables a button
-    document.getElementById(id).disabled = true;
 }
 
 
 function confirmAction(i) {    // confirms adding or increasing of items
     updateItemDialog(i);
+    sortUpdateSaveRender();
     closeDialog(i);
 }
 
 
-// function updateItemDialog(i) {
-//     let optionSelected = getJSONIndexValue(dishes, i, 'option-selected');
-//     (optionSelected) ? updateUpgradedDialog(i) : updateOriginalDialog(i);
-//     sortUpdateSaveRender();
-// }
+function updateItemDialog(i) {
+    let amount = getInnerHTMLValue('dialog-box-amount');
+    let price = getInnerHTMLValue('dialog-box-total-price');
+    let inCart = getDishesObjectValue(i, 'in-cart');
+    (inCart) ? increaseItemDialog(i, amount, price) : addItemDialog(i, amount, price);
+}
 
 
-// function updateUpgradedDialog(i) {
-//     let dishId = i + 1;
-//     let amount = getInnerHTMLValue('dialog-box-amount');
-//     let price = getUnformattedNumber('dialog-box-total-price');
-//     let inCart = getJSONIndexValue(dishes, dishId, 'in-cart');
-//     (inCart) ? increaseUpgradedDialog(dishId, amount, price) : addUpgradedDialog(dishId, amount, price);
-// }
+function increaseItemDialog(i, amount, price) {
+    let optionSelected = getDishesObjectValue(i, 'option-selected');
+    (optionSelected) ? increaseUpgraded(i, amount, price) : increaseOriginal(i, amount, price);
+}
 
 
-// function increaseUpgradedDialog(dishId, amount, price) {
-//     let itemId = getJSONIndexValue(dishes, dishId, 'item-id');
-//     increaseJSONIndexValue(shoppingCart, itemId, 'amount', amount);
-//     increaseJSONIndexValue(shoppingCart, itemId, 'price', price);
-// }
+function increaseUpgraded(i, amount, price) {
+    let iUp = upgradeIndex(i);
+    let itemId = getDishesObjectValue(iUp, 'item-id');
+    increaseCartObjectValue(itemId, 'amount', amount);
+    increaseCartObjectValue(itemId, 'price', price);
+}
 
 
-// function addUpgradedDialog(dishId, amount, price) {
-//     let serial = getJSONLength(shoppingCart);
-//     let title = getJSONIndexValue(dishes, dishId, 'title');
-//     addJSONObject(shoppingCart, serial, dishId);
-//     setJSONIndexValue(shoppingCart, serial, 'amount', amount);
-//     setJSONIndexValue(shoppingCart, serial, 'title', title);
-//     setJSONIndexValue(shoppingCart, serial, 'price', price);
-//     setJSONIndexValue(dishes, dishId, 'in-cart', true);
-//     setJSONIndexValue(dishes, dishId, 'item-id', serial);
-// }
+function upgradeIndex(i) {
+    return i + 1;
+}
 
 
-// function updateOriginalDialog(i) {
-//     let amount = getInnerHTMLValue('dialog-box-amount');
-//     let price = getUnformattedNumber('dialog-box-total-price');
-//     let inCart = getJSONIndexValue(dishes, i, 'in-cart');
-//     (inCart) ? increaseOriginalDialog(i, amount, price) : addOriginalDialog(i, amount, price);
-// }
+function increaseOriginal(i, amount, price) {
+    let itemId = getDishesObjectValue(i, 'item-id');
+    increaseCartObjectValue(itemId, 'amount', amount);
+    increaseCartObjectValue(itemId, 'price', price);
+}
 
 
-// function increaseOriginalDialog(i, amount, price) {
-//     let itemId = getJSONIndexValue(dishes, i, 'item-id');
-//     increaseJSONIndexValue(shoppingCart, itemId, 'amount', amount);
-//     increaseJSONIndexValue(shoppingCart, itemId, 'price', price);
-// }
+function addItemDialog(i, amount, price) {
+    let optionSelected = getDishesObjectValue(i, 'option-selected');
+    (optionSelected) ? addUpgraded(i, amount, price) : addOriginal(i, amount, price);
+}
 
 
-// function addOriginalDialog(i, amount, price) {
-//     let serial = getJSONLength(shoppingCart);
-//     let title = getJSONIndexValue(dishes, i, 'title');
-//     addJSONObject(shoppingCart, serial, i);
-//     setJSONIndexValue(shoppingCart, serial, 'amount', amount);
-//     setJSONIndexValue(shoppingCart, serial, 'title', title);
-//     setJSONIndexValue(shoppingCart, serial, 'price', price);
-//     setJSONIndexValue(dishes, i, 'in-cart', true);
-//     setJSONIndexValue(dishes, i, 'item-id', serial);
-// }
+function addUpgraded(i, amount, price) {
+    let serial = getJSONLength(shoppingCart);
+    let iUp = upgradeIndex(i);
+    let title = getDishesObjectValue(iUp, 'title');
+    let values = [iUp, amount, title, price];
+    addCartObject(serial, values);
+    setDishesObjectValue(iUp, 'in-cart', true);
+    setDishesObjectValue(iUp, 'item-id', serial);
+}
+
+
+function addOriginal(i, amount, price) {
+    let serial = getJSONLength(shoppingCart);
+    let title = getDishesObjectValue(i, 'title');
+    let values = [i, amount, title, price];
+    addCartObject(serial, values);
+    setDishesObjectValue(i, 'in-cart', true);
+    setDishesObjectValue(i, 'item-id', serial);
+}
 
 
 function submitOrder() {    // opens the final dialog and resets all settings of the website
@@ -308,7 +305,7 @@ function submitOrder() {    // opens the final dialog and resets all settings of
 
 function resetInCart() {    // sets 'in-cart' of all dishes to false
     for (let i = 0; i < dishes.length; i++) {
-        setJSONIndexValue(dishes, i, 'in-cart', false);
+        setDishesObjectValue(i, 'in-cart', false);
     }
 }
 
