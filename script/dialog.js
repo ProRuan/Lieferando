@@ -28,7 +28,7 @@ function fillDialogBox(i, dialogBox) {    // fills dialogBox with the content of
 
 
 function writeDialogBoxHeader(i) {    // writes the header of dialog box
-    let title = getDishesObjectValue(i, 'title');
+    let title = getDishesObjectValue(i, 'title');    // contains the title of dish i
     return `
         <div class="dialog-box-header display-between-center">
             <output id="hidden-index" hidden>${i}</output>
@@ -36,44 +36,6 @@ function writeDialogBoxHeader(i) {    // writes the header of dialog box
             <button id="dialog-box-close-button" class="dialog-box-close-button" onclick="closeDialog()"></button>
         </div>
     `;
-}
-
-
-function stop(event) {    // stops the following onclick function 'closeDialog()'
-    event.stopPropagation();
-}
-
-
-function closeDialog() {    // closes the dialog
-    resetOptionSelected();
-    resetDialogContent();
-    setClassOnCommand('body', 'remove', 'overflowY-hidden');
-    hideDialog();
-}
-
-
-function resetOptionSelected() {    // resets 'option-selected' of dish i
-    let index = getInnerHTMLValue('hidden-index');    // contains hidden index
-    if (index > -1) {    // if index greater then -1
-        setDishesObjectValue(index, 'option-selected', false);
-    }
-    save(dishes, 'dishes');
-}
-
-
-function getInnerHTMLValue(id) {    // provides the hidden index of dish i
-    return +document.getElementById(id).innerHTML;
-}
-
-
-function resetDialogContent() {    // resets the dialog's content
-    let comment = '<!-- rendering content of dialog box -->';
-    outputValue('dialog-box', comment);
-}
-
-
-function hideDialog() {
-    document.getElementById('dialog').close();
 }
 
 
@@ -88,8 +50,8 @@ function writeDialogBoxContent(i) {    // writes the content of dialog box
 
 
 function writeDialogBoxDescripton(i) {    // writes the description of dialog box
-    let description = getDishesObjectValue(i, 'description');
-    let price = getDecimal(dishes, i, 'price');
+    let description = getDishesObjectValue(i, 'description');    // contains the description of dish i
+    let price = getDecimal(dishes, i, 'price');    // contains the price of dish i formatted as a decimal
     return `
         <div class="dialog-box-description column-start-start">
             <p class="dialog-box-ingredients">${description}</p>
@@ -100,8 +62,8 @@ function writeDialogBoxDescripton(i) {    // writes the description of dialog bo
 
 
 function writeDialogBoxOption(i) {    // writes the option of dialog box
-    let option = getDishesObjectValue(i, 'option')
-    let upcharge = getDecimal(dishes, i, 'upcharge');
+    let option = getDishesObjectValue(i, 'option')    // contains the option of dish i
+    let upcharge = getDecimal(dishes, i, 'upcharge');    // contains the upcharge of dish i formatted as a decimal
     return `
         <div class="dialog-box-option">
             <div class="dialog-box-option-text">Ihre Option:</div>
@@ -114,42 +76,10 @@ function writeDialogBoxOption(i) {    // writes the option of dialog box
 }
 
 
-function upgradeOrDowngradeDish(i) {    // sets 'option-selected' of dish i and related settings
-    let optionSelected = getDishesObjectValue(i, 'option-selected');    // contains true or false
-    (optionSelected) ? setOriginalDish(i) : setUpgradedDish(i);
-    save(dishes, 'dishes');
-    updateTotalPriceDialog(i);
-}
-
-
-function setOriginalDish(i) {    // sets option related settings (false)
-    outputValue('option-button', 'auswählen');
-    setClassOnCommand('option-button', 'toggle', 'option-button-activated');
-    setDishesObjectValue(i, 'option-selected', false);
-}
-
-
-function setUpgradedDish(i) {    // sets option related settings (true)
-    outputValue('option-button', 'aktiviert');
-    setClassOnCommand('option-button', 'toggle', 'option-button-activated');
-    setDishesObjectValue(i, 'option-selected', true);
-}
-
-
-function updateTotalPriceDialog(i) {    // updates the total price of the 'dialog-box-add-button'
-    let amount = getInnerHTMLValue('dialog-box-amount');
-    let price = getDishesObjectValue(i, 'price');
-    let upcharge = setUpcharge(i);
-    let totalPrice = amount * (price + upcharge);
-    let totalPriceAsDecimal = formatAsDecimal(totalPrice);
-    outputValue('dialog-box-total-price', totalPriceAsDecimal);
-}
-
-
 function setUpcharge(i) {    // sets the value of upcharge
-    let optionSelected = getDishesObjectValue(i, 'option-selected');
-    let upcharge = getDishesObjectValue(i, 'upcharge');
-    return (optionSelected) ? upcharge : 0;    // return 0, if option is not selected
+    let optionSelected = getDishesObjectValue(i, 'option-selected');    // contains true or false
+    let upcharge = getDishesObjectValue(i, 'upcharge');    // contains the upcharge of dish i
+    return (optionSelected) ? upcharge : 0;    // true: upcharge | false: 0
 }
 
 
@@ -159,7 +89,7 @@ function selectOutput(id) {    // selects the element 'id' including innerHTML
 
 
 function writeDialogBoxFooter(i) {    // writes the footer of dialog box
-    let price = getDecimal(dishes, i, 'price');
+    let price = getDecimal(dishes, i, 'price');    // contains the price of dish i formatted as a decimal
     return `
         <div class="dialog-box-footer display-start-center">
             <div class="dialog-box-amount-group display-between-center">
@@ -172,6 +102,76 @@ function writeDialogBoxFooter(i) {    // writes the footer of dialog box
             </button>
         </div>
     `;
+}
+
+
+function stop(event) {    // stops the subsequent onclick function 'closeDialog()'
+    event.stopPropagation();
+}
+
+
+function closeDialog() {    // closes the dialog
+    resetOptionSelected();
+    resetDialogContent();
+    setClassOnCommand('body', 'remove', 'overflowY-hidden');
+    hideDialog();
+}
+
+
+function resetOptionSelected() {    // resets 'option-selected' of dish i
+    let index = getInnerHTMLValue('hidden-index');    // contains the index of dish i
+    if (index > -1) {    // if index greater then -1
+        setDishesObjectValue(index, 'option-selected', false);    // set 'option-selected' of dish i to false
+    }
+    save(dishes, 'dishes');
+}
+
+
+function getInnerHTMLValue(id) {    // provides the index of dish i which is hidden at the dialog box
+    return +document.getElementById(id).innerHTML;
+}
+
+
+function resetDialogContent() {    // resets the dialog's content
+    let comment = '<!-- rendering content of dialog box -->';    // default text
+    outputValue('dialog-box', comment);
+}
+
+
+function hideDialog() {    // closes the dialog
+    document.getElementById('dialog').close();
+}
+
+
+function upgradeOrDowngradeDish(i) {    // sets the option related settings of dish i
+    let optionSelected = getDishesObjectValue(i, 'option-selected');    // contains true or false
+    (optionSelected) ? setOriginalDish(i) : setUpgradedDish(i);    // true: original settings | false: upgraded settings
+    save(dishes, 'dishes');
+    updateTotalPriceDialog(i);
+}
+
+
+function setOriginalDish(i) {    // sets the original settings of dish i
+    outputValue('option-button', 'auswählen');
+    setClassOnCommand('option-button', 'toggle', 'option-button-activated');
+    setDishesObjectValue(i, 'option-selected', false);
+}
+
+
+function setUpgradedDish(i) {    // set the upgraded settings of dish i
+    outputValue('option-button', 'aktiviert');
+    setClassOnCommand('option-button', 'toggle', 'option-button-activated');
+    setDishesObjectValue(i, 'option-selected', true);
+}
+
+
+function updateTotalPriceDialog(i) {    // updates the total price of the output element 'dialog-box-add-button'
+    let amount = getInnerHTMLValue('dialog-box-amount');    // contains the amount provided by dialog box
+    let price = getDishesObjectValue(i, 'price');    // contains the price of dish i
+    let upcharge = setUpcharge(i);    // contains 0 (if no option selected)
+    let totalPrice = amount * (price + upcharge);    // contains the total price
+    let totalPriceAsDecimal = formatAsDecimal(totalPrice);    // contains the total price formatted as decimal
+    outputValue('dialog-box-total-price', totalPriceAsDecimal);
 }
 
 
