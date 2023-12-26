@@ -231,23 +231,15 @@ function confirmAction(i) {    // confirms adding or increasing of items
 function updateItemDialog(i) {
     let amount = getInnerHTMLValue('dialog-box-amount');
     let price = getUnformattedNumber('dialog-box-total-price');
-    let inCart = getDishesObjectValue(i, 'in-cart');
-    (inCart) ? increaseItemDialog(i, amount, price) : addItemDialog(i, amount, price);
-}
-
-
-function increaseItemDialog(i, amount, price) {
     let optionSelected = getDishesObjectValue(i, 'option-selected');
-    (optionSelected) ? increaseUpgraded(i, amount, price) : increaseOriginal(i, amount, price);
-    saveAndRender();
+    (optionSelected) ? updateUpgradedItem(i, amount, price) : updateOriginalItem(i, amount, price);
 }
 
 
-function increaseUpgraded(i, amount, price) {
+function updateUpgradedItem(i, amount, price) {
     let iUp = upgradeIndex(i);
-    let itemId = getDishesObjectValue(iUp, 'item-id');
-    increaseCartObjectValue(itemId, 'amount', amount);
-    increaseCartObjectValue(itemId, 'price', price);
+    let inCart = getDishesObjectValue(iUp, 'in-cart');
+    (inCart) ? increaseItemDialog(iUp, amount, price) : addItemDialog(iUp, amount, price);
 }
 
 
@@ -256,38 +248,28 @@ function upgradeIndex(i) {
 }
 
 
-function increaseOriginal(i, amount, price) {
-    let itemId = getDishesObjectValue(i, 'item-id');
+function increaseItemDialog(index, amount, price) {
+    let itemId = getDishesObjectValue(index, 'item-id');
     increaseCartObjectValue(itemId, 'amount', amount);
     increaseCartObjectValue(itemId, 'price', price);
+    saveAndRender();
 }
 
 
-function addItemDialog(i, amount, price) {
-    let optionSelected = getDishesObjectValue(i, 'option-selected');
-    (optionSelected) ? addUpgraded(i, amount, price) : addOriginal(i, amount, price);
+function addItemDialog(index, amount, price) {
+    let serial = getJSONLength(shoppingCart);
+    let title = getDishesObjectValue(index, 'title');
+    let values = [index, amount, title, price];
+    addCartObject(serial, values);
+    setDishesObjectValue(index, 'in-cart', true);
+    setDishesObjectValue(index, 'item-id', serial);
     sortUpdateSaveRender();
 }
 
 
-function addUpgraded(i, amount, price) {
-    let serial = getJSONLength(shoppingCart);
-    let iUp = upgradeIndex(i);
-    let title = getDishesObjectValue(iUp, 'title');
-    let values = [iUp, amount, title, price];
-    addCartObject(serial, values);
-    setDishesObjectValue(iUp, 'in-cart', true);
-    setDishesObjectValue(iUp, 'item-id', serial);
-}
-
-
-function addOriginal(i, amount, price) {
-    let serial = getJSONLength(shoppingCart);
-    let title = getDishesObjectValue(i, 'title');
-    let values = [i, amount, title, price];
-    addCartObject(serial, values);
-    setDishesObjectValue(i, 'in-cart', true);
-    setDishesObjectValue(i, 'item-id', serial);
+function updateOriginalItem(i, amount, price) {
+    let inCart = getDishesObjectValue(i, 'in-cart');
+    (inCart) ? increaseItemDialog(i, amount, price) : addItemDialog(i, amount, price);
 }
 
 
