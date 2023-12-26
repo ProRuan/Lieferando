@@ -226,7 +226,6 @@ function disableButtonIf(id) {
 
 function confirmAction(i) {    // confirms adding or increasing of items
     updateItemDialog(i);
-    sortUpdateSaveRender();
     closeDialog(i);
 }
 
@@ -242,6 +241,7 @@ function updateItemDialog(i) {
 function increaseItemDialog(i, amount, price) {
     let optionSelected = getDishesObjectValue(i, 'option-selected');
     (optionSelected) ? increaseUpgraded(i, amount, price) : increaseOriginal(i, amount, price);
+    saveAndRender();
 }
 
 
@@ -268,6 +268,7 @@ function increaseOriginal(i, amount, price) {
 function addItemDialog(i, amount, price) {
     let optionSelected = getDishesObjectValue(i, 'option-selected');
     (optionSelected) ? addUpgraded(i, amount, price) : addOriginal(i, amount, price);
+    sortUpdateSaveRender();
 }
 
 
@@ -294,12 +295,17 @@ function addOriginal(i, amount, price) {
 
 function submitOrder() {    // opens the final dialog and resets all settings of the website
     openDialog();
-    emptyJSON(shoppingCart);
+    emptyShoppingCart();
     resetInCart();
     saveAndRender();
     showFinalDialog();
     hideShoppingCart();
     setTimeout(closeDialog, 3000);
+}
+
+
+function emptyShoppingCart() {
+    shoppingCart = [];
 }
 
 

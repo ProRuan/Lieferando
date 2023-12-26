@@ -277,7 +277,7 @@ function copyJSON(variable) {
     return copy;    // returns the whole copy
 }
 
-
+// in Verwendung?
 function emptyJSON(variable) {
     variable = [];
 }
