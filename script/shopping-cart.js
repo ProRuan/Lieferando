@@ -34,7 +34,7 @@ function writeItem(i) {    // writes the item i in the shopping cart
 
 
 function writeTableTr(i) {    // writes the table row i in the shopping cart
-    let amount = getJSONIndexValue(shoppingCart, i, 'amount');
+    let amount = getCartObjectValue(i, 'amount');
     return `
         <tr>
             <td id="item-index-${i}" class="item-index fw-700">${amount}</td>
@@ -48,8 +48,13 @@ function writeTableTr(i) {    // writes the table row i in the shopping cart
 }
 
 
+function getCartObjectValue(index, key) {
+    return shoppingCart[index][key];
+}
+
+
 function writeTitleAndPrice(i) {    // writes title and price of dish i in the shopping cart
-    let title = getJSONIndexValue(shoppingCart, i, 'title');
+    let title = getCartObjectValue(i, 'title');
     let price = getDecimal(shoppingCart, i, 'price');
     return `
         <div id="item-title-and-price-${i}" class="width-100 display-between-center gap-20">
@@ -68,14 +73,14 @@ function writeOption(i) {    // writes the option of item i in the shopping cart
 
 
 function writeNotesAndAmount(i) {    // writes notes and amount of item i in the shopping cart
-    let amount = getJSONIndexValue(shoppingCart, i, 'amount');
+    let amount = getCartObjectValue(i, 'amount');
     return `
         <div class="mt-8 width-100 display-between-center gap-20">
             <div class="item-notes">Anmerkungen hinzufügen</div>
             <div class="display-between-center">
-                <button id="menu-plus-button-${i}" class="button" onclick="increaseItemInCart(${i})">+</button>
+                <button id="menu-plus-button-${i}" class="button" onclick="updateItemInCart(${i}, true)">+</button>
                 <output id="item-amount-${i}" class="item-amount">${amount}</output>
-                <button id="menu-minus-button-${i}" class="button" onclick="decreaseItemInCart(${i})">-</button>
+                <button id="menu-minus-button-${i}" class="button" onclick="updateItemInCart(${i}, false)">-</button>
             </div>
         </div>
     `;
@@ -85,48 +90,29 @@ function writeNotesAndAmount(i) {    // writes notes and amount of item i in the
 function setShoppingCartSections() {    // shows and hides sections of the shopping cart
     let cartEmpty = (shoppingCart.length < 1);
     if (cartEmpty) {    // if shoppingCart is empty ...
-        setClassOnCommand('shopping-cart-guide', 'display-none', 'remove');
-        setClassOnCommand('shopping-cart-item-collector', 'display-none', 'add');
-        setClassOnCommand('sum-and-order', 'display-none', 'add');
+        setClassOnCommand('shopping-cart-guide', 'remove', 'display-none');
+        setClassOnCommand('shopping-cart-item-collector', 'add', 'display-none');
+        setClassOnCommand('sum-and-order', 'add', 'display-none');
     } else {    // shopping cart contains one or more items ...
-        setClassOnCommand('shopping-cart-guide', 'display-none', 'add');
-        setClassOnCommand('shopping-cart-item-collector', 'display-none', 'remove');
-        setClassOnCommand('sum-and-order', 'display-none', 'remove');
+        setClassOnCommand('shopping-cart-guide', 'add', 'display-none');
+        setClassOnCommand('shopping-cart-item-collector', 'remove', 'display-none');
+        setClassOnCommand('sum-and-order', 'remove', 'display-none');
     }
 }
 
 
-function increaseItemInCart(i) {    // increases item i in the shopping cart
-    increaseJSONIndexValue(shoppingCart, i, 'amount', 1);
-    increasePriceInCart(i);
+function updateItemInCart(i, increase) {    // increases item i in the shopping cart
+    (increase) ? increaseItemInCart(i, 1) : decreaseOrDeleteItemInCart(i, -1);
+}
+
+
+function increaseItemInCart(i, sign) {
+    let amount = getCartObjectValue(i, 'amount');
+    let price = getCartObjectValue(i, 'price');
+    price = sign * (price / amount);
+    increaseCartObjectValue(i, 'amount', sign);
+    increaseCartObjectValue(i, 'price', price);
     saveAndRender();
-}
-
-
-function increasePriceInCart(i) {    // increases the price of item i in cart
-    let dishId = getJSONIndexValue(shoppingCart, i, 'dish-id');    // contains the index of the related dish
-    let original = getJSONIndexValue(dishes, dishId, 'original');    // contains true or false
-    (original) ? increasePriceOfOriginal(i, dishId) : increasePriceOfUpgraded(i, dishId);
-}
-
-
-function increasePriceOfOriginal(i, dishId) {    // increases the price of original item in the shopping cart
-    let price = getJSONIndexValue(dishes, dishId, 'price');
-    increaseJSONIndexValue(shoppingCart, i, 'price', price);
-}
-
-
-function increasePriceOfUpgraded(i, dishId) {    // increases the price of upgraded item in the shopping cart
-    originalDishId = downgradeIndex(dishId);    // reduces the index of upgraded dish to get the original dish
-    let priceOfItem = getJSONIndexValue(dishes, originalDishId, 'price');
-    let upcharge = getJSONIndexValue(dishes, originalDishId, 'upcharge');
-    let totalPrice = priceOfItem + upcharge;        // contains the adding total price of item i
-    increaseJSONIndexValue(shoppingCart, i, 'price', totalPrice);
-}
-
-
-function downgradeIndex(dishId) {    // reduces the index of upgraded dish to get the index of original dish
-    return --dishId;    // index of upgraded dish - 1
 }
 
 
@@ -136,61 +122,29 @@ function saveAndRender() {
 }
 
 
-function decreaseItemInCart(i) {    // decreases item i in the shopping cart
-    decreaseOrDeleteItem(i);
-    saveAndRender();
-}
-
-
-function decreaseOrDeleteItem(i) {    // decreases or delete item i in the shopping cart
-    let amount = getJSONIndexValue(shoppingCart, i, 'amount');    // contains the amount of item i
-    if (amount > 1) {    // if the amount is greater than 1 ...
-        increaseJSONIndexValue(shoppingCart, i, 'amount', -1);
-        decreasePriceInCart(i);    // decrease price of item i
-    } else {    // else ...
-        deleteItem(i);    // delete item i
-        updateItemId();
-    }
-}
-
-
-function decreasePriceInCart(i) {    // decreases the price of item i in the shopping cart
-    let dishId = getJSONIndexValue(shoppingCart, i, 'dish-id');    // contains the index of the related dish
-    let original = getJSONIndexValue(dishes, dishId, 'original');    // contains true or false
-    (original) ? decreasePriceOfOriginal(i, dishId) : decreasePriceOfUpgraded(i, dishId);
-}
-
-
-function decreasePriceOfOriginal(i, dishId) {    // decreases the price of original item in the shopping cart
-    let price = getJSONIndexValue(dishes, dishId, 'price');
-    increaseJSONIndexValue(shoppingCart, i, 'price', -price);
-}
-
-
-function decreasePriceOfUpgraded(i, dishId) {    // decreases the price of upgraded item in the shopping cart
-    originalDishId = downgradeIndex(dishId);    // reduces the index of upgraded dish to get the original dish
-    let priceOfItem = getJSONIndexValue(dishes, originalDishId, 'price');
-    let upcharge = getJSONIndexValue(dishes, originalDishId, 'upcharge');
-    let totalPrice = priceOfItem + upcharge;    // contains the adding total price of item i
-    increaseJSONIndexValue(shoppingCart, i, 'price', -totalPrice);
+function decreaseOrDeleteItemInCart(i, sign) {    // decreases or delete item i in the shopping cart
+    let amount = getCartObjectValue(i, 'amount');
+    (amount > 1) ? increaseItemInCart(i, sign) : deleteItem(i);
 }
 
 
 function deleteItem(i) {    // removes item i from the shopping cart
-    let dishId = getJSONIndexValue(shoppingCart, i, 'dish-id');    // contains the index of related dish
-    setJSONIndexValue(dishes, dishId, 'in-cart', false);
-    deleteJSONObjectValue(dishes, dishId, 'item-id');
-    deleteJSONObject(shoppingCart, i, 1);
+    let dishId = getCartObjectValue(i, 'dish-id');    // contains the index of related dish
+    setDishesObjectValue(dishId, 'in-cart', false);
+    deleteDishesObjectValue(dishId, 'item-id');
+    deleteCartObject(i, 1);
+    saveAndRender();
+    updateItemId();
 }
 
 
-function deleteJSONObjectValue(variable, index, key) {
-    delete variable[index][key];
+function deleteDishesObjectValue(index, key) {
+    delete dishes[index][key];
 }
 
 
-function deleteJSONObject(variable, index, value) {
-    variable.splice(index, value);
+function deleteCartObject(index, value) {
+    shoppingCart.splice(index, value);
 }
 
 
@@ -204,7 +158,7 @@ function outputSubtotal() {    // outputs the subtotal in the shopping cart
 function calculateSubtotal() {    // calculates the subtotal of all items in the shopping cart
     let subtotal = 0;
     for (let i = 0; i < shoppingCart.length; i++) {
-        subtotal += getJSONIndexValue(shoppingCart, i, 'price');
+        subtotal += getCartObjectValue(i, 'price');
     }
     return subtotal;
 }
@@ -259,8 +213,8 @@ function calculateTotal() {    // calculates the total of the shopping cart
 
 function sortItems() {    // sorts items in the order of dishes
     let copy = copyJSON(shoppingCart);    // contains a copy of shoppingCart
-    emptyJSON(shoppingCart);
-    refillJSON(shoppingCart, dishes, copy);
+    emptyShoppingCart();
+    refillShoppingCart(dishes, copy);
 }
 
 
@@ -268,32 +222,27 @@ function copyJSON(variable) {
     let copy = [];    // defines the empty JSON array copy
     for (let i = 0; i < variable.length; i++) {
         copy[i] = {
-            'dish-id': getJSONIndexValue(variable, i, 'dish-id'),
-            'amount': getJSONIndexValue(variable, i, 'amount'),
-            'title': getJSONIndexValue(variable, i, 'title'),
-            'price': getJSONIndexValue(variable, i, 'price')
+            'dish-id': getJSONObjectValue(variable, i, 'dish-id'),
+            'amount': getJSONObjectValue(variable, i, 'amount'),
+            'title': getJSONObjectValue(variable, i, 'title'),
+            'price': getJSONObjectValue(variable, i, 'price')
         };
     }
     return copy;    // returns the whole copy
 }
 
-// in Verwendung?
-function emptyJSON(variable) {
-    variable = [];
-}
 
-
-function refillJSON(variable, master, copy) {
+function refillShoppingCart(master, copy) {
     for (let i = 0; i < copy.length; i++) {
         let min = getJSONLength(master);
         let lowest = getLowestIndex(copy, min);    // contains the lowest itemID
-        variable[i] = {
-            'dish-id': getJSONIndexValue(copy, lowest, 'dish-id'),
-            'amount': getJSONIndexValue(copy, lowest, 'amount'),
-            'title': getJSONIndexValue(copy, lowest, 'title'),
-            'price': getJSONIndexValue(copy, lowest, 'price')
+        shoppingCart[i] = {
+            'dish-id': getJSONObjectValue(copy, lowest, 'dish-id'),
+            'amount': getJSONObjectValue(copy, lowest, 'amount'),
+            'title': getJSONObjectValue(copy, lowest, 'title'),
+            'price': getJSONObjectValue(copy, lowest, 'price')
         };    // adds the item i to the shopping cart
-        setJSONIndexValue(copy, lowest, 'dish-id', master.length);
+        copy[lowest]['dish-id'] = master.length;
     }
 }
 
@@ -301,7 +250,7 @@ function refillJSON(variable, master, copy) {
 function getLowestIndex(copy, min) {    // provides the lowest itemId
     let lowest = 0;
     for (let i = 0; i < copy.length; i++) {
-        let dishId = getJSONIndexValue(copy, i, 'dish-id');    // contains the dishId of copied item j
+        let dishId = getJSONObjectValue(copy, i, 'dish-id');    // contains the dishId of copied item j
         if (dishId < min) {    // if dishId less than minimum index ...
             min = dishId;    // set minimum index = dishID
             lowest = i;    // set current lowest itemId
@@ -313,21 +262,57 @@ function getLowestIndex(copy, min) {    // provides the lowest itemId
 
 function updateItemId() {    // updates the itemId of dishes
     for (let i = 0; i < shoppingCart.length; i++) {
-        let dishId = getJSONIndexValue(shoppingCart, i, 'dish-id');    // contains the dishId of item i
-        setJSONIndexValue(dishes, dishId, 'item-id', i);
+        let dishId = getCartObjectValue(i, 'dish-id');    // contains the dishId of item i
+        setDishesObjectValue(dishId, 'item-id', i);
+    }
+}
+
+
+function showShoppingCartMobileIf() {    // shows the element 'shopping-cart-mobile' on one condition
+    let itemAmount = getJSONLength(shoppingCart);    // contains the number of items in the shopping cart
+    if (itemAmount > 0) {    // if itemAmount is greater than 0 ...
+        setClassOnCommand('shopping-cart-mobile', 'add', 'display-flex');
+    } else {    // else ...
+        setClassOnCommand('shopping-cart-mobile', 'remove', 'display-flex');
     }
 }
 
 
 function showShoppingCart() {
-    setClassOnCommand('body', 'overflowY-responsive', 'add');
-    setClassOnCommand('shopping-cart-window', 'display-unset', 'remove');
-    setClassOnCommand('shopping-cart-mobile', 'display-none', 'add');
+    setClassOnCommand('body', 'add', 'overflowY-responsive');
+    setClassOnCommand('shopping-cart-window', 'remove', 'display-unset');
+    setClassOnCommand('shopping-cart-mobile', 'add', 'display-none');
 }
 
 
 function hideShoppingCart() {
-    setClassOnCommand('body', 'overflowY-responsive', 'remove');
-    setClassOnCommand('shopping-cart-window', 'display-unset', 'add');
-    setClassOnCommand('shopping-cart-mobile', 'display-none', 'remove');
+    setClassOnCommand('body', 'remove', 'overflowY-responsive');
+    setClassOnCommand('shopping-cart-window', 'add', 'display-unset');
+    setClassOnCommand('shopping-cart-mobile', 'remove', 'display-none');
+}
+
+
+
+function setClassOnCommand(id, command, className) {
+    (command == 'toggle') ? toggleClass(id, className) : addOrRemoveClass(id, command, className);
+}
+
+
+function toggleClass(id, className) {
+    document.getElementById(id).classList.toggle(className);
+}
+
+
+function addOrRemoveClass(id, command, className) {
+    (command == 'add') ? addClass(id, className) : removeClass(id, className);
+}
+
+
+function addClass(id, className) {
+    document.getElementById(id).classList.add(className);
+}
+
+
+function removeClass(id, className) {
+    document.getElementById(id).classList.remove(className);
 }

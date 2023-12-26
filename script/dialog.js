@@ -55,7 +55,7 @@ function closeDialog() {    // closes the dialog
 function resetOptionSelected() {    // resets 'option-selected' of dish i
     let index = getInnerHTMLValue('hidden-index');    // contains hidden index
     if (index > -1) {    // if index greater then -1
-        setDishesObjectValue(index, 'object-selected', false);
+        setDishesObjectValue(index, 'option-selected', false);
     }
     save(dishes, 'dishes');
 }
@@ -113,7 +113,7 @@ function writeDialogBoxOption(i) {    // writes the option of dialog box
     `;
 }
 
-// Bitte bearbeiten!!!
+
 function upgradeOrDowngradeDish(i) {    // sets 'option-selected' of dish i and related settings
     let optionSelected = getDishesObjectValue(i, 'option-selected');    // contains true or false
     (optionSelected) ? setOriginalDish(i) : setUpgradedDish(i);
@@ -124,14 +124,14 @@ function upgradeOrDowngradeDish(i) {    // sets 'option-selected' of dish i and 
 
 function setOriginalDish(i) {    // sets option related settings (false)
     outputValue('option-button', 'auswählen');
-    setClassOnCommand('option-button', 'remove', 'option-button-activated');
+    setClassOnCommand('option-button', 'toggle', 'option-button-activated');
     setDishesObjectValue(i, 'option-selected', false);
 }
 
 
 function setUpgradedDish(i) {    // sets option related settings (true)
     outputValue('option-button', 'aktiviert');
-    setClassOnCommand('option-button', 'add', 'option-button-activated');
+    setClassOnCommand('option-button', 'toggle', 'option-button-activated');
     setDishesObjectValue(i, 'option-selected', true);
 }
 
@@ -152,7 +152,7 @@ function setUpcharge(i) {    // sets the value of upcharge
     return (optionSelected) ? upcharge : 0;    // return 0, if option is not selected
 }
 
-// Umbenennen?
+
 function selectOutput(id) {    // selects the element 'id' including innerHTML
     return document.getElementById(id).innerHTML;
 }
@@ -192,8 +192,6 @@ function setButtonIf(id, value) {
     let buttondisabled = getElement(id).disabled;    // contains the minus button of the dialog box
     if (buttondisabled) {    // if the minus button is disabled ...
         setButton(id, false);    // enable minus button
-    } else {
-        setButton(id, true);
     }
 }
 
@@ -229,10 +227,10 @@ function confirmAction(i) {    // confirms adding or increasing of items
     closeDialog(i);
 }
 
-
+// Bitte i or dishId bearbeiten!!!
 function updateItemDialog(i) {
     let amount = getInnerHTMLValue('dialog-box-amount');
-    let price = getInnerHTMLValue('dialog-box-total-price');
+    let price = getUnformattedNumber('dialog-box-total-price');
     let inCart = getDishesObjectValue(i, 'in-cart');
     (inCart) ? increaseItemDialog(i, amount, price) : addItemDialog(i, amount, price);
 }

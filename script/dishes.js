@@ -358,28 +358,3 @@ function updateShoppingCartHeightHeader(hWindow, hHeader) {
     setNewHeight('shopping-cart-window', hNew);
     calculateItemCollectorHeight(hNew);
 }
-
-
-function showShoppingCartMobileIf() {    // shows the element 'shopping-cart-mobile' on one condition
-    let itemAmount = getJSONLength(shoppingCart);    // contains the number of items in the shopping cart
-    if (itemAmount > 0) {    // if itemAmount is greater than 0 ...
-        setClassOnCommand('shopping-cart-mobile', 'add', 'display-flex');
-    } else {    // else ...
-        setClassOnCommand('shopping-cart-mobile', 'remove', 'display-flex');
-    }
-}
-
-
-function setClassOnCommand(id, command, className) {
-    (command == 'add') ? addClass(id, className) : removeClass(id, className);
-}
-
-
-function addClass(id, className) {
-    document.getElementById(id).classList.add(className);
-}
-
-
-function removeClass(id, className) {
-    document.getElementById(id).classList.remove(className);
-}
