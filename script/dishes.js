@@ -323,15 +323,15 @@ function calculateMaxScrollHeight() {    // calculates the difference of body's 
 
 function updateShoppingCartHeightFooter(hWindow, hDeltaWindow) {    // rezising function of footer area
     let hDelta = scrollY - hDeltaWindow;
-    let hNew = getFormattedHeight(hWindow, hDelta);
-    setNewHeight('shopping-cart-window', hNew);
+    let hNew = hWindow - hDelta;
+    let hNewFormatted = getFormattedHeight(hNew);
+    setNewHeight('shopping-cart-window', hNewFormatted);
     calculateItemCollectorHeight(hNew);
 }
 
 
-function getFormattedHeight(minuend, subtrahend) {    // formats the height for subsequent style settings
-    heightUnformatted = minuend - subtrahend;
-    return 'height: ' + heightUnformatted.toString() + 'px';
+function getFormattedHeight(number) {    // formats the height for subsequent style settings
+    return `height: ${number}px`;
 }
 
 
@@ -340,21 +340,23 @@ function setNewHeight(id, hNew) {    // sets a new style (height) to an element
 }
 
 
-function calculateItemCollectorHeight(newHeight) {    // resizes the height of the element 'shopping-cart-item-collector'
-    let hNew = getFormattedHeight(newHeight, 328);
-    setNewHeight('shopping-cart-item-collector', hNew);
+function calculateItemCollectorHeight(number) {    // resizes the height of the element 'shopping-cart-item-collector'
+    let hNew = number - 328;
+    let hNewFormatted = getFormattedHeight(hNew);
+    setNewHeight('shopping-cart-item-collector', hNewFormatted);
 }
 
 
 function updateShoppingCartHeightContent() {    // resizing function of content area
     setNewHeight('shopping-cart-window', 'height: 100vh');
-    setNewHeight('shopping-cart-item-collector', 'height: calc(100vh- 328px)')
+    setNewHeight('shopping-cart-item-collector', 'height: calc(100vh - 328px)');
 }
 
 
 function updateShoppingCartHeightHeader(hWindow, hHeader) {    // resizing function of header area
     let hDelta = hHeader - scrollY;
-    let hNew = getFormattedHeight(hWindow, hDelta);
-    setNewHeight('shopping-cart-window', hNew);
+    let hNew = hWindow - hDelta;
+    let hNewFormatted = getFormattedHeight(hNew);
+    setNewHeight('shopping-cart-window', hNewFormatted);
     calculateItemCollectorHeight(hNew);
 }
