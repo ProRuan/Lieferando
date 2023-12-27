@@ -187,14 +187,9 @@ function calculateDeliveryCosts() {    // calculates the delivery costs of the s
 }
 
 
-function getUnformattedNumber(id) {
-    let numberFormatted = selectOutput(id);
-    return Number(numberFormatted.replace(',', '.'));
-}
-
-
-function selectOutput(id) {    // selects the element 'id' including innerHTML
-    return document.getElementById(id).innerHTML;
+function getUnformattedNumber(id) {    // reformats a String to a number
+    let numberFormatted = document.getElementById(id).innerHTML;    // contains a String of an element's inner HTML
+    return Number(numberFormatted.replace(',', '.'));    // returns a number
 }
 
 
