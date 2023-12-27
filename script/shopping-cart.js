@@ -1,5 +1,5 @@
 // Variables
-let shoppingCart = [];    // contains all selected dishes
+let shoppingCart = [];    // contains all selected dishes with dish id, amount, title and price
 
 
 // Functions
@@ -33,8 +33,8 @@ function writeItem(i) {    // writes the item i in the shopping cart
 }
 
 
-function writeTableTr(i) {    // writes the table row i in the shopping cart
-    let amount = getCartObjectValue(i, 'amount');
+function writeTableTr(i) {    // writes the table row of item i in the shopping cart
+    let amount = getCartObjectValue(i, 'amount');    // contains the amount of item i
     return `
         <tr>
             <td id="item-index-${i}" class="item-index fw-700">${amount}</td>
@@ -48,14 +48,14 @@ function writeTableTr(i) {    // writes the table row i in the shopping cart
 }
 
 
-function getCartObjectValue(index, key) {
+function getCartObjectValue(index, key) {    // provides an object value of shoppingCart by index and key
     return shoppingCart[index][key];
 }
 
 
 function writeTitleAndPrice(i) {    // writes title and price of dish i in the shopping cart
-    let title = getCartObjectValue(i, 'title');
-    let price = getDecimal(shoppingCart, i, 'price');
+    let title = getCartObjectValue(i, 'title');    // contains the title of item i
+    let price = getDecimal(shoppingCart, i, 'price');    // contains the price of item i formatted as a decimal
     return `
         <div id="item-title-and-price-${i}" class="width-100 display-between-center gap-20">
             <div id="item-title-${i}" class="added-item-title fw-700">${title}</div>
@@ -73,7 +73,7 @@ function writeOption(i) {    // writes the option of item i in the shopping cart
 
 
 function writeNotesAndAmount(i) {    // writes notes and amount of item i in the shopping cart
-    let amount = getCartObjectValue(i, 'amount');
+    let amount = getCartObjectValue(i, 'amount');    // contains the amount of item i
     return `
         <div class="mt-8 width-100 display-between-center gap-20">
             <div class="item-notes">Anmerkungen hinzufügen</div>
@@ -89,7 +89,7 @@ function writeNotesAndAmount(i) {    // writes notes and amount of item i in the
 
 function setShoppingCartSections() {    // shows and hides sections of the shopping cart
     let cartEmpty = (shoppingCart.length < 1);
-    if (cartEmpty) {    // if shoppingCart is empty ...
+    if (cartEmpty) {    // shoppingCart is empty ...
         setClassOnCommand('shopping-cart-guide', 'remove', 'display-none');
         setClassOnCommand('shopping-cart-item-collector', 'add', 'display-none');
         setClassOnCommand('sum-and-order', 'add', 'display-none');
@@ -101,15 +101,15 @@ function setShoppingCartSections() {    // shows and hides sections of the shopp
 }
 
 
-function updateItemInCart(i, increase) {    // increases item i in the shopping cart
-    (increase) ? increaseItemInCart(i, 1) : decreaseOrDeleteItemInCart(i, -1);
+function updateItemInCart(i, increase) {    // increases or decreases (deletes) item i in the shopping cart
+    (increase) ? increaseItemInCart(i, 1) : decreaseOrDeleteItemInCart(i, -1);    // true: increase item | false: decrease or delete item
 }
 
 
-function increaseItemInCart(i, sign) {
-    let amount = getCartObjectValue(i, 'amount');
-    let price = getCartObjectValue(i, 'price');
-    price = sign * (price / amount);
+function increaseItemInCart(i, sign) {    // increases item i in the shopping cart
+    let amount = getCartObjectValue(i, 'amount');    // contains the amount of item i
+    let price = getCartObjectValue(i, 'price');    // contains the price of item i
+    price = sign * (price / amount);    // contains the increasing or decreasing value of price
     increaseCartObjectValue(i, 'amount', sign);
     increaseCartObjectValue(i, 'price', price);
     saveAndRender();
@@ -122,9 +122,9 @@ function saveAndRender() {
 }
 
 
-function decreaseOrDeleteItemInCart(i, sign) {    // decreases or delete item i in the shopping cart
-    let amount = getCartObjectValue(i, 'amount');
-    (amount > 1) ? increaseItemInCart(i, sign) : deleteItem(i);
+function decreaseOrDeleteItemInCart(i, sign) {    // decreases or deletes item i in the shopping cart
+    let amount = getCartObjectValue(i, 'amount');    // contains amount of item i
+    (amount > 1) ? increaseItemInCart(i, sign) : deleteItem(i);    // true: decrease item | false: delete item
 }
 
 
@@ -138,24 +138,24 @@ function deleteItem(i) {    // removes item i from the shopping cart
 }
 
 
-function deleteDishesObjectValue(index, key) {
+function deleteDishesObjectValue(index, key) {    // deletes an object value of dishes
     delete dishes[index][key];
 }
 
 
-function deleteCartObject(index, value) {
+function deleteCartObject(index, value) {    // deletes an object of shoppingCart
     shoppingCart.splice(index, value);
 }
 
 
 function outputSubtotal() {    // outputs the subtotal in the shopping cart
-    let subtotal = calculateSubtotal();
-    let subtotalAsDecimal = formatAsDecimal(subtotal);
+    let subtotal = calculateSubtotal();    // contains the subtotal
+    let subtotalAsDecimal = formatAsDecimal(subtotal);    // contains the subtotal formatted as decimal
     outputValue('subtotal', subtotalAsDecimal);
 }
 
 
-function calculateSubtotal() {    // calculates the subtotal of all items in the shopping cart
+function calculateSubtotal() {    // summarizes the subtotal of all items in the shopping cart
     let subtotal = 0;
     for (let i = 0; i < shoppingCart.length; i++) {
         subtotal += getCartObjectValue(i, 'price');
@@ -164,19 +164,19 @@ function calculateSubtotal() {    // calculates the subtotal of all items in the
 }
 
 
-function formatAsDecimal(number) {
+function formatAsDecimal(number) {    // returns a decimal number with comma
     return number.toFixed(2).replace('.', ',');
 }
 
 
-function outputValue(id, decimal) {
+function outputValue(id, decimal) {    // writes the inner HTML of an element
     document.getElementById(id).innerHTML = decimal;
 }
 
 
 function outputDeliveryCosts() {    // outputs the delivery costs in the shopping cart
-    let deliveryCosts = calculateDeliveryCosts();
-    let deliveryCostsAsDecimal = formatAsDecimal(deliveryCosts);
+    let deliveryCosts = calculateDeliveryCosts();    // contains the delivery costs
+    let deliveryCostsAsDecimal = formatAsDecimal(deliveryCosts);    // contais the delivery costs formatted as decimal
     outputValue('delivery-costs', deliveryCostsAsDecimal);
 }
 
@@ -193,12 +193,17 @@ function getUnformattedNumber(id) {
 }
 
 
+function selectOutput(id) {    // selects the element 'id' including innerHTML
+    return document.getElementById(id).innerHTML;
+}
+
+
 function outputTotal() {    // outputs the total in the shopping cart
-    let total = calculateTotal();
-    let totalAsDecimal = formatAsDecimal(total);
+    let total = calculateTotal();    // contains the total
+    let totalAsDecimal = formatAsDecimal(total);    // contains the total formatted as decimal
     let ids = ['total', 'order-button-total', 'mobile-button-total'];    // contains the ids of output elements
     for (let i = 0; i < ids.length; i++) {
-        let id = ids[i];
+        let id = ids[i];    // contains the current id
         outputValue(id, totalAsDecimal);
     }
 }
@@ -218,8 +223,8 @@ function sortItems() {    // sorts items in the order of dishes
 }
 
 
-function copyJSON(variable) {
-    let copy = [];    // defines the empty JSON array copy
+function copyJSON(variable) {    // creates a copy of a JSON
+    let copy = [];
     for (let i = 0; i < variable.length; i++) {
         copy[i] = {
             'dish-id': getJSONObjectValue(variable, i, 'dish-id'),
@@ -228,21 +233,21 @@ function copyJSON(variable) {
             'price': getJSONObjectValue(variable, i, 'price')
         };
     }
-    return copy;    // returns the whole copy
+    return copy;
 }
 
 
-function refillShoppingCart(master, copy) {
+function refillShoppingCart(master, copy) {    // refills the shopping cart with the sorted items
     for (let i = 0; i < copy.length; i++) {
-        let min = getJSONLength(master);
-        let lowest = getLowestIndex(copy, min);    // contains the lowest itemID
+        let min = getJSONLength(master);    // contains the current lowest dishId
+        let lowest = getLowestIndex(copy, min);    // contains the lowest itemId
         shoppingCart[i] = {
             'dish-id': getJSONObjectValue(copy, lowest, 'dish-id'),
             'amount': getJSONObjectValue(copy, lowest, 'amount'),
             'title': getJSONObjectValue(copy, lowest, 'title'),
             'price': getJSONObjectValue(copy, lowest, 'price')
         };    // adds the item i to the shopping cart
-        copy[lowest]['dish-id'] = master.length;
+        copy[lowest]['dish-id'] = master.length;    // sets the dishId out of reach
     }
 }
 
@@ -271,47 +276,47 @@ function updateItemId() {    // updates the itemId of dishes
 function showShoppingCartMobileIf() {    // shows the element 'shopping-cart-mobile' on one condition
     let itemAmount = getJSONLength(shoppingCart);    // contains the number of items in the shopping cart
     if (itemAmount > 0) {    // if itemAmount is greater than 0 ...
-        setClassOnCommand('shopping-cart-mobile', 'add', 'display-flex');
+        setClassOnCommand('shopping-cart-mobile', 'add', 'display-flex');    // show shopping cart mobile
     } else {    // else ...
-        setClassOnCommand('shopping-cart-mobile', 'remove', 'display-flex');
+        setClassOnCommand('shopping-cart-mobile', 'remove', 'display-flex');    // hide shopping cart mobile
     }
 }
 
 
-function showShoppingCart() {
+function showShoppingCart() {    // shows the shopping cart
     setClassOnCommand('body', 'add', 'overflowY-responsive');
     setClassOnCommand('shopping-cart-window', 'remove', 'display-unset');
     setClassOnCommand('shopping-cart-mobile', 'add', 'display-none');
 }
 
 
-function hideShoppingCart() {
+function hideShoppingCart() {    // hides the shopping cart
     setClassOnCommand('body', 'remove', 'overflowY-responsive');
     setClassOnCommand('shopping-cart-window', 'add', 'display-unset');
     setClassOnCommand('shopping-cart-mobile', 'remove', 'display-none');
 }
 
 
-function setClassOnCommand(id, command, className) {
+function setClassOnCommand(id, command, className) {    // manages a class of an element on command
     (command == 'toggle') ? toggleClass(id, className) : addOrRemoveClass(id, command, className);
 }
 
 
-function toggleClass(id, className) {
+function toggleClass(id, className) {    // toggles a class of an element
     document.getElementById(id).classList.toggle(className);
 }
 
 
-function addOrRemoveClass(id, command, className) {
+function addOrRemoveClass(id, command, className) {    // adds or removes an element's class on command
     (command == 'add') ? addClass(id, className) : removeClass(id, className);
 }
 
 
-function addClass(id, className) {
+function addClass(id, className) {    // adds a class to an element
     document.getElementById(id).classList.add(className);
 }
 
 
-function removeClass(id, className) {
+function removeClass(id, className) {    // removes a class from an element
     document.getElementById(id).classList.remove(className);
 }

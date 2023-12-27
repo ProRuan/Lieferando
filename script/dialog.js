@@ -76,11 +76,6 @@ function writeDialogBoxOption(i) {    // writes the option of dialog box
 }
 
 
-function selectOutput(id) {    // selects the element 'id' including innerHTML
-    return document.getElementById(id).innerHTML;
-}
-
-
 function writeDialogBoxFooter(i) {    // writes the footer of dialog box
     let price = getDecimal(dishes, i, 'price');    // contains the price of dish i formatted as a decimal
     return `
@@ -243,7 +238,7 @@ function upgradeIndex(i) {    // provides the index of upgraded dish
 }
 
 
-function increaseItemDialog(index, amount, price) {    // increases the amount and the price of an item in the shopping cart
+function increaseItemDialog(index, amount, price) {    // increases amount and price of an item in the shopping cart
     let itemId = getDishesObjectValue(index, 'item-id');    // contains the item-id of item
     increaseCartObjectValue(itemId, 'amount', amount);
     increaseCartObjectValue(itemId, 'price', price);
