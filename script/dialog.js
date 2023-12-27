@@ -76,13 +76,6 @@ function writeDialogBoxOption(i) {    // writes the option of dialog box
 }
 
 
-function setUpcharge(i) {    // sets the value of upcharge
-    let optionSelected = getDishesObjectValue(i, 'option-selected');    // contains true or false
-    let upcharge = getDishesObjectValue(i, 'upcharge');    // contains the upcharge of dish i
-    return (optionSelected) ? upcharge : 0;    // true: upcharge | false: 0
-}
-
-
 function selectOutput(id) {    // selects the element 'id' including innerHTML
     return document.getElementById(id).innerHTML;
 }
@@ -166,7 +159,7 @@ function setUpgradedDish(i) {    // set the upgraded settings of dish i
 
 
 function updateTotalPriceDialog(i) {    // updates the total price of the output element 'dialog-box-add-button'
-    let amount = getInnerHTMLValue('dialog-box-amount');    // contains the amount provided by dialog box
+    let amount = getInnerHTMLValue('dialog-box-amount');    // contains the amount of item
     let price = getDishesObjectValue(i, 'price');    // contains the price of dish i
     let upcharge = setUpcharge(i);    // contains 0 (if no option selected)
     let totalPrice = amount * (price + upcharge);    // contains the total price
@@ -175,91 +168,93 @@ function updateTotalPriceDialog(i) {    // updates the total price of the output
 }
 
 
+function setUpcharge(i) {    // sets the value of upcharge
+    let optionSelected = getDishesObjectValue(i, 'option-selected');    // contains true or false
+    let upcharge = getDishesObjectValue(i, 'upcharge');    // contains the upcharge of dish i
+    return (optionSelected) ? upcharge : 0;    // true: upcharge | false: 0
+}
+
+
 function stepUpDialog(i) {    // increases the item at the dialog box
-    increaseAmountDialog();
+    increaseAmountDialog(true);
     updateTotalPriceDialog(i);
-    setButtonIf('dialog-box-minus-button', false);
+    enableButtonIf('dialog-box-minus-button');
 }
 
 
-function increaseAmountDialog() {    // increases the amount of item at the dialog box
-    let amount = getInnerHTMLValue('dialog-box-amount');
-    outputValue('dialog-box-amount', ++amount);
+function increaseAmountDialog(increase) {    // increases the amount of item at the dialog box
+    let amount = getInnerHTMLValue('dialog-box-amount');    // contains the amount of item
+    (increase) ? ++amount : --amount;    // true: amount + 1 | false: amount - 1
+    outputValue('dialog-box-amount', amount);
 }
 
 
-function setButtonIf(id, value) {
-    let buttondisabled = getElement(id).disabled;    // contains the minus button of the dialog box
-    if (buttondisabled) {    // if the minus button is disabled ...
-        setButton(id, false);    // enable minus button
+function enableButtonIf(id) {    // enables a button on one condition
+    let buttondisabled = getElement(id).disabled;    // contains a button element
+    if (buttondisabled) {    // if the button is disabled ...
+        setButton(id, false);    // enable button
     }
 }
 
 
-function setButton(id, value) {    // enables a button
+function setButton(id, value) {    // sets a button enabled or disabled
     document.getElementById(id).disabled = value;
 }
 
 
 function stepDownDialog(i) {    // decreases the item at the dialog box
-    decreaseAmountDialog();
+    increaseAmountDialog(false);
     updateTotalPriceDialog(i);
     disableButtonIf('dialog-box-minus-button');
 }
 
 
-function decreaseAmountDialog() {    // decreases the amount of item at the dialog box
-    let amount = getInnerHTMLValue('dialog-box-amount');
-    outputValue('dialog-box-amount', --amount);
-}
-
-
-function disableButtonIf(id) {
-    let amount = getInnerHTMLValue('dialog-box-amount');    // contains the amount
-    if (amount < 2) {    // if amount less than 2 ...
-        setButton(id, true);    // disable minus button
+function disableButtonIf(id) {    // disables a button on one condition
+    let amount = getInnerHTMLValue('dialog-box-amount');    // contains the amount of item
+    if (amount < 2) {    // if amount is less than 2 ...
+        setButton(id, true);    // disable button
     }
 }
 
 
-function confirmAction(i) {    // confirms adding or increasing of items
+function confirmAction(i) {    // executes the increasing or adding of items and closes the dialog
     updateItemDialog(i);
     closeDialog(i);
 }
 
-// Bitte i or dishId bearbeiten!!!
-function updateItemDialog(i) {
-    let amount = getInnerHTMLValue('dialog-box-amount');
-    let price = getUnformattedNumber('dialog-box-total-price');
-    let optionSelected = getDishesObjectValue(i, 'option-selected');
-    (optionSelected) ? updateUpgradedItem(i, amount, price) : updateOriginalItem(i, amount, price);
+
+function updateItemDialog(i) {    // updates an upgraded or orignal item on one condition
+    let amount = getInnerHTMLValue('dialog-box-amount');    // contains the amount of item
+    let price = getUnformattedNumber('dialog-box-total-price');    // contains the total price of item
+    let optionSelected = getDishesObjectValue(i, 'option-selected');    // contains true or false
+    (optionSelected) ? updateUpgradedItem(i, amount, price) : updateOriginalItem(i, amount, price);    // true: update upgraded item | false: update original item
 }
 
 
-function updateUpgradedItem(i, amount, price) {
-    let iUp = upgradeIndex(i);
-    let inCart = getDishesObjectValue(iUp, 'in-cart');
-    (inCart) ? increaseItemDialog(iUp, amount, price) : addItemDialog(iUp, amount, price);
+function updateUpgradedItem(i, amount, price) {    // increases or adds an upgraded item on one condition
+    let iUp = upgradeIndex(i);    // contains the index of upgraded dish
+    let inCart = getDishesObjectValue(iUp, 'in-cart');    // contains true or false
+    (inCart) ? increaseItemDialog(iUp, amount, price) : addItemDialog(iUp, amount, price);    // true: increase item | false: add item
 }
 
 
-function upgradeIndex(i) {
+function upgradeIndex(i) {    // provides the index of upgraded dish
     return i + 1;
 }
 
 
-function increaseItemDialog(index, amount, price) {
-    let itemId = getDishesObjectValue(index, 'item-id');
+function increaseItemDialog(index, amount, price) {    // increases the amount and the price of an item in the shopping cart
+    let itemId = getDishesObjectValue(index, 'item-id');    // contains the item-id of item
     increaseCartObjectValue(itemId, 'amount', amount);
     increaseCartObjectValue(itemId, 'price', price);
     saveAndRender();
 }
 
 
-function addItemDialog(index, amount, price) {
-    let serial = getJSONLength(shoppingCart);
-    let title = getDishesObjectValue(index, 'title');
-    let values = [index, amount, title, price];
+function addItemDialog(index, amount, price) {    // adds an item to th shopping cart
+    let serial = getJSONLength(shoppingCart);    // contains the serial number of the item
+    let title = getDishesObjectValue(index, 'title');    // contains the title of item
+    let values = [index, amount, title, price];    // contains index, amount, title and price of item
     addCartObject(serial, values);
     setDishesObjectValue(index, 'in-cart', true);
     setDishesObjectValue(index, 'item-id', serial);
@@ -267,9 +262,9 @@ function addItemDialog(index, amount, price) {
 }
 
 
-function updateOriginalItem(i, amount, price) {
-    let inCart = getDishesObjectValue(i, 'in-cart');
-    (inCart) ? increaseItemDialog(i, amount, price) : addItemDialog(i, amount, price);
+function updateOriginalItem(i, amount, price) {    // increases or adds an original item on one condition
+    let inCart = getDishesObjectValue(i, 'in-cart');    // contains true or false
+    (inCart) ? increaseItemDialog(i, amount, price) : addItemDialog(i, amount, price);    // true: increase item | false: add item
 }
 
 
@@ -284,7 +279,7 @@ function submitOrder() {    // opens the final dialog and resets all settings of
 }
 
 
-function emptyShoppingCart() {
+function emptyShoppingCart() {    // empties the shopping cart
     shoppingCart = [];
 }
 
@@ -297,8 +292,8 @@ function resetInCart() {    // sets 'in-cart' of all dishes to false
 
 
 function showFinalDialog() {    // shows the final dialog
-    dialogBox = getElement('dialog-box');
-    dialogBox.innerHTML = '';
+    dialogBox = getElement('dialog-box');    // contains the element 'dialog-box'
+    dialogBox.innerHTML = '';    // empties dialogBox
     writeOrderConfirmation(dialogBox);
 }
 
